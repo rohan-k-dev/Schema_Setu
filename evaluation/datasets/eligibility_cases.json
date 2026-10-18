@@ -1,0 +1,646 @@
+[
+ {
+  "case_id": "E01",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "state": "karnataka",
+   "land_size_acres": 2
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Simple eligible"
+ },
+ {
+  "case_id": "E02",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "state": "karnataka",
+   "land_size_acres": 10
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "Land exceeds"
+ },
+ {
+  "case_id": "E03",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "state": "karnataka"
+  },
+  "expected_status": "NEEDS_MORE_INFORMATION",
+  "description": "Missing land"
+ },
+ {
+  "case_id": "E04",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [],
+  "profile": {
+   "state": "karnataka"
+  },
+  "expected_status": "UNVERIFIABLE",
+  "description": "No rules"
+ },
+ {
+  "case_id": "E05",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "EQ",
+    "value_json": "karnataka"
+   }
+  ],
+  "profile": {
+   "state": "karnataka"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "EQ operator pass"
+ },
+ {
+  "case_id": "E06",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "EQ",
+    "value_json": "karnataka"
+   }
+  ],
+  "profile": {
+   "state": "maharashtra"
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "EQ operator fail"
+ },
+ {
+  "case_id": "E07",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "NEQ",
+    "value_json": "karnataka"
+   }
+  ],
+  "profile": {
+   "state": "maharashtra"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "NEQ pass"
+ },
+ {
+  "case_id": "E08",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "NOT_IN",
+    "value_json": [
+     "karnataka",
+     "tamil nadu"
+    ]
+   }
+  ],
+  "profile": {
+   "state": "maharashtra"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "NOT_IN pass"
+ },
+ {
+  "case_id": "E09",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "LT",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "land_size_acres": 3
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "LT pass"
+ },
+ {
+  "case_id": "E10",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "LT",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "land_size_acres": 5
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "LT fail boundary"
+ },
+ {
+  "case_id": "E11",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "GT",
+    "value_json": 2
+   }
+  ],
+  "profile": {
+   "land_size_acres": 5
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "GT pass"
+ },
+ {
+  "case_id": "E12",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "GTE",
+    "value_json": 2
+   }
+  ],
+  "profile": {
+   "land_size_acres": 2
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "GTE boundary pass"
+ },
+ {
+  "case_id": "E13",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "BETWEEN",
+    "value_json": [
+     1,
+     5
+    ]
+   }
+  ],
+  "profile": {
+   "land_size_acres": 3
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "BETWEEN pass"
+ },
+ {
+  "case_id": "E14",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "BETWEEN",
+    "value_json": [
+     1,
+     5
+    ]
+   }
+  ],
+  "profile": {
+   "land_size_acres": 7
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "BETWEEN fail"
+ },
+ {
+  "case_id": "E15",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "has_aadhaar",
+    "operator": "BOOLEAN",
+    "value_json": true
+   }
+  ],
+  "profile": {
+   "has_aadhaar": true
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "BOOLEAN pass"
+ },
+ {
+  "case_id": "E16",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "has_aadhaar",
+    "operator": "BOOLEAN",
+    "value_json": true
+   }
+  ],
+  "profile": {
+   "has_aadhaar": false
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "BOOLEAN fail"
+ },
+ {
+  "case_id": "E17",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "primary_crop",
+    "operator": "IN",
+    "value_json": [
+     "ragi",
+     "maize"
+    ]
+   },
+   {
+    "rule_id": "R3",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "state": "karnataka",
+   "primary_crop": "ragi",
+   "land_size_acres": 2
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Multi-rule AND all pass"
+ },
+ {
+  "case_id": "E18",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "primary_crop",
+    "operator": "IN",
+    "value_json": [
+     "ragi"
+    ]
+   },
+   {
+    "rule_id": "R3",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "state": "karnataka",
+   "primary_crop": "wheat",
+   "land_size_acres": 2
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "Multi-rule AND one fail"
+ },
+ {
+  "case_id": "E19",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "annual_income",
+    "operator": "LTE",
+    "value_json": 200000
+   }
+  ],
+  "profile": {
+   "state": "karnataka"
+  },
+  "expected_status": "NEEDS_MORE_INFORMATION",
+  "description": "Missing required field"
+ },
+ {
+  "case_id": "E20",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "EQ",
+    "value_json": "karnataka"
+   }
+  ],
+  "profile": {},
+  "expected_status": "NEEDS_MORE_INFORMATION",
+  "description": "Empty profile"
+ },
+ {
+  "case_id": "E21",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "category",
+    "operator": "IN",
+    "value_json": [
+     "sc",
+     "st"
+    ]
+   }
+  ],
+  "profile": {
+   "category": "sc"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Category IN pass"
+ },
+ {
+  "case_id": "E22",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "gender",
+    "operator": "EQ",
+    "value_json": "female"
+   }
+  ],
+  "profile": {
+   "gender": "female"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Gender match"
+ },
+ {
+  "case_id": "E23",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "gender",
+    "operator": "EQ",
+    "value_json": "female"
+   }
+  ],
+  "profile": {
+   "gender": "male"
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "Gender mismatch"
+ },
+ {
+  "case_id": "E24",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "annual_income",
+    "operator": "LTE",
+    "value_json": 200000
+   }
+  ],
+  "profile": {
+   "annual_income": 150000
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Income under limit"
+ },
+ {
+  "case_id": "E25",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "annual_income",
+    "operator": "LTE",
+    "value_json": 200000
+   }
+  ],
+  "profile": {
+   "annual_income": 300000
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "Income over limit"
+ },
+ {
+  "case_id": "E26",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "karnataka"
+    ]
+   },
+   {
+    "rule_id": "R2",
+    "field_name": "state",
+    "operator": "IN",
+    "value_json": [
+     "maharashtra"
+    ]
+   }
+  ],
+  "profile": {
+   "state": "karnataka"
+  },
+  "expected_status": "UNVERIFIABLE",
+  "description": "Duplicate state rules",
+  "label_history": [
+   {
+    "dataset_version": "eligibility_v1",
+    "expected_status": "ELIGIBLE"
+   },
+   {
+    "dataset_version": "eligibility_v2",
+    "expected_status": "UNVERIFIABLE",
+    "date": "2026-10-13"
+   }
+  ],
+  "correction_reason": "v1 label was ELIGIBLE, which contradicts the documented AND semantics: a Karnataka profile fails 'state IN [maharashtra]'. The two required rules allow disjoint values, so the rule set is unsatisfiable (a configuration error). Phase 7 §38: contradictory rules must not be resolved arbitrarily -> UNVERIFIABLE. See docs/phase7-bug-register.md BUG-029."
+ },
+ {
+  "case_id": "E27",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "LTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "land_size_acres": 5
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "LTE boundary pass"
+ },
+ {
+  "case_id": "E28",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "land_size_acres",
+    "operator": "GTE",
+    "value_json": 5
+   }
+  ],
+  "profile": {
+   "land_size_acres": 3
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "GTE fail"
+ },
+ {
+  "case_id": "E29",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "primary_crop",
+    "operator": "IN",
+    "value_json": [
+     "ragi",
+     "jowar",
+     "bajra",
+     "maize"
+    ]
+   }
+  ],
+  "profile": {
+   "primary_crop": "ragi"
+  },
+  "expected_status": "ELIGIBLE",
+  "description": "Crop in list"
+ },
+ {
+  "case_id": "E30",
+  "scheme_id": "TEST",
+  "scheme_name": "Test",
+  "rules": [
+   {
+    "rule_id": "R1",
+    "field_name": "primary_crop",
+    "operator": "IN",
+    "value_json": [
+     "ragi",
+     "jowar"
+    ]
+   }
+  ],
+  "profile": {
+   "primary_crop": "wheat"
+  },
+  "expected_status": "NOT_ELIGIBLE",
+  "description": "Crop not in list"
+ }
+]

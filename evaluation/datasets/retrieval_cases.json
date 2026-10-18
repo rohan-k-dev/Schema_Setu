@@ -1,0 +1,80 @@
+{
+  "dataset": "retrieval",
+  "version": "retrieval_v1",
+  "created": "2026-10-13",
+  "label_method": "Expected candidates were written by hand from the corpus applicability fields (applicable_states / applicable_crops in data/validated/schemes.json, corpus v1.0.0). 'targeted' = schemes restricted to a state or crop that the user matches; these are the most relevant results and must appear in the top-K merged candidates. 'excluded' = schemes restricted to a different state or crop; they must never appear. Schemes without any state/crop restriction are applicable to everyone. The corpus has no crop taxonomy (e.g. ragi is not linked to 'millets'), so such hierarchy matches are not expected.",
+  "k": 10,
+  "state_targeted_schemes": {
+    "MOVCDNER": ["Arunachal Pradesh", "Assam", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Sikkim", "Tripura"],
+    "STATE_AP_RYTHU": ["Andhra Pradesh"],
+    "STATE_KA_KRUSHAK": ["Karnataka"],
+    "STATE_MH_NAMO": ["Maharashtra"],
+    "STATE_TN_UZHAVAR": ["Tamil Nadu"],
+    "STATE_TS_RYTHU": ["Telangana"],
+    "STATE_UP_KISAN": ["Uttar Pradesh"]
+  },
+  "crop_targeted_schemes": {
+    "MIDH": ["fruits", "vegetables", "spices", "coconut", "mango", "banana"],
+    "NFSM": ["rice", "wheat", "pulses", "millets", "maize"],
+    "NMOOP": ["groundnut", "mustard", "soybean", "sunflower", "sesame", "linseed", "oilseeds"]
+  },
+  "profile_cases": [
+    {"case_id": "R01", "profile": {"state": "Karnataka", "primary_crop": "ragi"}, "targeted": ["STATE_KA_KRUSHAK"], "excluded": ["STATE_AP_RYTHU", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM", "NMOOP"]},
+    {"case_id": "R02", "profile": {"state": "Maharashtra", "primary_crop": "cotton"}, "targeted": ["STATE_MH_NAMO"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM", "NMOOP"]},
+    {"case_id": "R03", "profile": {"state": "Tamil Nadu", "primary_crop": "rice"}, "targeted": ["STATE_TN_UZHAVAR", "NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NMOOP"]},
+    {"case_id": "R04", "profile": {"state": "Andhra Pradesh", "primary_crop": "groundnut"}, "targeted": ["STATE_AP_RYTHU", "NMOOP"], "excluded": ["STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM"]},
+    {"case_id": "R05", "profile": {"state": "Telangana", "primary_crop": "maize"}, "targeted": ["STATE_TS_RYTHU", "NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NMOOP"]},
+    {"case_id": "R06", "profile": {"state": "Uttar Pradesh", "primary_crop": "wheat"}, "targeted": ["STATE_UP_KISAN", "NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "MOVCDNER", "MIDH", "NMOOP"]},
+    {"case_id": "R07", "profile": {"state": "Assam", "primary_crop": "rice"}, "targeted": ["MOVCDNER", "NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MIDH", "NMOOP"]},
+    {"case_id": "R08", "profile": {"state": "Sikkim", "primary_crop": "mango"}, "targeted": ["MOVCDNER", "MIDH"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "NFSM", "NMOOP"]},
+    {"case_id": "R09", "profile": {"state": "Kerala", "primary_crop": "coconut"}, "targeted": ["MIDH"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "NFSM", "NMOOP"]},
+    {"case_id": "R10", "profile": {"state": "Punjab", "primary_crop": "wheat"}, "targeted": ["NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NMOOP"]},
+    {"case_id": "R11", "profile": {"state": "Gujarat", "primary_crop": "groundnut"}, "targeted": ["NMOOP"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM"]},
+    {"case_id": "R12", "profile": {"state": "Karnataka", "primary_crop": "banana"}, "targeted": ["STATE_KA_KRUSHAK", "MIDH"], "excluded": ["STATE_AP_RYTHU", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "NFSM", "NMOOP"]},
+    {"case_id": "R13", "profile": {"state": "Maharashtra", "primary_crop": "soybean"}, "targeted": ["STATE_MH_NAMO", "NMOOP"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM"]},
+    {"case_id": "R14", "profile": {"state": "Karnataka"}, "targeted": ["STATE_KA_KRUSHAK"], "excluded": ["STATE_AP_RYTHU", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER"], "note": "No crop stated: crop-restricted schemes remain possible and are neither targeted nor excluded"},
+    {"case_id": "R15", "profile": {"primary_crop": "rice"}, "targeted": ["NFSM"], "excluded": ["MIDH", "NMOOP"], "note": "No state stated: state-restricted schemes remain possible"},
+    {"case_id": "R16", "profile": {"state": "Meghalaya", "primary_crop": "vegetables"}, "targeted": ["MOVCDNER", "MIDH"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "NFSM", "NMOOP"]},
+    {"case_id": "R17", "profile": {"state": "Uttar Pradesh", "primary_crop": "sugarcane"}, "targeted": ["STATE_UP_KISAN"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "MOVCDNER", "MIDH", "NFSM", "NMOOP"]},
+    {"case_id": "R18", "profile": {"state": "Tamil Nadu", "primary_crop": "mustard"}, "targeted": ["STATE_TN_UZHAVAR", "NMOOP"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NFSM"]},
+    {"case_id": "R19", "profile": {"state": "Telangana", "primary_crop": "pulses"}, "targeted": ["STATE_TS_RYTHU", "NFSM"], "excluded": ["STATE_AP_RYTHU", "STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_UP_KISAN", "MOVCDNER", "MIDH", "NMOOP"]},
+    {"case_id": "R20", "profile": {"state": "Andhra Pradesh", "primary_crop": "spices"}, "targeted": ["STATE_AP_RYTHU", "MIDH"], "excluded": ["STATE_KA_KRUSHAK", "STATE_MH_NAMO", "STATE_TN_UZHAVAR", "STATE_TS_RYTHU", "STATE_UP_KISAN", "MOVCDNER", "NFSM", "NMOOP"]}
+  ],
+  "lookup_cases": [
+    {"case_id": "L01", "referenced_scheme_id": "PM_KISAN", "expected_top1": "PM_KISAN", "description": "Exact scheme lookup"},
+    {"case_id": "L02", "referenced_scheme_id": "STATE_KA_KRUSHAK", "expected_top1": "STATE_KA_KRUSHAK", "description": "Exact state scheme lookup"},
+    {"case_id": "L03", "query": "Kisan Credit Card", "expected_include": ["KCC"], "description": "Exact scheme name search (no profile)"},
+    {"case_id": "L04", "query": "Soil Health", "expected_include": ["SOIL_HEALTH_CARD"], "description": "Partial scheme name search"},
+    {"case_id": "L05", "query": "weather forecast in Paris", "expected_empty": true, "description": "Irrelevant query must not produce candidates"},
+    {"case_id": "L06", "query": "", "expected_empty": true, "description": "Empty query with empty profile"},
+    {"case_id": "L07", "query": "Kisan Credt Card", "expect_only_real_schemes": true, "description": "Typo: no fuzzy matching; must not invent schemes"},
+    {"case_id": "L08", "query": "'; DROP TABLE schemes; --", "expected_empty": true, "description": "SQL-injection text treated as plain text"},
+    {"case_id": "L09", "query": "scheme ", "repeat": 1000, "expect_only_real_schemes": true, "description": "Huge query (5000+ chars)"},
+    {"case_id": "L10", "query": "किसान क्रेडिट कार्ड", "expect_only_real_schemes": true, "description": "Mixed-language scheme name"}
+  ],
+  "merge_cases": [
+    {"case_id": "M01", "db": ["PM_KISAN"], "graph": ["SCHEME:PM_KISAN"], "web_titles": ["PM Kisan Samman Nidhi - official portal"], "expected_ids": ["PM_KISAN"], "expected_sources": {"PM_KISAN": ["DATABASE", "KNOWLEDGE_GRAPH", "LIVE_WEB"]}, "description": "Same scheme from three sources -> one candidate"},
+    {"case_id": "M02", "db": ["PMFBY"], "graph": ["SCHEME:PMFBY"], "web_titles": ["Pradhan Mantri Fasal Bima Yojana guidelines"], "expected_ids": ["PMFBY"], "expected_sources": {"PMFBY": ["DATABASE", "KNOWLEDGE_GRAPH", "LIVE_WEB"]}},
+    {"case_id": "M03", "db": ["PM_KUSUM"], "graph": ["SCHEME:PM_KUSUM"], "web_titles": ["PM KUSUM solar pump scheme"], "expected_ids": ["PM_KUSUM"], "expected_sources": {"PM_KUSUM": ["DATABASE", "KNOWLEDGE_GRAPH", "LIVE_WEB"]}, "description": "Web identity map must resolve to the canonical corpus ID"},
+    {"case_id": "M04", "db": ["KCC"], "graph": [], "web_titles": ["Kisan Credit Card scheme details"], "expected_ids": ["KCC"], "expected_sources": {"KCC": ["DATABASE", "LIVE_WEB"]}},
+    {"case_id": "M05", "db": ["SOIL_HEALTH_CARD", "KCC"], "graph": ["SCHEME:KCC", "scheme:soil_health_card"], "web_titles": [], "expected_ids": ["KCC", "SOIL_HEALTH_CARD"], "expected_sources": {"KCC": ["DATABASE", "KNOWLEDGE_GRAPH"], "SOIL_HEALTH_CARD": ["DATABASE", "KNOWLEDGE_GRAPH"]}, "description": "Case-insensitive graph prefix"}
+  ],
+  "conflict_cases": [
+    {"case_id": "C01", "scheme_id": "PM_KISAN", "db_benefits": "Rs. 6,000 per year", "web_benefits": "Rs. 10,000 per year", "expect_conflict": true, "expect_db_value_kept": true},
+    {"case_id": "C02", "scheme_id": "PM_KISAN", "db_benefits": "Rs. 6,000 per year", "web_benefits": "Rs. 6,000 per year", "expect_conflict": false, "expect_db_value_kept": true}
+  ],
+  "failure_matrix": [
+    {"case_id": "F01", "db": true, "graph": true, "web": false},
+    {"case_id": "F02", "db": true, "graph": false, "web": true},
+    {"case_id": "F03", "db": false, "graph": true, "web": true},
+    {"case_id": "F04", "db": true, "graph": false, "web": false},
+    {"case_id": "F05", "db": false, "graph": false, "web": true},
+    {"case_id": "F06", "db": false, "graph": false, "web": false}
+  ],
+  "failure_matrix_expected_behaviour": "Each failing channel is reported in retrieval_errors; candidates come from the healthy channels; the response status is partial_results when any channel failed and no_results when nothing was retrieved; no candidate is invented.",
+  "web_fixture": [
+    {"title": "PM-KISAN Samman Nidhi | Official Website", "url": "https://pmkisan.gov.in/", "content": "PM-KISAN provides income support of Rs 6,000 per year to land-holding farmer families."},
+    {"title": "Kisan Credit Card (KCC) scheme", "url": "https://www.myscheme.gov.in/schemes/kcc", "content": "KCC provides farmers with timely access to credit."},
+    {"title": "Top 10 farming tips", "url": "https://random-blog.example.com/tips", "content": "General farming tips unrelated to any government scheme."}
+  ]
+}

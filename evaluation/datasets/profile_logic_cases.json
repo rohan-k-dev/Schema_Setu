@@ -1,0 +1,67 @@
+{
+  "dataset": "profile_logic",
+  "version": "profile_logic_v1",
+  "created": "2026-10-13",
+  "label_method": "Hand-written multi-turn scenarios for the deterministic profile layer (merge, conflict detection, normalization, completeness, question selection, context, follow-up reference resolution). Each turn's 'extraction' is the scripted structured-LLM output for that utterance (what a correct extractor returns); the expectations test what the deterministic system does with it. LLM extraction accuracy itself is measured separately (profile_cases.json, live mode only).",
+  "profile_update_policy": "A new value for an already-known field is applied tentatively and the assistant asks the user to confirm it (conflict confirmation). Restating the value confirms it. The system never changes a known field without asking.",
+  "cases": [
+    {"case_id": "PL01", "area": "hallucination", "turns": [{"input": "I am from Karnataka.", "extraction": {"state": "Karnataka"}}],
+     "expect": {"profile": {"state": "Karnataka"}, "profile_absent": ["primary_crop", "annual_income", "category", "gender", "land_size_acres"]}, "description": "§13 merge must not add fields that were not extracted"},
+    {"case_id": "PL02", "area": "conflict", "turns": [
+        {"input": "I am from Karnataka and I have 2 acres.", "extraction": {"state": "Karnataka", "land_size_acres": 2}},
+        {"input": "I actually own 10 acres.", "extraction": {"land_size_acres": 10}}],
+     "expect": {"conflict_field": "land_size_acres", "response_status": "asking_question", "reply_contains": ["2", "10"]}, "description": "§14 conflict detected and confirmation asked"},
+    {"case_id": "PL03", "area": "update", "turns": [
+        {"input": "I grow ragi in Karnataka on 2 acres.", "extraction": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2}},
+        {"input": "I now grow maize.", "extraction": {"primary_crop": "maize"}}],
+     "expect": {"conflict_field": "primary_crop", "response_status": "asking_question"}, "description": "§15 update follows the confirmation policy"},
+    {"case_id": "PL04", "area": "completeness", "turns": [{"input": "Hello", "extraction": {}}],
+     "expect": {"missing_fields": ["state", "land_size_acres", "primary_crop"], "response_status": "asking_question", "question_field": "state"}},
+    {"case_id": "PL05", "area": "completeness", "turns": [{"input": "I am from Karnataka", "extraction": {"state": "Karnataka"}}],
+     "expect": {"missing_fields": ["land_size_acres", "primary_crop"], "question_field": "land_size_acres"}},
+    {"case_id": "PL06", "area": "completeness", "turns": [{"input": "Karnataka, 2 acres", "extraction": {"state": "Karnataka", "land_size_acres": 2}}],
+     "expect": {"missing_fields": ["primary_crop"], "question_field": "primary_crop"}},
+    {"case_id": "PL07", "area": "completeness", "turns": [{"input": "Karnataka, 2 acres, ragi", "extraction": {"state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi"}}],
+     "expect": {"missing_fields": [], "response_status_in": ["schemes_found", "partial_results"]}},
+    {"case_id": "PL08", "area": "invalid_value", "turns": [{"input": "I have negative 5 acres in Karnataka growing ragi", "extraction": {"state": "Karnataka", "land_size_acres": -5, "primary_crop": "ragi"}}],
+     "expect": {"profile_absent": ["land_size_acres"], "question_field": "land_size_acres"}, "description": "Negative land must not be stored"},
+    {"case_id": "PL09", "area": "invalid_value", "turns": [{"input": "I am a landless farmer in Karnataka, 0 acres, I grow ragi on lease", "extraction": {"state": "Karnataka", "land_size_acres": 0, "primary_crop": "ragi"}}],
+     "expect": {"profile": {"land_size_acres": 0}, "missing_fields": []}, "description": "Zero land is a valid value"},
+    {"case_id": "PL10", "area": "context", "turns": [
+        {"input": "Karnataka.", "extraction": {"state": "Karnataka"}},
+        {"input": "2 acres.", "extraction": {"land_size_acres": 2}},
+        {"input": "Ragi.", "extraction": {"primary_crop": "ragi"}}],
+     "expect": {"profile": {"state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi"}, "missing_fields": [], "response_status_in": ["schemes_found", "partial_results"]}, "description": "§18 profile maintained across turns"},
+    {"case_id": "PL11", "area": "question", "turns": [
+        {"input": "Hi", "extraction": {}},
+        {"input": "Karnataka", "extraction": {"state": "Karnataka"}}],
+     "expect": {"question_sequence_fields": ["state", "land_size_acres"], "single_question": true}, "description": "§17 one question per turn, follows priority, no duplicates"},
+    {"case_id": "PL12", "area": "normalization", "turns": [{"input": "karnataka", "extraction": {"state": "karnataka"}}],
+     "expect": {"profile": {"state": "Karnataka"}}, "description": "Lower-case state canonicalised (needed for exact-match DB retrieval)"},
+    {"case_id": "PL13", "area": "normalization", "turns": [{"input": "I am from KA", "extraction": {"state": "KA"}}],
+     "expect": {"profile": {"state": "Karnataka"}}},
+    {"case_id": "PL14", "area": "normalization", "turns": [{"input": "I grow paddy", "extraction": {"primary_crop": "paddy"}}],
+     "expect": {"profile": {"primary_crop": "rice"}}},
+    {"case_id": "PL15", "area": "normalization", "turns": [{"input": "I belong to scheduled caste", "extraction": {"category": "scheduled caste"}}],
+     "expect": {"profile": {"category": "SC"}}},
+    {"case_id": "PL16", "area": "normalization", "turns": [{"input": "I am a woman farmer", "extraction": {"gender": "woman", "occupation": "farmer"}}],
+     "expect": {"profile": {"gender": "female", "occupation": "farmer"}}},
+    {"case_id": "PL17", "area": "fields", "turns": [{"input": "I am a farmer", "extraction": {"occupation": "farmer"}}],
+     "expect": {"profile": {"occupation": "farmer"}}, "description": "Occupation is required by 8 corpus schemes and must be kept"},
+    {"case_id": "PL18", "area": "fields", "turns": [{"input": "I am 35 years old", "extraction": {"age": 35}}],
+     "expect": {"profile": {"age": 35}}, "description": "Age is required by PM-KMY, PMJJBY, PMSBY"},
+    {"case_id": "PL19", "area": "invalid_value", "turns": [{"input": "my income is not a number", "extraction": {"annual_income": "NaN"}}],
+     "expect": {"profile_absent": ["annual_income"]}, "description": "Non-finite numbers rejected"},
+    {"case_id": "PL20", "area": "follow_up", "turns": [
+        {"input": "I am a farmer from Karnataka with 2 acres growing ragi", "extraction": {"state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi", "occupation": "farmer"}},
+        {"input": "What documents do I need for the second one?", "extraction": {}}],
+     "expect": {"referenced_ordinal": 2, "response_status_in": ["schemes_found", "partial_results", "scheme_details"]}, "description": "§19 'the second one' resolves to the 2nd scheme of the previous answer"},
+    {"case_id": "PL21", "area": "ambiguity", "previous_schemes": ["PM_KISAN"], "turns": [
+        {"input": "What about the second one?", "extraction": {}}],
+     "expect": {"response_status": "clarification_required"}, "description": "§20 ordinal beyond the previous list must ask for clarification"},
+    {"case_id": "PL22", "area": "isolation", "sessions": {
+        "A": [{"input": "Karnataka, 2 acres, ragi", "extraction": {"state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi"}}],
+        "B": [{"input": "Maharashtra, 5 acres, cotton", "extraction": {"state": "Maharashtra", "land_size_acres": 5, "primary_crop": "cotton"}}]},
+     "expect": {"A": {"state": "Karnataka"}, "B": {"state": "Maharashtra"}}, "description": "§110 strict session isolation"}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "participants": [
+    {"participant_id": "P01", "language": "kn", "group": "agriculture-familiar", "digital_literacy": "low"}
+  ],
+  "task_results": [
+    {"participant_id": "P01", "task_id": "T1", "completed": true, "completion_time_s": 0, "comprehension_score": null,
+     "trust_rating": null, "usability_rating": null, "voice_rating": null, "comments": "", "themes": []}
+  ]
+}

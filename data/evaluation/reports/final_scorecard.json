@@ -1,0 +1,672 @@
+{
+  "evaluation_run": "after",
+  "generated_at": "2026-10-13T18:21:40.497877+00:00",
+  "manifest": {
+    "evaluation_version": "phase7-eval-1.0.0",
+    "generated_at": "2026-10-13T18:21:40.497877+00:00",
+    "mode": "offline",
+    "application_version": "0.7.0-rc1",
+    "git_commit": "a95ab12",
+    "git_working_tree_dirty": true,
+    "corpus_version": "1.0.0",
+    "corpus_content_hash": "4b99a45a57461952",
+    "graph_version": "1.0.0",
+    "graph_corpus_version": "1.0.0",
+    "eligibility_engine_version": "1.0.0",
+    "dataset_counts": {
+      "adversarial_cases.json": {
+        "version": "adversarial_v1",
+        "count": 36
+      },
+      "corpus_eligibility_cases.json": {
+        "version": "corpus_eligibility_v1",
+        "count": 36
+      },
+      "e2e_cases.json": {
+        "version": "e2e_v1",
+        "count": 24
+      },
+      "eligibility_cases.json": {
+        "version": "eligibility_v2",
+        "count": 30
+      },
+      "eligibility_logic_cases.json": {
+        "version": "eligibility_logic_v1",
+        "count": 18
+      },
+      "multilingual_cases.json": {
+        "version": "multilingual_v1",
+        "count": 23
+      },
+      "profile_cases.json": {
+        "version": "profile_v1",
+        "count": 30
+      },
+      "profile_logic_cases.json": {
+        "version": "profile_logic_v1",
+        "count": 22
+      },
+      "retrieval_cases.json": {
+        "version": "retrieval_v1",
+        "count": 43
+      },
+      "voice_cases.json": {
+        "version": "voice_v1",
+        "count": 28
+      },
+      "xai_cases.json": {
+        "version": "xai_v1",
+        "count": 32
+      },
+      "data/evaluation/eligibility_golden_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 30
+      },
+      "data/evaluation/multilingual_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 8
+      },
+      "data/evaluation/human_review_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 4
+      }
+    },
+    "test_environment": {
+      "os": "Windows-10-10.0.26200-SP0",
+      "python": "3.11.4",
+      "node": "v24.13.1",
+      "database": "corpus fixture (offline)"
+    },
+    "model_configuration": {
+      "llm": "Groq llama-3.3-70b-versatile (temperature 0)",
+      "llm_in_offline_mode": "mocked (scripted structured extraction; text LLM unavailable)",
+      "asr_tts_translation": "Sarvam (saarika/bulbul/mayura) — mocked offline",
+      "web_search": "Tavily — mocked offline",
+      "keys_present": {
+        "GROQ_API_KEY": false,
+        "TAVILY_API_KEY": false,
+        "SARVAM_API_KEY": false
+      }
+    },
+    "supported_languages_declared": [
+      "bn",
+      "en",
+      "gu",
+      "hi",
+      "kn",
+      "ml",
+      "mr",
+      "od",
+      "pa",
+      "ta",
+      "te"
+    ]
+  },
+  "status_counts": {
+    "PASS": 47,
+    "NOT_MEASURED": 6,
+    "INFO": 3
+  },
+  "rows": [
+    {
+      "category": "Profile",
+      "metric": "Deterministic profile-layer scenarios pass rate",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "profile_logic_cases.json",
+      "path": "profile.pass_rate"
+    },
+    {
+      "category": "Profile",
+      "metric": "LLM extraction field F1 (live)",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "profile_cases.json (--live)",
+      "path": "live_profile_extraction.field_f1"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Merged targeted recall@10",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merged.mean_targeted_recall_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Merged precision@10 (applicable schemes)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merged.mean_precision_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "DB targeted recall@10",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.database.mean_targeted_recall_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Graph false relationships (out-of-scope schemes)",
+      "target": 0,
+      "comparator": "<=",
+      "actual": 0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.knowledge_graph.exclusion_violations"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Graph crop-filter accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.knowledge_graph.crop_filter_accuracy"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Exact lookup / adversarial query pass rate",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.lookups.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Candidate merge correctness",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merge.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Source-conflict handling",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.source_conflicts.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Failure matrix (6 combinations)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.failure_matrix.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Tavily pipeline (URL kept, official linked, unrelated dropped)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.tavily_pipeline.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Parallel retrieval (2s+1s+3s mocked) seconds",
+      "target": 4.0,
+      "comparator": "<=",
+      "actual": 3.002,
+      "status": "PASS",
+      "evidence": "parallel benchmark",
+      "path": "retrieval.parallel.measured_s"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Scheme-level accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.scheme_level.accuracy"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Rule-level accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "phase5 golden",
+      "path": "eligibility.rule_level.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "False-positive rate (ELIGIBLE when gold NOT_ELIGIBLE)",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0,
+      "status": "PASS",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.false_positive.rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "False-negative rate",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0,
+      "status": "PASS",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.false_negative.rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Operator coverage probes",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "11 operators + unknown",
+      "path": "eligibility.operator_coverage.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Three-valued logic truth table",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "eligibility_logic_cases.json",
+      "path": "eligibility.three_valued_logic.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Rule provenance (source text + URL + version)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "corpus rules",
+      "path": "eligibility.rule_provenance.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Determinism (same input -> same result)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "40 cases x2",
+      "path": "eligibility.determinism.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "UNKNOWNs caused by unsupported profile fields",
+      "target": "info",
+      "comparator": "info",
+      "actual": 5,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.unknown_causes.unsupported_profile_field"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "NEEDS_MORE_INFORMATION rate (fully stated profiles)",
+      "target": "info",
+      "comparator": "info",
+      "actual": 0.025,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.needs_more_information_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "UNVERIFIABLE rate (corpus rule coverage)",
+      "target": "info",
+      "comparator": "info",
+      "actual": 0.45,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.unverifiable_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Status consistency",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.status_consistency.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Supported-claim grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.supported_claims.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Numeric grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.numeric_grounding.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "URL grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.url_grounding.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Genuine explanations accepted by validator",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.genuine_explanations_accepted.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Fabrication probes rejected",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.fabrication_probe_rejection.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Official source cited when available",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.source_citation.rate"
+    },
+    {
+      "category": "Recommendation",
+      "metric": "Ranking checks",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "recommendation_runner",
+      "path": "recommendation.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Profile parity across languages (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.profile_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Eligibility parity across languages (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.eligibility_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "XAI evidence parity (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.xai_evidence_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Translation is presentation-only",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.translation_presentation_only.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Translation-failure fallback",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.translation_failure.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Live Sarvam translation quality",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "--live (not implemented offline)",
+      "path": "live_translation.score"
+    },
+    {
+      "category": "Voice",
+      "metric": "Post-ASR pipeline (mocked ASR)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "voice_cases.json",
+      "path": "voice.post_asr_pipeline.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Voice/text session continuity",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "voice_cases.json",
+      "path": "voice.session_continuity.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Failure fallbacks + upload security",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "voice_cases.json",
+      "path": "voice.failures_and_upload_security.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Word error rate (real audio)",
+      "target": null,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "no ground-truth audio",
+      "path": "voice.wer_value"
+    },
+    {
+      "category": "Human Review",
+      "metric": "HITL checks (escalation, lifecycle, audit, privacy, auth)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "review_runner",
+      "path": "human_review.pass_rate"
+    },
+    {
+      "category": "Security",
+      "metric": "Red-team probes passed",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "adversarial_cases.json",
+      "path": "adversarial.pass_rate"
+    },
+    {
+      "category": "End-to-end",
+      "metric": "Golden journeys passed",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "e2e_cases.json",
+      "path": "e2e.pass_rate"
+    },
+    {
+      "category": "Performance",
+      "metric": "Offline text request P95 (ms, external services mocked)",
+      "target": 2000,
+      "comparator": "<=",
+      "actual": 113.737,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.text_request.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Offline voice round trip P95 (ms, mocked ASR/TTS)",
+      "target": 3000,
+      "comparator": "<=",
+      "actual": 111.496,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.voice_round_trip.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Review-II live latency target 10-15 s",
+      "target": 15000,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "--live",
+      "path": "live_performance.latency.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Concurrent load error rate (200 req, c=10)",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.load_concurrent.error_rate"
+    },
+    {
+      "category": "Performance",
+      "metric": "Concurrent load P95 (ms)",
+      "target": 5000,
+      "comparator": "<=",
+      "actual": 1257.419,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.load_concurrent.latency.p95_ms"
+    },
+    {
+      "category": "Stability",
+      "metric": "Graph reloads during run",
+      "target": 0,
+      "comparator": "<=",
+      "actual": 0,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.graph_reloads_during_run"
+    },
+    {
+      "category": "Stability",
+      "metric": "RSS growth over last 100 requests at session cap (KB)",
+      "target": 10240,
+      "comparator": "<=",
+      "actual": 5572.0,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.memory.rss_growth_kb_last_100_requests"
+    },
+    {
+      "category": "Stability",
+      "metric": "Soak test errors",
+      "target": 0,
+      "comparator": "<=",
+      "actual": 0,
+      "status": "PASS",
+      "evidence": "--soak-seconds",
+      "path": "performance.soak.errors"
+    },
+    {
+      "category": "Accessibility",
+      "metric": "Static accessibility audit checks",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "accessibility_runner",
+      "path": "accessibility.pass_rate"
+    },
+    {
+      "category": "User Study",
+      "metric": "Task completion rate",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "data/evaluation/user_study/",
+      "path": "user_study.task_completion_rate"
+    },
+    {
+      "category": "Expert Validation",
+      "metric": "Outputs rated CORRECT",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "data/evaluation/expert_validation/",
+      "path": "expert_validation.correct_rate"
+    }
+  ]
+}

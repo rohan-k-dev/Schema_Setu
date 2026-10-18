@@ -1,0 +1,31 @@
+{
+  "release_candidate": "SchemeSetu-1.0.0",
+  "recommended_git_tag": "v1.0.0",
+  "tag_created": false,
+  "application_version": "1.0.0",
+  "corpus_version": "1.0.0",
+  "graph_version": "1.0.0",
+  "graph_corpus_version": "1.0.0",
+  "eligibility_engine_version": "1.0.0",
+  "evaluation_version": "phase7-eval-1.0.0",
+  "evaluation_run": "final",
+  "generated_at": "2026-10-17T18:04:59.166723+00:00",
+  "git_commit": "a95ab12",
+  "git_working_tree_dirty": true,
+  "note_on_commit": "Phase 7 changes are uncommitted; commit them and regenerate before tagging.",
+  "test_status": {
+    "backend_pytest": {
+      "exit_code": 0,
+      "passed": 502,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "scorecard_status_counts": {
+    "PASS": 47,
+    "NOT_MEASURED": 6,
+    "INFO": 3
+  },
+  "graph_corpus_matches_db_corpus": true,
+  "classification": "release candidate \u2014 not a production release"
+}

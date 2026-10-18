@@ -22,6 +22,7 @@ env/
 .Python
 pip-log.txt
 pip-delete-this-directory.txt
+.pytest_cache/
 
 # ========================
 # Node / Frontend
@@ -61,3 +62,12 @@ Thumbs.db
 *.pem
 coverage/
 .vercel
+logs/
+
+# ========================
+# Data (Phase 1)
+# ========================
+# Raw source files are large and shouldn't be committed
+data/raw/
+# Extracted text files
+data/extracted/

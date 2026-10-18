@@ -1,0 +1,33 @@
+{
+  "corpus_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-09-26T20:14:50.530466",
+  "total_scheme_count": 40,
+  "active_scheme_count": 40,
+  "source_count": 40,
+  "official_source_count": 40,
+  "domains": [
+    "agriculture",
+    "farmer_welfare",
+    "rural_development"
+  ],
+  "states": [
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Karnataka",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh"
+  ],
+  "validation_status": "passed",
+  "generator_version": "phase1-v1",
+  "content_hash": "4b99a45a57461952"
+}

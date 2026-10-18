@@ -1,0 +1,105 @@
+{
+  "evaluation_version": "phase7-eval-1.0.0",
+  "generated_at": "2026-10-18T13:46:09.616337+00:00",
+  "mode": "offline",
+  "application_version": "1.0.0",
+  "git_commit": "a95ab12",
+  "git_working_tree_dirty": true,
+  "corpus_version": "1.0.0",
+  "corpus_content_hash": "4b99a45a57461952",
+  "graph_version": "1.0.0",
+  "graph_corpus_version": "1.0.0",
+  "eligibility_engine_version": "1.0.0",
+  "dataset_counts": {
+    "adversarial_cases.json": {
+      "version": "adversarial_v1",
+      "count": 36
+    },
+    "corpus_eligibility_cases.json": {
+      "version": "corpus_eligibility_v1",
+      "count": 36
+    },
+    "demo_scenarios.json": {
+      "version": "demo_v1",
+      "count": 12
+    },
+    "e2e_cases.json": {
+      "version": "e2e_v1",
+      "count": 24
+    },
+    "eligibility_cases.json": {
+      "version": "eligibility_v2",
+      "count": 30
+    },
+    "eligibility_logic_cases.json": {
+      "version": "eligibility_logic_v1",
+      "count": 18
+    },
+    "multilingual_cases.json": {
+      "version": "multilingual_v1",
+      "count": 23
+    },
+    "profile_cases.json": {
+      "version": "profile_v1",
+      "count": 30
+    },
+    "profile_logic_cases.json": {
+      "version": "profile_logic_v1",
+      "count": 22
+    },
+    "retrieval_cases.json": {
+      "version": "retrieval_v1",
+      "count": 43
+    },
+    "voice_cases.json": {
+      "version": "voice_v1",
+      "count": 28
+    },
+    "xai_cases.json": {
+      "version": "xai_v1",
+      "count": 32
+    },
+    "data/evaluation/eligibility_golden_cases.json": {
+      "version": "phase5/6 legacy",
+      "count": 30
+    },
+    "data/evaluation/multilingual_cases.json": {
+      "version": "phase5/6 legacy",
+      "count": 8
+    },
+    "data/evaluation/human_review_cases.json": {
+      "version": "phase5/6 legacy",
+      "count": 4
+    }
+  },
+  "test_environment": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "node": "v24.20.0",
+    "database": "corpus fixture (offline)"
+  },
+  "model_configuration": {
+    "llm": "Groq openai/gpt-oss-20b (temperature 0)",
+    "llm_in_offline_mode": "mocked (scripted structured extraction; text LLM unavailable)",
+    "asr_tts_translation": "Sarvam (saarika/bulbul/mayura) — mocked offline",
+    "web_search": "Tavily — mocked offline",
+    "keys_present": {
+      "GROQ_API_KEY": false,
+      "TAVILY_API_KEY": false,
+      "SARVAM_API_KEY": false
+    }
+  },
+  "supported_languages_declared": [
+    "bn",
+    "en",
+    "gu",
+    "hi",
+    "kn",
+    "ml",
+    "mr",
+    "od",
+    "pa",
+    "ta",
+    "te"
+  ]
+}

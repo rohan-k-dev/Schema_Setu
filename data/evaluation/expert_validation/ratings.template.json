@@ -1,0 +1,7 @@
+{
+  "reviewer_role": "agriculture-domain faculty",
+  "ratings": [
+    {"sample_id": "EX01", "scheme_id": "PM_KISAN", "system_status": "ELIGIBLE", "expert_status": null,
+     "accuracy_rating": null, "xai_rating": null, "source_rating": null, "comments": "", "disagreement_cause": null}
+  ]
+}

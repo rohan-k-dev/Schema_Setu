@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Backend tests (unit, integration, golden journeys, security regressions)
+        working-directory: backend
+        run: python -m pytest app/tests -q
+      - name: Offline evaluation (no API keys; external services mocked)
+        run: python scripts/run_evaluation.py --offline --skip-performance --label ci
+      - name: Offline smoke test
+        run: python scripts/smoke_test.py --offline
+      - name: Fail if any measured scorecard metric fails
+        run: |
+          python - <<'PY'
+          import json, sys
+          rows = json.load(open("data/evaluation/reports/ci/results.json"))["scorecard"]
+          bad = [r for r in rows if r["status"] in ("FAIL", "PARTIAL")]
+          for r in bad:
+              print(f"{r['status']}: {r['category']} / {r['metric']} = {r['actual']}")
+          sys.exit(1 if bad else 0)
+          PY
+
+  postgres-parity:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: schemesetu
+          POSTGRES_USER: schemesetu
+          POSTGRES_PASSWORD: schemesetu
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U schemesetu" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://schemesetu:schemesetu@localhost:5432/schemesetu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r backend/requirements.txt
+      - name: Migrate, import canonical corpus, integrity check
+        run: |
+          cd backend && alembic upgrade head && cd ..
+          python scripts/import_corpus.py
+          python scripts/db_check.py
+      - name: Real PostgreSQL vs evaluation fixture parity
+        run: python scripts/verify_db_parity.py
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - name: Type-check and production build
+        run: npm run build
+        working-directory: frontend
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build images
+        run: docker compose build

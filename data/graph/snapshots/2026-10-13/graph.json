@@ -1,0 +1,3562 @@
+{
+  "graph_metadata": {
+    "corpus_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "builder_version": "1.0.0",
+    "generated_at": "2026-10-13T18:40:40.592705+00:00",
+    "node_count": 179,
+    "edge_count": 356
+  },
+  "nodes": [
+    {
+      "id": "BENEFICIARY:AGRI_ENTREPRENEURS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "agri-entrepreneurs",
+      "normalized_name": "AGRI_ENTREPRENEURS"
+    },
+    {
+      "id": "BENEFICIARY:ALL_CITIZENS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "all citizens",
+      "normalized_name": "ALL_CITIZENS"
+    },
+    {
+      "id": "BENEFICIARY:ANIMAL_HUSBANDRY_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "animal husbandry farmers",
+      "normalized_name": "ANIMAL_HUSBANDRY_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:ARTISANS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "artisans",
+      "normalized_name": "ARTISANS"
+    },
+    {
+      "id": "BENEFICIARY:BAMBOO_GROWERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "bamboo growers",
+      "normalized_name": "BAMBOO_GROWERS"
+    },
+    {
+      "id": "BENEFICIARY:CROP_GROWERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "crop growers",
+      "normalized_name": "CROP_GROWERS"
+    },
+    {
+      "id": "BENEFICIARY:DAIRY_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "dairy farmers",
+      "normalized_name": "DAIRY_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:ENTREPRENEURS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "entrepreneurs",
+      "normalized_name": "ENTREPRENEURS"
+    },
+    {
+      "id": "BENEFICIARY:FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "farmers",
+      "normalized_name": "FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:FARMER_GROUPS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "farmer groups",
+      "normalized_name": "FARMER_GROUPS"
+    },
+    {
+      "id": "BENEFICIARY:FISHERMEN",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "fishermen",
+      "normalized_name": "FISHERMEN"
+    },
+    {
+      "id": "BENEFICIARY:FPOS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "FPOs",
+      "normalized_name": "FPOS"
+    },
+    {
+      "id": "BENEFICIARY:HORTICULTURE_GROWERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "horticulture growers",
+      "normalized_name": "HORTICULTURE_GROWERS"
+    },
+    {
+      "id": "BENEFICIARY:HOUSELESS_FAMILIES",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "houseless families",
+      "normalized_name": "HOUSELESS_FAMILIES"
+    },
+    {
+      "id": "BENEFICIARY:LAND_HOLDING_FARMER_FAMILIES",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "land-holding farmer families",
+      "normalized_name": "LAND_HOLDING_FARMER_FAMILIES"
+    },
+    {
+      "id": "BENEFICIARY:LIVESTOCK_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "livestock farmers",
+      "normalized_name": "LIVESTOCK_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:MARGINAL_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "marginal farmers",
+      "normalized_name": "MARGINAL_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:OILSEED_GROWERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "oilseed growers",
+      "normalized_name": "OILSEED_GROWERS"
+    },
+    {
+      "id": "BENEFICIARY:PACS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "PACS",
+      "normalized_name": "PACS"
+    },
+    {
+      "id": "BENEFICIARY:POULTRY_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "poultry farmers",
+      "normalized_name": "POULTRY_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:RURAL_AREAS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "rural areas",
+      "normalized_name": "RURAL_AREAS"
+    },
+    {
+      "id": "BENEFICIARY:RURAL_HOUSEHOLDS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "rural households",
+      "normalized_name": "RURAL_HOUSEHOLDS"
+    },
+    {
+      "id": "BENEFICIARY:RURAL_POOR",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "rural poor",
+      "normalized_name": "RURAL_POOR"
+    },
+    {
+      "id": "BENEFICIARY:RURAL_WORKERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "rural workers",
+      "normalized_name": "RURAL_WORKERS"
+    },
+    {
+      "id": "BENEFICIARY:RURAL_YOUTH",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "rural youth",
+      "normalized_name": "RURAL_YOUTH"
+    },
+    {
+      "id": "BENEFICIARY:SHARECROPPERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "sharecroppers",
+      "normalized_name": "SHARECROPPERS"
+    },
+    {
+      "id": "BENEFICIARY:SMALL_AND_MARGINAL_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "small and marginal farmers",
+      "normalized_name": "SMALL_AND_MARGINAL_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:SMALL_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "small farmers",
+      "normalized_name": "SMALL_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:STATE_GOVERNMENTS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "state governments",
+      "normalized_name": "STATE_GOVERNMENTS"
+    },
+    {
+      "id": "BENEFICIARY:TENANT_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "tenant farmers",
+      "normalized_name": "TENANT_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:TRADERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "traders",
+      "normalized_name": "TRADERS"
+    },
+    {
+      "id": "BENEFICIARY:UNBANKED_POPULATION",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "unbanked population",
+      "normalized_name": "UNBANKED_POPULATION"
+    },
+    {
+      "id": "BENEFICIARY:UNEMPLOYED_YOUTH",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "unemployed youth",
+      "normalized_name": "UNEMPLOYED_YOUTH"
+    },
+    {
+      "id": "BENEFICIARY:WOMEN_FARMERS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "women farmers",
+      "normalized_name": "WOMEN_FARMERS"
+    },
+    {
+      "id": "BENEFICIARY:WOMEN_SHGS",
+      "node_type": "BENEFICIARY",
+      "canonical_name": "women SHGs",
+      "normalized_name": "WOMEN_SHGS"
+    },
+    {
+      "id": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "node_type": "BENEFIT",
+      "canonical_name": "financial_assistance"
+    },
+    {
+      "id": "BENEFIT:INFRASTRUCTURE",
+      "node_type": "BENEFIT",
+      "canonical_name": "infrastructure"
+    },
+    {
+      "id": "BENEFIT:INPUT_SUPPORT",
+      "node_type": "BENEFIT",
+      "canonical_name": "input_support"
+    },
+    {
+      "id": "BENEFIT:INSURANCE",
+      "node_type": "BENEFIT",
+      "canonical_name": "insurance"
+    },
+    {
+      "id": "BENEFIT:LOAN",
+      "node_type": "BENEFIT",
+      "canonical_name": "loan"
+    },
+    {
+      "id": "BENEFIT:OTHER",
+      "node_type": "BENEFIT",
+      "canonical_name": "other"
+    },
+    {
+      "id": "BENEFIT:SUBSIDY",
+      "node_type": "BENEFIT",
+      "canonical_name": "subsidy"
+    },
+    {
+      "id": "BENEFIT:TRAINING",
+      "node_type": "BENEFIT",
+      "canonical_name": "training"
+    },
+    {
+      "id": "CATEGORY:SC",
+      "node_type": "CATEGORY",
+      "canonical_name": "SC"
+    },
+    {
+      "id": "CATEGORY:ST",
+      "node_type": "CATEGORY",
+      "canonical_name": "ST"
+    },
+    {
+      "id": "COUNTRY:INDIA",
+      "node_type": "COUNTRY",
+      "canonical_name": "India"
+    },
+    {
+      "id": "CROP:BANANA",
+      "node_type": "CROP",
+      "canonical_name": "banana",
+      "normalized_name": "BANANA"
+    },
+    {
+      "id": "CROP:COCONUT",
+      "node_type": "CROP",
+      "canonical_name": "coconut",
+      "normalized_name": "COCONUT"
+    },
+    {
+      "id": "CROP:FRUITS",
+      "node_type": "CROP",
+      "canonical_name": "fruits",
+      "normalized_name": "FRUITS"
+    },
+    {
+      "id": "CROP:GROUNDNUT",
+      "node_type": "CROP",
+      "canonical_name": "groundnut",
+      "normalized_name": "GROUNDNUT"
+    },
+    {
+      "id": "CROP:LINSEED",
+      "node_type": "CROP",
+      "canonical_name": "linseed",
+      "normalized_name": "LINSEED"
+    },
+    {
+      "id": "CROP:MAIZE",
+      "node_type": "CROP",
+      "canonical_name": "maize",
+      "normalized_name": "MAIZE"
+    },
+    {
+      "id": "CROP:MANGO",
+      "node_type": "CROP",
+      "canonical_name": "mango",
+      "normalized_name": "MANGO"
+    },
+    {
+      "id": "CROP:MILLETS",
+      "node_type": "CROP",
+      "canonical_name": "millets",
+      "normalized_name": "MILLETS"
+    },
+    {
+      "id": "CROP:MUSTARD",
+      "node_type": "CROP",
+      "canonical_name": "mustard",
+      "normalized_name": "MUSTARD"
+    },
+    {
+      "id": "CROP:OILSEEDS",
+      "node_type": "CROP",
+      "canonical_name": "oilseeds",
+      "normalized_name": "OILSEEDS"
+    },
+    {
+      "id": "CROP:PULSES",
+      "node_type": "CROP",
+      "canonical_name": "pulses",
+      "normalized_name": "PULSES"
+    },
+    {
+      "id": "CROP:RICE",
+      "node_type": "CROP",
+      "canonical_name": "rice",
+      "normalized_name": "RICE"
+    },
+    {
+      "id": "CROP:SESAME",
+      "node_type": "CROP",
+      "canonical_name": "sesame",
+      "normalized_name": "SESAME"
+    },
+    {
+      "id": "CROP:SOYBEAN",
+      "node_type": "CROP",
+      "canonical_name": "soybean",
+      "normalized_name": "SOYBEAN"
+    },
+    {
+      "id": "CROP:SPICES",
+      "node_type": "CROP",
+      "canonical_name": "spices",
+      "normalized_name": "SPICES"
+    },
+    {
+      "id": "CROP:SUNFLOWER",
+      "node_type": "CROP",
+      "canonical_name": "sunflower",
+      "normalized_name": "SUNFLOWER"
+    },
+    {
+      "id": "CROP:VEGETABLES",
+      "node_type": "CROP",
+      "canonical_name": "vegetables",
+      "normalized_name": "VEGETABLES"
+    },
+    {
+      "id": "CROP:WHEAT",
+      "node_type": "CROP",
+      "canonical_name": "wheat",
+      "normalized_name": "WHEAT"
+    },
+    {
+      "id": "DEPARTMENT:DEPARTMENT_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "node_type": "DEPARTMENT",
+      "canonical_name": "Department of Agriculture and Farmers Welfare"
+    },
+    {
+      "id": "DOCUMENT:AADHAAR_CARD",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Aadhaar Card",
+      "normalized_name": "AADHAAR_CARD"
+    },
+    {
+      "id": "DOCUMENT:AADHAAR_CARD_OR_ANY_IDENTITY_PROOF",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Aadhaar Card or any identity proof",
+      "normalized_name": "AADHAAR_CARD_OR_ANY_IDENTITY_PROOF"
+    },
+    {
+      "id": "DOCUMENT:BANK_ACCOUNT",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Bank Account",
+      "normalized_name": "BANK_ACCOUNT"
+    },
+    {
+      "id": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Bank Account Details",
+      "normalized_name": "BANK_ACCOUNT_DETAILS"
+    },
+    {
+      "id": "DOCUMENT:BANK_ACCOUNT_JAN_DHAN_ACCOUNT",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Bank Account/Jan Dhan Account",
+      "normalized_name": "BANK_ACCOUNT_JAN_DHAN_ACCOUNT"
+    },
+    {
+      "id": "DOCUMENT:BANK_LOAN_SANCTION_LETTER",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Bank Loan Sanction Letter",
+      "normalized_name": "BANK_LOAN_SANCTION_LETTER"
+    },
+    {
+      "id": "DOCUMENT:GROUP_FORMATION_DOCUMENTS",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Group Formation Documents",
+      "normalized_name": "GROUP_FORMATION_DOCUMENTS"
+    },
+    {
+      "id": "DOCUMENT:JOB_CARD",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Job Card",
+      "normalized_name": "JOB_CARD"
+    },
+    {
+      "id": "DOCUMENT:LAND_DETAILS",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Land Details",
+      "normalized_name": "LAND_DETAILS"
+    },
+    {
+      "id": "DOCUMENT:LAND_RECORDS",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Land Records",
+      "normalized_name": "LAND_RECORDS"
+    },
+    {
+      "id": "DOCUMENT:LAND_RECORDS___LEASE_AGREEMENT",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Land Records / Lease Agreement",
+      "normalized_name": "LAND_RECORDS___LEASE_AGREEMENT"
+    },
+    {
+      "id": "DOCUMENT:PASSPORT_SIZE_PHOTO",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Passport Size Photo",
+      "normalized_name": "PASSPORT_SIZE_PHOTO"
+    },
+    {
+      "id": "DOCUMENT:PROJECT_REPORT",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Project Report",
+      "normalized_name": "PROJECT_REPORT"
+    },
+    {
+      "id": "DOCUMENT:SECC_DATA_INCLUSION",
+      "node_type": "DOCUMENT",
+      "canonical_name": "SECC Data Inclusion",
+      "normalized_name": "SECC_DATA_INCLUSION"
+    },
+    {
+      "id": "DOCUMENT:SOWING_CERTIFICATE",
+      "node_type": "DOCUMENT",
+      "canonical_name": "Sowing Certificate",
+      "normalized_name": "SOWING_CERTIFICATE"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:DEDS_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "category",
+      "operator": "IN",
+      "value": "[\"SC\", \"ST\"]",
+      "required": false,
+      "logical_group": "OR",
+      "source_text": "33.33% for SC/ST"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:DEDS_1",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Farmers, entrepreneurs"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:KCC_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Owner cultivators, tenant farmers, sharecroppers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:MGNREGA_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "residence",
+      "operator": "EQ",
+      "value": "\"rural\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "rural household"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:MKSP_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "gender",
+      "operator": "EQ",
+      "value": "\"female\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "women in agriculture"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:MOVCDNER_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Arunachal Pradesh\", \"Assam\", \"Manipur\", \"Meghalaya\", \"Mizoram\", \"Nagaland\", \"Sikkim\", \"Tripura\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "North Eastern Region"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:NMOOP_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "primary_crop",
+      "operator": "IN",
+      "value": "[\"groundnut\", \"mustard\", \"soybean\", \"sunflower\", \"sesame\", \"linseed\", \"oilseeds\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Farmers growing oilseed crops"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PKVY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "land_size_acres",
+      "operator": "GTE",
+      "value": "0.5",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Cluster-based, minimum 20 hectares total"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PMFBY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "All farmers growing notified crops"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PMJJBY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "age",
+      "operator": "BETWEEN",
+      "value": "[18, 50]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Age 18 to 50 years"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PMKSY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "All farmers with agricultural land"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PMSBY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "age",
+      "operator": "BETWEEN",
+      "value": "[18, 70]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Age 18 to 70 years"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PM_KISAN_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "has_land",
+      "operator": "BOOLEAN",
+      "value": "true",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "land-holding farmer families"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PM_KISAN_1",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "All land-holding farmer families"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PM_KMY_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "age",
+      "operator": "BETWEEN",
+      "value": "[18, 40]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "age group of 18-40 years"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PM_KMY_1",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "land_size_acres",
+      "operator": "LTE",
+      "value": "5",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "cultivable land up to 2 hectares (approx 5 acres)"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:PM_KUSUM_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Individual farmers, cooperatives, panchayats"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:SMAM_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "All farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:SOIL_HEALTH_CARD_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "occupation",
+      "operator": "EQ",
+      "value": "\"farmer\"",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "All farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_AP_RYTHU_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Andhra Pradesh\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Andhra Pradesh farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_KA_KRUSHAK_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Karnataka\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Karnataka state farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_MH_NAMO_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Maharashtra\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Maharashtra farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_TN_UZHAVAR_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Tamil Nadu\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Tamil Nadu farmers"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_TS_RYTHU_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Telangana\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "Telangana state"
+    },
+    {
+      "id": "ELIGIBILITY_RULE:STATE_UP_KISAN_0",
+      "node_type": "ELIGIBILITY_RULE",
+      "field_name": "state",
+      "operator": "IN",
+      "value": "[\"Uttar Pradesh\"]",
+      "required": true,
+      "logical_group": "AND",
+      "source_text": "UP farmers"
+    },
+    {
+      "id": "GENDER:FEMALE",
+      "node_type": "GENDER",
+      "canonical_name": "female"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_ANDHRA_PRADESH",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Andhra Pradesh",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_ANDHRA_PRADESH"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_KARNATAKA",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Karnataka",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_KARNATAKA"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_MAHARASHTRA",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Maharashtra",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_MAHARASHTRA"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_TAMIL_NADU",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Tamil Nadu",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_TAMIL_NADU"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_TELANGANA",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Telangana",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_TELANGANA"
+    },
+    {
+      "id": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_UTTAR_PRADESH",
+      "node_type": "MINISTRY",
+      "canonical_name": "Department of Agriculture, Uttar Pradesh",
+      "normalized_name": "DEPARTMENT_OF_AGRICULTURE_UTTAR_PRADESH"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of Agriculture and Farmers Welfare",
+      "normalized_name": "MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_FINANCE",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of Finance",
+      "normalized_name": "MINISTRY_OF_FINANCE"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_FISHERIES_ANIMAL_HUSBANDRY_AND_DAIRYING",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of Fisheries, Animal Husbandry and Dairying",
+      "normalized_name": "MINISTRY_OF_FISHERIES_ANIMAL_HUSBANDRY_AND_DAIRYING"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_MICRO_SMALL_AND_MEDIUM_ENTERPRISES",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of Micro, Small and Medium Enterprises",
+      "normalized_name": "MINISTRY_OF_MICRO_SMALL_AND_MEDIUM_ENTERPRISES"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_NEW_AND_RENEWABLE_ENERGY",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of New and Renewable Energy",
+      "normalized_name": "MINISTRY_OF_NEW_AND_RENEWABLE_ENERGY"
+    },
+    {
+      "id": "MINISTRY:MINISTRY_OF_RURAL_DEVELOPMENT",
+      "node_type": "MINISTRY",
+      "canonical_name": "Ministry of Rural Development",
+      "normalized_name": "MINISTRY_OF_RURAL_DEVELOPMENT"
+    },
+    {
+      "id": "MINISTRY:NABARD___MINISTRY_OF_FINANCE",
+      "node_type": "MINISTRY",
+      "canonical_name": "NABARD / Ministry of Finance",
+      "normalized_name": "NABARD___MINISTRY_OF_FINANCE"
+    },
+    {
+      "id": "OCCUPATION:FARMER",
+      "node_type": "OCCUPATION",
+      "canonical_name": "farmer"
+    },
+    {
+      "id": "SCHEME:AGMARKNET",
+      "node_type": "SCHEME",
+      "scheme_id": "AGMARKNET",
+      "name": "Agricultural Marketing Information Network",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:AGRI_INFRA_FUND",
+      "node_type": "SCHEME",
+      "scheme_id": "AGRI_INFRA_FUND",
+      "name": "Agriculture Infrastructure Fund",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:ATMA",
+      "node_type": "SCHEME",
+      "scheme_id": "ATMA",
+      "name": "Agricultural Technology Management Agency",
+      "status": "ACTIVE",
+      "level": "central_state",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:DEDS",
+      "node_type": "SCHEME",
+      "scheme_id": "DEDS",
+      "name": "Dairy Entrepreneurship Development Scheme",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Fisheries, Animal Husbandry and Dairying",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:ENAM",
+      "node_type": "SCHEME",
+      "scheme_id": "ENAM",
+      "name": "National Agriculture Market",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:FPO_SCHEME",
+      "node_type": "SCHEME",
+      "scheme_id": "FPO_SCHEME",
+      "name": "Formation and Promotion of 10,000 Farmer Producer Organizations",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:KCC",
+      "node_type": "SCHEME",
+      "scheme_id": "KCC",
+      "name": "Kisan Credit Card",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:MGNREGA",
+      "node_type": "SCHEME",
+      "scheme_id": "MGNREGA",
+      "name": "Mahatma Gandhi National Rural Employment Guarantee Act",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Rural Development",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:MIDH",
+      "node_type": "SCHEME",
+      "scheme_id": "MIDH",
+      "name": "Mission for Integrated Development of Horticulture",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:MKSP",
+      "node_type": "SCHEME",
+      "scheme_id": "MKSP",
+      "name": "Mahila Kisan Sashaktikaran Pariyojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Rural Development",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:MOVCDNER",
+      "node_type": "SCHEME",
+      "scheme_id": "MOVCDNER",
+      "name": "Mission Organic Value Chain Development for North Eastern Region",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NABARD_RIDF",
+      "node_type": "SCHEME",
+      "scheme_id": "NABARD_RIDF",
+      "name": "Rural Infrastructure Development Fund",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "NABARD / Ministry of Finance",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NBM",
+      "node_type": "SCHEME",
+      "scheme_id": "NBM",
+      "name": "National Bamboo Mission",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NFSM",
+      "node_type": "SCHEME",
+      "scheme_id": "NFSM",
+      "name": "National Food Security Mission",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NLM",
+      "node_type": "SCHEME",
+      "scheme_id": "NLM",
+      "name": "National Livestock Mission",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Fisheries, Animal Husbandry and Dairying",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NMAET",
+      "node_type": "SCHEME",
+      "scheme_id": "NMAET",
+      "name": "National Mission on Agricultural Extension and Technology",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NMOOP",
+      "node_type": "SCHEME",
+      "scheme_id": "NMOOP",
+      "name": "National Mission on Oilseeds and Oil Palm",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NMSA",
+      "node_type": "SCHEME",
+      "scheme_id": "NMSA",
+      "name": "National Mission for Sustainable Agriculture",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:NRLM",
+      "node_type": "SCHEME",
+      "scheme_id": "NRLM",
+      "name": "Deendayal Antyodaya Yojana - National Rural Livelihoods Mission",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Rural Development",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PKVY",
+      "node_type": "SCHEME",
+      "scheme_id": "PKVY",
+      "name": "Paramparagat Krishi Vikas Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMAY_G",
+      "node_type": "SCHEME",
+      "scheme_id": "PMAY_G",
+      "name": "Pradhan Mantri Awaas Yojana - Gramin",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Rural Development",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMEGP",
+      "node_type": "SCHEME",
+      "scheme_id": "PMEGP",
+      "name": "Prime Minister's Employment Generation Programme",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Micro, Small and Medium Enterprises",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMFBY",
+      "node_type": "SCHEME",
+      "scheme_id": "PMFBY",
+      "name": "Pradhan Mantri Fasal Bima Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "department": "Department of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMJDY",
+      "node_type": "SCHEME",
+      "scheme_id": "PMJDY",
+      "name": "Pradhan Mantri Jan Dhan Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Finance",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMJJBY",
+      "node_type": "SCHEME",
+      "scheme_id": "PMJJBY",
+      "name": "Pradhan Mantri Jeevan Jyoti Bima Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Finance",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMKISAN_MAN_DHAN",
+      "node_type": "SCHEME",
+      "scheme_id": "PMKISAN_MAN_DHAN",
+      "name": "Pradhan Mantri Kisan MaanDhan Yojana (PM-KMY)",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMKSY",
+      "node_type": "SCHEME",
+      "scheme_id": "PMKSY",
+      "name": "Pradhan Mantri Krishi Sinchayee Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PMSBY",
+      "node_type": "SCHEME",
+      "scheme_id": "PMSBY",
+      "name": "Pradhan Mantri Suraksha Bima Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Finance",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PM_KISAN",
+      "node_type": "SCHEME",
+      "scheme_id": "PM_KISAN",
+      "name": "Pradhan Mantri Kisan Samman Nidhi",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "department": "Department of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PM_KMY",
+      "node_type": "SCHEME",
+      "scheme_id": "PM_KMY",
+      "name": "Pradhan Mantri Kisan Maandhan Yojana",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:PM_KUSUM",
+      "node_type": "SCHEME",
+      "scheme_id": "PM_KUSUM",
+      "name": "Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of New and Renewable Energy",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:RKVY_RAFTAAR",
+      "node_type": "SCHEME",
+      "scheme_id": "RKVY_RAFTAAR",
+      "name": "Rashtriya Krishi Vikas Yojana - RAFTAAR",
+      "status": "ACTIVE",
+      "level": "central_state",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:SMAM",
+      "node_type": "SCHEME",
+      "scheme_id": "SMAM",
+      "name": "Sub-Mission on Agricultural Mechanization",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:SOIL_HEALTH_CARD",
+      "node_type": "SCHEME",
+      "scheme_id": "SOIL_HEALTH_CARD",
+      "name": "Soil Health Card Scheme",
+      "status": "ACTIVE",
+      "level": "central",
+      "ministry": "Ministry of Agriculture and Farmers Welfare",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_AP_RYTHU",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_AP_RYTHU",
+      "name": "YSR Rythu Bharosa - AP Farmer Investment Support",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Andhra Pradesh",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_KA_KRUSHAK",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_KA_KRUSHAK",
+      "name": "Raitha Siri - Karnataka Farmer Income Support",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Karnataka",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_MH_NAMO",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_MH_NAMO",
+      "name": "Namo Shetkari Mahasanman Nidhi - Maharashtra",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Maharashtra",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_TN_UZHAVAR",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_TN_UZHAVAR",
+      "name": "Uzhavar Pathukappu Thittam - Tamil Nadu",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Tamil Nadu",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_TS_RYTHU",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_TS_RYTHU",
+      "name": "Rythu Bandhu - Telangana Farmer Investment Support",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Telangana",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SCHEME:STATE_UP_KISAN",
+      "node_type": "SCHEME",
+      "scheme_id": "STATE_UP_KISAN",
+      "name": "UP Kisan Kalyan Mission",
+      "status": "ACTIVE",
+      "level": "state",
+      "ministry": "Department of Agriculture, Uttar Pradesh",
+      "corpus_version": "1.0.0",
+      "last_verified_at": "2026-09-26"
+    },
+    {
+      "id": "SOURCE:AGRICOOP_GOV",
+      "node_type": "SOURCE",
+      "source_type": "OFFICIAL_CENTRAL",
+      "source_name": "",
+      "url": "https://agmarknet.gov.in"
+    },
+    {
+      "id": "SOURCE:INDIA_GOV",
+      "node_type": "SOURCE",
+      "source_type": "OFFICIAL_CENTRAL",
+      "source_name": "",
+      "url": "https://nrega.nic.in"
+    },
+    {
+      "id": "SOURCE:MYSCHEME_GOV",
+      "node_type": "SOURCE",
+      "source_type": "OFFICIAL_CENTRAL",
+      "source_name": "",
+      "url": "https://agriinfra.dac.gov.in"
+    },
+    {
+      "id": "SOURCE:PMFBY_GOV",
+      "node_type": "SOURCE",
+      "source_type": "OFFICIAL_CENTRAL",
+      "source_name": "",
+      "url": "https://pmfby.gov.in",
+      "verified_at": "2026-09-26"
+    },
+    {
+      "id": "SOURCE:PMKISAN_GOV",
+      "node_type": "SOURCE",
+      "source_type": "OFFICIAL_CENTRAL",
+      "source_name": "",
+      "url": "https://pmkisan.gov.in",
+      "verified_at": "2026-09-26"
+    },
+    {
+      "id": "STATE:ANDHRA_PRADESH",
+      "node_type": "STATE",
+      "canonical_name": "Andhra Pradesh",
+      "normalized_name": "ANDHRA_PRADESH"
+    },
+    {
+      "id": "STATE:ARUNACHAL_PRADESH",
+      "node_type": "STATE",
+      "canonical_name": "Arunachal Pradesh",
+      "normalized_name": "ARUNACHAL_PRADESH"
+    },
+    {
+      "id": "STATE:ASSAM",
+      "node_type": "STATE",
+      "canonical_name": "Assam",
+      "normalized_name": "ASSAM"
+    },
+    {
+      "id": "STATE:KARNATAKA",
+      "node_type": "STATE",
+      "canonical_name": "Karnataka",
+      "normalized_name": "KARNATAKA"
+    },
+    {
+      "id": "STATE:MAHARASHTRA",
+      "node_type": "STATE",
+      "canonical_name": "Maharashtra",
+      "normalized_name": "MAHARASHTRA"
+    },
+    {
+      "id": "STATE:MANIPUR",
+      "node_type": "STATE",
+      "canonical_name": "Manipur",
+      "normalized_name": "MANIPUR"
+    },
+    {
+      "id": "STATE:MEGHALAYA",
+      "node_type": "STATE",
+      "canonical_name": "Meghalaya",
+      "normalized_name": "MEGHALAYA"
+    },
+    {
+      "id": "STATE:MIZORAM",
+      "node_type": "STATE",
+      "canonical_name": "Mizoram",
+      "normalized_name": "MIZORAM"
+    },
+    {
+      "id": "STATE:NAGALAND",
+      "node_type": "STATE",
+      "canonical_name": "Nagaland",
+      "normalized_name": "NAGALAND"
+    },
+    {
+      "id": "STATE:SIKKIM",
+      "node_type": "STATE",
+      "canonical_name": "Sikkim",
+      "normalized_name": "SIKKIM"
+    },
+    {
+      "id": "STATE:TAMIL_NADU",
+      "node_type": "STATE",
+      "canonical_name": "Tamil Nadu",
+      "normalized_name": "TAMIL_NADU"
+    },
+    {
+      "id": "STATE:TELANGANA",
+      "node_type": "STATE",
+      "canonical_name": "Telangana",
+      "normalized_name": "TELANGANA"
+    },
+    {
+      "id": "STATE:TRIPURA",
+      "node_type": "STATE",
+      "canonical_name": "Tripura",
+      "normalized_name": "TRIPURA"
+    },
+    {
+      "id": "STATE:UTTAR_PRADESH",
+      "node_type": "STATE",
+      "canonical_name": "Uttar Pradesh",
+      "normalized_name": "UTTAR_PRADESH"
+    }
+  ],
+  "edges": [
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "BENEFICIARY:TRADERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "BENEFIT:OTHER",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGMARKNET",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "BENEFICIARY:AGRI_ENTREPRENEURS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "BENEFICIARY:FPOS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "BENEFICIARY:PACS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "BENEFIT:LOAN",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Interest subvention of 3% per annum up to a limit of Rs 2 crore"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:AGRI_INFRA_FUND",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ATMA",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ATMA",
+      "target": "BENEFIT:TRAINING",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ATMA",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ATMA",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ATMA",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "BENEFICIARY:DAIRY_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "BENEFICIARY:ENTREPRENEURS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "25% of outlay as back ended capital subsidy for general category, 33.33% for SC/ST"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "CATEGORY:SC",
+      "relation": "TARGETS_CATEGORY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "CATEGORY:ST",
+      "relation": "TARGETS_CATEGORY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "DOCUMENT:BANK_LOAN_SANCTION_LETTER",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "DOCUMENT:PROJECT_REPORT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "ELIGIBILITY_RULE:DEDS_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "ELIGIBILITY_RULE:DEDS_1",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "MINISTRY:MINISTRY_OF_FISHERIES_ANIMAL_HUSBANDRY_AND_DAIRYING",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:DEDS",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "BENEFICIARY:FPOS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "BENEFICIARY:TRADERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "BENEFIT:OTHER",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:ENAM",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "BENEFICIARY:FPOS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "BENEFICIARY:MARGINAL_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "BENEFICIARY:SMALL_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Financial assistance of Rs.18.00 lakh per FPO for a period of 3 years"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:FPO_SCHEME",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "BENEFICIARY:ANIMAL_HUSBANDRY_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "BENEFICIARY:FISHERMEN",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "BENEFIT:LOAN",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Interest subvention of 2% and additional 3% prompt repayment incentive"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "DOCUMENT:PASSPORT_SIZE_PHOTO",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "ELIGIBILITY_RULE:KCC_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:KCC",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "BENEFICIARY:RURAL_HOUSEHOLDS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "BENEFICIARY:RURAL_WORKERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "100 days of guaranteed wage employment in a financial year"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "DOCUMENT:JOB_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "ELIGIBILITY_RULE:MGNREGA_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "MINISTRY:MINISTRY_OF_RURAL_DEVELOPMENT",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MGNREGA",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "BENEFICIARY:HORTICULTURE_GROWERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:BANANA",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:COCONUT",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:FRUITS",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:MANGO",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:SPICES",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "CROP:VEGETABLES",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MIDH",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "BENEFICIARY:WOMEN_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "BENEFIT:TRAINING",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "ELIGIBILITY_RULE:MKSP_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "GENDER:FEMALE",
+      "relation": "TARGETS_GENDER",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "MINISTRY:MINISTRY_OF_RURAL_DEVELOPMENT",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MKSP",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "ELIGIBILITY_RULE:MOVCDNER_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:ARUNACHAL_PRADESH",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:ASSAM",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:MANIPUR",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:MEGHALAYA",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:MIZORAM",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:NAGALAND",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:SIKKIM",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:MOVCDNER",
+      "target": "STATE:TRIPURA",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "BENEFICIARY:RURAL_AREAS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "BENEFICIARY:STATE_GOVERNMENTS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "BENEFIT:INFRASTRUCTURE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "MINISTRY:NABARD___MINISTRY_OF_FINANCE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NABARD_RIDF",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "BENEFICIARY:BAMBOO_GROWERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NBM",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "BENEFIT:INPUT_SUPPORT",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "CROP:MAIZE",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "CROP:MILLETS",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "CROP:PULSES",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "CROP:RICE",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "CROP:WHEAT",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NFSM",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "BENEFICIARY:LIVESTOCK_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "BENEFICIARY:POULTRY_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "MINISTRY:MINISTRY_OF_FISHERIES_ANIMAL_HUSBANDRY_AND_DAIRYING",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NLM",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMAET",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMAET",
+      "target": "BENEFIT:TRAINING",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMAET",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMAET",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMAET",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "BENEFICIARY:OILSEED_GROWERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:GROUNDNUT",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:LINSEED",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:MUSTARD",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:OILSEEDS",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:SESAME",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:SOYBEAN",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "CROP:SUNFLOWER",
+      "relation": "TARGETS_CROP",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "ELIGIBILITY_RULE:NMOOP_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMOOP",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMSA",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMSA",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMSA",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMSA",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NMSA",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "BENEFICIARY:RURAL_POOR",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "BENEFICIARY:WOMEN_SHGS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "MINISTRY:MINISTRY_OF_RURAL_DEVELOPMENT",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:NRLM",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "BENEFICIARY:FARMER_GROUPS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "DOCUMENT:GROUP_FORMATION_DOCUMENTS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "ELIGIBILITY_RULE:PKVY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PKVY",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "BENEFICIARY:HOUSELESS_FAMILIES",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "BENEFICIARY:RURAL_HOUSEHOLDS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Unit assistance of Rs. 1.20 lakh in plain areas and Rs. 1.30 lakh in hilly States"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "DOCUMENT:BANK_ACCOUNT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "DOCUMENT:SECC_DATA_INCLUSION",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "MINISTRY:MINISTRY_OF_RURAL_DEVELOPMENT",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMAY_G",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "BENEFICIARY:ARTISANS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "BENEFICIARY:RURAL_YOUTH",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "BENEFICIARY:UNEMPLOYED_YOUTH",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Subsidy of 15-35% of the project cost"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "DOCUMENT:PROJECT_REPORT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "MINISTRY:MINISTRY_OF_MICRO_SMALL_AND_MEDIUM_ENTERPRISES",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMEGP",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "BENEFICIARY:CROP_GROWERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "BENEFICIARY:SHARECROPPERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "BENEFICIARY:TENANT_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "BENEFIT:INSURANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "The farmer's share of premium is 2% for Kharif crops, 1.5% for Rabi crops and 5% for commercial/horticultural crops."
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "DEPARTMENT:DEPARTMENT_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "BELONGS_TO_DEPARTMENT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "DOCUMENT:LAND_RECORDS___LEASE_AGREEMENT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "DOCUMENT:SOWING_CERTIFICATE",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "ELIGIBILITY_RULE:PMFBY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMFBY",
+      "target": "SOURCE:PMFBY_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "BENEFICIARY:RURAL_POOR",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "BENEFICIARY:UNBANKED_POPULATION",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "BENEFIT:OTHER",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "DOCUMENT:AADHAAR_CARD_OR_ANY_IDENTITY_PROOF",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "MINISTRY:MINISTRY_OF_FINANCE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJDY",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "BENEFICIARY:ALL_CITIZENS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "BENEFICIARY:RURAL_POOR",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "BENEFIT:INSURANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "life cover of Rs. 2 Lakhs for death due to any reason at a premium of Rs. 436 per annum"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "DOCUMENT:BANK_ACCOUNT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "ELIGIBILITY_RULE:PMJJBY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "MINISTRY:MINISTRY_OF_FINANCE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMJJBY",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKISAN_MAN_DHAN",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKISAN_MAN_DHAN",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKISAN_MAN_DHAN",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKISAN_MAN_DHAN",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKISAN_MAN_DHAN",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "55% subsidy for small and marginal farmers, 45% for other farmers"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "ELIGIBILITY_RULE:PMKSY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMKSY",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "BENEFICIARY:ALL_CITIZENS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "BENEFIT:INSURANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Rs. 2 Lakh for accidental death and permanent total disability and Rs 1 Lakh for permanent partial disability"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "DOCUMENT:BANK_ACCOUNT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "ELIGIBILITY_RULE:PMSBY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "MINISTRY:MINISTRY_OF_FINANCE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PMSBY",
+      "target": "SOURCE:INDIA_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "BENEFICIARY:LAND_HOLDING_FARMER_FAMILIES",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Under the scheme an income support of Rs.6000/- per year is provided to all farmer families across the country in three equal installments of Rs.2000/- each every four months."
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "DEPARTMENT:DEPARTMENT_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "BELONGS_TO_DEPARTMENT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "ELIGIBILITY_RULE:PM_KISAN_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "ELIGIBILITY_RULE:PM_KISAN_1",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KISAN",
+      "target": "SOURCE:PMKISAN_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "BENEFICIARY:MARGINAL_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "BENEFICIARY:SMALL_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "guaranteed pension of Rs.3000/- per month after attaining the age of 60 years"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "DOCUMENT:BANK_ACCOUNT_JAN_DHAN_ACCOUNT",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "ELIGIBILITY_RULE:PM_KMY_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "ELIGIBILITY_RULE:PM_KMY_1",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KMY",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Central Financial Assistance of 30% of the benchmark cost and State subsidy of 30%."
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "ELIGIBILITY_RULE:PM_KUSUM_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "MINISTRY:MINISTRY_OF_NEW_AND_RENEWABLE_ENERGY",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:PM_KUSUM",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "BENEFICIARY:AGRI_ENTREPRENEURS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:RKVY_RAFTAAR",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "BENEFICIARY:SMALL_AND_MARGINAL_FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "BENEFIT:SUBSIDY",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "DOCUMENT:AADHAAR_CARD",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "DOCUMENT:BANK_ACCOUNT_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "DOCUMENT:LAND_RECORDS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "ELIGIBILITY_RULE:SMAM_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SMAM",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "BENEFIT:OTHER",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "COUNTRY:INDIA",
+      "relation": "GLOBAL_APPLICABILITY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "DOCUMENT:LAND_DETAILS",
+      "relation": "REQUIRES_DOCUMENT",
+      "mandatory": true,
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "ELIGIBILITY_RULE:SOIL_HEALTH_CARD_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "MINISTRY:MINISTRY_OF_AGRICULTURE_AND_FARMERS_WELFARE",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "OCCUPATION:FARMER",
+      "relation": "TARGETS_OCCUPATION",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:SOIL_HEALTH_CARD",
+      "target": "SOURCE:AGRICOOP_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Rs.13,500/- per annum as investment support to every farmer family"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "ELIGIBILITY_RULE:STATE_AP_RYTHU_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_ANDHRA_PRADESH",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_AP_RYTHU",
+      "target": "STATE:ANDHRA_PRADESH",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "ELIGIBILITY_RULE:STATE_KA_KRUSHAK_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_KARNATAKA",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_KA_KRUSHAK",
+      "target": "STATE:KARNATAKA",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "ELIGIBILITY_RULE:STATE_MH_NAMO_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_MAHARASHTRA",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_MH_NAMO",
+      "target": "STATE:MAHARASHTRA",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "BENEFIT:INSURANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "ELIGIBILITY_RULE:STATE_TN_UZHAVAR_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_TAMIL_NADU",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TN_UZHAVAR",
+      "target": "STATE:TAMIL_NADU",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "BENEFIT:FINANCIAL_ASSISTANCE",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0",
+      "source_text": "Rs.10,000 per acre per year"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "ELIGIBILITY_RULE:STATE_TS_RYTHU_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_TELANGANA",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_TS_RYTHU",
+      "target": "STATE:TELANGANA",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "BENEFICIARY:FARMERS",
+      "relation": "TARGETS_BENEFICIARY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "BENEFIT:OTHER",
+      "relation": "PROVIDES_BENEFIT",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "ELIGIBILITY_RULE:STATE_UP_KISAN_0",
+      "relation": "HAS_ELIGIBILITY_RULE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "MINISTRY:DEPARTMENT_OF_AGRICULTURE_UTTAR_PRADESH",
+      "relation": "OFFERED_BY_MINISTRY",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "SOURCE:MYSCHEME_GOV",
+      "relation": "HAS_SOURCE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "SCHEME:STATE_UP_KISAN",
+      "target": "STATE:UTTAR_PRADESH",
+      "relation": "APPLIES_TO_STATE",
+      "corpus_version": "1.0.0"
+    },
+    {
+      "source": "STATE:ANDHRA_PRADESH",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:ARUNACHAL_PRADESH",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:ASSAM",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:KARNATAKA",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:MAHARASHTRA",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:MANIPUR",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:MEGHALAYA",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:MIZORAM",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:NAGALAND",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:SIKKIM",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:TAMIL_NADU",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:TELANGANA",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:TRIPURA",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    },
+    {
+      "source": "STATE:UTTAR_PRADESH",
+      "target": "COUNTRY:INDIA",
+      "relation": "PART_OF"
+    }
+  ]
+}

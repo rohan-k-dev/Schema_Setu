@@ -1,0 +1,14 @@
+{
+    "schema_version": "1.0.0",
+    "description": "Canonical Government Scheme Schema for SchemeSetu AI",
+    "created_at": "2026-09-26",
+    "fields": {
+        "required": ["scheme_id", "name", "description"],
+        "source_required": true,
+        "total_fields": 28
+    },
+    "rule_operators": ["EQ", "NEQ", "IN", "NOT_IN", "LT", "LTE", "GT", "GTE", "BETWEEN", "CONTAINS", "BOOLEAN", "UNKNOWN"],
+    "source_types": ["OFFICIAL_CENTRAL", "OFFICIAL_STATE", "OFFICIAL_SCHEME_PORTAL", "SECONDARY", "UNKNOWN"],
+    "scheme_statuses": ["ACTIVE", "INACTIVE", "SUSPENDED", "UNKNOWN"],
+    "benefit_types": ["financial_assistance", "insurance", "subsidy", "loan", "input_support", "training", "infrastructure", "other", "unknown"]
+}
