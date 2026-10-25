@@ -114,6 +114,8 @@ export interface ChatResponse {
   retrieval_metadata?: RetrievalMetadata;
   review?: ReviewStatus;
   thread_id?: string;
+  profile_saved?: boolean;
+  profile_save_error?: string;
 }
 
 /** Safe human-review status shown to the user (no reviewer data). */

@@ -1,8 +1,10 @@
 # Environment & Configuration Reference
 
 Single authoritative source for SchemeSetu configuration. Values are read by
-`backend/app/core/config.py` (pydantic-settings) from the process environment and `backend/.env`.
-Template: `backend/.env.example`. The frontend has exactly one variable.
+`backend/app/core/config.py` (pydantic-settings) from the process environment, `backend/.env`, and the
+repository-root `.env` file. The root `.env` overrides `backend/.env`, so local development can use a
+managed database URL without editing the backend template. Template: `backend/.env.example`. The frontend
+has exactly one variable.
 
 **Secrets:** every backend variable is server-only. The backend never returns API keys, the database URL
 or the reviewer key in any response. `/health` reports only booleans (`groq_configured`, …). Configuration

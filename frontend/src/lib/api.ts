@@ -53,12 +53,21 @@ export async function fetchLanguages(): Promise<LanguageInfo[]> {
 export async function sendChat(
   message: string,
   threadId: string = "default_session",
-  language: string = "en"
+  language: string = "en",
+  accessToken?: string | null,
+  consentToSaveProfile: boolean = false
 ): Promise<ChatResponse> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
   const response = await fetch(`${API_BASE_URL}/chat`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, thread_id: threadId, language }),
+    headers,
+    body: JSON.stringify({
+      message,
+      thread_id: threadId,
+      language,
+      consent_to_save_profile: consentToSaveProfile,
+    }),
   });
 
   if (!response.ok) {
@@ -75,15 +84,21 @@ export async function sendVoice(
   audioBlob: Blob,
   filename: string,
   threadId: string = "default_session",
-  language: string = "en"
+  language: string = "en",
+  accessToken?: string | null,
+  consentToSaveProfile: boolean = false
 ): Promise<ChatResponse> {
   const formData = new FormData();
   formData.append("file", audioBlob, filename);
   formData.append("thread_id", threadId);
   formData.append("language", language);
+  formData.append("consent_to_save_profile", String(consentToSaveProfile));
 
+  const headers: Record<string, string> = {};
+  if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
   const response = await fetch(`${API_BASE_URL}/voice`, {
     method: "POST",
+    headers,
     body: formData,
   });
 

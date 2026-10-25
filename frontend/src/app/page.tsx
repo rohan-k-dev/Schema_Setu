@@ -44,36 +44,52 @@ export default function Home() {
   const [language, setLanguage] = useState("en");
   const [failedMessage, setFailedMessage] = useState<string | null>(null);
   const [demoMode, setDemoMode] = useState(false);
+  const [profileConsentGiven, setProfileConsentGiven] = useState(false);
+  const [consentToSaveProfile, setConsentToSaveProfile] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
 
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const { user, accessToken, isAuthenticated, logout } = useAuth();
+  const { user, accessToken, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const profileFetchedForRef = useRef<string | null>(null);
 
   // Auto-sync saved farmer profile if user is logged in
   useEffect(() => {
-    if (isAuthenticated && accessToken && !profile) {
-      apiGetProfile(accessToken)
-        .then((saved) => {
-          if (saved) {
-            setProfile({
-              state: saved.state,
-              district: saved.district,
-              land_size_acres: saved.land_size_acres,
-              primary_crop: saved.primary_crop,
-              other_crops: saved.other_crops,
-              farming_type: saved.farming_type,
-              age: saved.age,
-              gender: saved.gender,
-              category: saved.category,
-              annual_income: saved.annual_income,
-              has_aadhaar: saved.has_aadhaar,
-              occupation: saved.occupation,
-            });
-          }
-        })
-        .catch(() => {});
+    if (!isAuthenticated || !accessToken) {
+      profileFetchedForRef.current = null;
+      setProfileConsentGiven(false);
+      setConsentToSaveProfile(false);
+      return;
     }
-  }, [isAuthenticated, accessToken, profile]);
+    if (profileFetchedForRef.current === accessToken) return;
+
+    profileFetchedForRef.current = accessToken;
+    setProfileLoading(true);
+    apiGetProfile(accessToken)
+      .then((saved) => {
+        setProfileConsentGiven(saved?.consent_given ?? false);
+        if (saved) {
+          setProfile({
+            state: saved.state,
+            district: saved.district,
+            land_size_acres: saved.land_size_acres,
+            primary_crop: saved.primary_crop,
+            other_crops: saved.other_crops,
+            farming_type: saved.farming_type,
+            age: saved.age,
+            gender: saved.gender,
+            category: saved.category,
+            annual_income: saved.annual_income,
+            has_aadhaar: saved.has_aadhaar,
+            occupation: saved.occupation,
+          });
+        }
+      })
+      .catch((error: unknown) => {
+        console.error("Saved farmer profile could not be loaded:", error);
+      })
+      .finally(() => setProfileLoading(false));
+  }, [isAuthenticated, accessToken]);
 
   // Conversation session for this tab
   const threadIdRef = useRef<string>("");
@@ -147,8 +163,18 @@ export default function Home() {
    */
   const handleResponseData = useCallback(
     (data: ChatResponse) => {
-      if (data.current_profile) {
-        setProfile(data.current_profile);
+      const currentProfile = data.current_profile;
+      if (currentProfile) {
+        setProfile((previous) => {
+          const updates = Object.fromEntries(
+            Object.entries(currentProfile).filter(([, value]) => value != null)
+          );
+          return { ...(previous ?? {}), ...updates };
+        });
+      }
+      if (data.profile_saved) {
+        setProfileConsentGiven(true);
+        setConsentToSaveProfile(false);
       }
       if (data.schemes && data.schemes.length > 0) {
         setSchemes(data.schemes);
@@ -167,6 +193,9 @@ export default function Home() {
         setMessages((prev) => [...prev, { sender: "agent", text: reply }]);
         if (data.status !== "error") playAudioResponse(reply);
       }
+      if (data.profile_save_error) {
+        setMessages((prev) => [...prev, { sender: "agent", text: data.profile_save_error! }]);
+      }
     },
     [playAudioResponse]
   );
@@ -178,7 +207,13 @@ export default function Home() {
     setFailedMessage(null);
     setLoading(true);
     try {
-      const data = await sendChat(userMsg, threadIdRef.current, language);
+      const data = await sendChat(
+        userMsg,
+        threadIdRef.current,
+        language,
+        accessToken,
+        profileConsentGiven || consentToSaveProfile
+      );
       handleResponseData(data);
     } catch (error) {
       console.error("API Error:", error);
@@ -193,7 +228,7 @@ export default function Home() {
   };
 
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || profileLoading) return;
     const userMsg = input;
     setInput("");
     setMessages((prev) => [...prev, { sender: "user", text: userMsg }]);
@@ -234,7 +269,14 @@ export default function Home() {
 
     try {
       setVoiceState("transcribing");
-      const data = await sendVoice(audioBlob, filename, threadIdRef.current, language);
+      const data = await sendVoice(
+        audioBlob,
+        filename,
+        threadIdRef.current,
+        language,
+        accessToken,
+        profileConsentGiven || consentToSaveProfile
+      );
 
       // Update the voice message with the actual transcript
       if (data.user_transcript) {
@@ -270,7 +312,7 @@ export default function Home() {
    * Graceful fallback if MediaRecorder not supported (§116, §117).
    */
   const handleVoiceToggle = async () => {
-    if (loading) return;
+    if (loading || profileLoading) return;
 
     if (isRecording) {
       // Stop Recording
@@ -341,7 +383,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans lg:h-dvh lg:min-h-0 lg:overflow-hidden">
       {/* Header with language selector */}
       <header className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-white px-4 py-3 shadow-md">
         <div className="max-w-7xl w-full mx-auto flex items-center justify-between">
@@ -423,10 +465,10 @@ export default function Home() {
         </div>
       )}
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:min-h-0 lg:grid-rows-1">
         {/* Left: Chat & Voice Interaction */}
         <div
-          className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden h-[600px] sm:h-[700px] lg:h-[calc(100vh-9rem)] lg:min-h-[520px]"
+          className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden h-[600px] sm:h-[700px] lg:h-auto lg:min-h-0"
           role="region"
           aria-label="Chat conversation"
         >
@@ -458,13 +500,13 @@ export default function Home() {
             onSend={handleSend}
             onVoiceToggle={handleVoiceToggle}
             isRecording={isRecording}
-            loading={loading}
+            loading={loading || profileLoading}
             voiceState={voiceState}
           />
         </div>
 
         {/* Right: Profile & Schemes */}
-        <div className="space-y-4 sm:space-y-6 flex flex-col lg:h-[calc(100vh-9rem)] lg:min-h-[520px] overflow-y-auto pr-1">
+        <div className="space-y-4 sm:space-y-6 flex flex-col lg:h-auto lg:min-h-0 overflow-y-auto overscroll-contain pr-1">
           {isAuthenticated && (
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center justify-between text-xs">
               <span className="text-emerald-900 font-medium truncate">
@@ -479,6 +521,20 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          )}
+          {isAuthenticated && !authLoading && !profileLoading && !profileConsentGiven && (
+            <label className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600">
+              <input
+                type="checkbox"
+                checked={consentToSaveProfile}
+                onChange={(event) => setConsentToSaveProfile(event.target.checked)}
+                className="mt-0.5 accent-emerald-600"
+              />
+              <span>
+                Save details I share in chat to my farmer profile. I can change or remove them from
+                the Profile page.
+              </span>
+            </label>
           )}
           <ProfilePanel profile={profile} />
           <SchemeList schemes={schemes} />

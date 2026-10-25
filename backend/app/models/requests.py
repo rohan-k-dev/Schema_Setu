@@ -27,6 +27,10 @@ class ChatRequest(BaseModel):
         max_length=16,
         description="Selected language code (e.g. 'hi', 'kn', 'ta')"
     )
+    consent_to_save_profile: bool = Field(
+        default=False,
+        description="Explicit consent to save profile details extracted from this conversation",
+    )
 
     @field_validator("message")
     @classmethod

@@ -69,6 +69,8 @@ class ChatResponse(BaseModel):
     retrieval_metadata: Optional[Dict[str, Any]] = None
     review: Optional[Dict[str, Any]] = None
     thread_id: Optional[str] = None
+    profile_saved: Optional[bool] = None
+    profile_save_error: Optional[str] = None
 
 
 class TTSResponse(BaseModel):
