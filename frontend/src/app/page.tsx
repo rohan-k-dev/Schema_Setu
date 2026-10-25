@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import Link from "next/link";
 
 // Centralized types and API client
 import type { ChatResponse, FarmerProfile, Scheme, Message } from "@/lib/types";
-import { sendChat, sendVoice, generateTTS } from "@/lib/api";
+import { sendChat, sendVoice, generateTTS, apiGetProfile } from "@/lib/api";
+import { useAuth } from "@/lib/AuthContext";
 
 // Extracted components
 import StatusIndicator from "@/components/StatusIndicator";
@@ -44,6 +46,34 @@ export default function Home() {
   const [demoMode, setDemoMode] = useState(false);
 
   const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const { user, accessToken, isAuthenticated, logout } = useAuth();
+
+  // Auto-sync saved farmer profile if user is logged in
+  useEffect(() => {
+    if (isAuthenticated && accessToken && !profile) {
+      apiGetProfile(accessToken)
+        .then((saved) => {
+          if (saved) {
+            setProfile({
+              state: saved.state,
+              district: saved.district,
+              land_size_acres: saved.land_size_acres,
+              primary_crop: saved.primary_crop,
+              other_crops: saved.other_crops,
+              farming_type: saved.farming_type,
+              age: saved.age,
+              gender: saved.gender,
+              category: saved.category,
+              annual_income: saved.annual_income,
+              has_aadhaar: saved.has_aadhaar,
+              occupation: saved.occupation,
+            });
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isAuthenticated, accessToken, profile]);
 
   // Conversation session for this tab
   const threadIdRef = useRef<string>("");
@@ -323,7 +353,7 @@ export default function Home() {
               AI-Powered Scheme Discovery
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
             {isSpeaking && (
               <button
                 onClick={stopAudio}
@@ -345,6 +375,42 @@ export default function Home() {
               New chat
             </button>
             <StatusIndicator onDemoMode={setDemoMode} />
+
+            {/* Farmer Auth Navigation */}
+            {isAuthenticated ? (
+              <div className="flex items-center gap-1.5 sm:gap-2 border-l border-emerald-500/40 pl-2 sm:pl-3">
+                <Link
+                  href="/dashboard"
+                  className="px-3 min-h-[44px] inline-flex items-center rounded-lg bg-white text-emerald-800 hover:bg-emerald-50 text-xs font-bold shadow-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  title="Personalized Dashboard"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/profile"
+                  className="hidden md:inline-flex px-3 min-h-[44px] items-center rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  title="Saved Farmer Profile"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={logout}
+                  className="px-2 min-h-[44px] text-xs text-emerald-200 hover:text-white hover:underline focus:outline-none"
+                  aria-label="Sign out"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="border-l border-emerald-500/40 pl-2 sm:pl-3">
+                <Link
+                  href="/auth"
+                  className="px-3.5 min-h-[44px] inline-flex items-center rounded-lg bg-white text-emerald-800 hover:bg-emerald-50 text-xs font-bold shadow-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  Sign In
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -399,6 +465,21 @@ export default function Home() {
 
         {/* Right: Profile & Schemes */}
         <div className="space-y-4 sm:space-y-6 flex flex-col lg:h-[calc(100vh-9rem)] lg:min-h-[520px] overflow-y-auto pr-1">
+          {isAuthenticated && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center justify-between text-xs">
+              <span className="text-emerald-900 font-medium truncate">
+                🌾 {user?.full_name || "Farmer"} (Account Linked)
+              </span>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Link
+                  href="/dashboard"
+                  className="text-emerald-700 hover:text-emerald-900 font-bold hover:underline"
+                >
+                  Dashboard →
+                </Link>
+              </div>
+            </div>
+          )}
           <ProfilePanel profile={profile} />
           <SchemeList schemes={schemes} />
         </div>

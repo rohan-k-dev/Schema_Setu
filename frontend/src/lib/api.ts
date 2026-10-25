@@ -1,11 +1,23 @@
 /**
- * Centralized API client — Phase 6.
+ * Centralized API client — Phase 6 + Phase 9 (auth & profile).
  *
  * All backend requests go through this module.
  * Language parameter added to chat/voice for multilingual support (§12).
  */
 
-import type { ChatResponse, TTSResponse, HealthResponse } from "./types";
+import type {
+  ChatResponse,
+  TTSResponse,
+  HealthResponse,
+  TokenResponse,
+  RegisterPayload,
+  LoginPayload,
+  SavedFarmerProfile,
+  ProfileUpdatePayload,
+  SavedScheme,
+  SearchHistoryEntry,
+  DashboardData,
+} from "./types";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
@@ -113,4 +125,150 @@ export async function healthCheck(): Promise<HealthResponse> {
   }
 
   return response.json();
+}
+
+// ─── Auth API ─────────────────────────────────────────────────────────────────
+
+function authHeaders(accessToken: string) {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+}
+
+export async function apiRegister(payload: RegisterPayload): Promise<TokenResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error?.message || data?.detail?.message || "Registration failed.");
+  return data as TokenResponse;
+}
+
+export async function apiLogin(payload: LoginPayload): Promise<TokenResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error?.message || data?.detail?.message || "Login failed.");
+  return data as TokenResponse;
+}
+
+export async function apiRefreshToken(refreshToken: string): Promise<TokenResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: refreshToken }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error?.message || "Token refresh failed.");
+  return data as TokenResponse;
+}
+
+export async function apiLogout(refreshToken: string): Promise<void> {
+  await fetch(`${API_BASE_URL}/auth/logout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: refreshToken }),
+  });
+}
+
+export async function apiForgotPassword(email: string): Promise<void> {
+  await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function apiResetPassword(token: string, newPassword: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data?.error?.message || "Password reset failed.");
+  }
+}
+
+// ─── Farmer / Profile API ─────────────────────────────────────────────────────
+
+export async function apiGetDashboard(accessToken: string): Promise<DashboardData> {
+  const res = await fetch(`${API_BASE_URL}/farmers/me/dashboard`, {
+    headers: authHeaders(accessToken),
+  });
+  if (!res.ok) throw new Error("Failed to load dashboard.");
+  return res.json();
+}
+
+export async function apiGetProfile(accessToken: string): Promise<SavedFarmerProfile | null> {
+  const res = await fetch(`${API_BASE_URL}/farmers/me/profile`, {
+    headers: authHeaders(accessToken),
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Failed to load profile.");
+  return res.json();
+}
+
+export async function apiUpdateProfile(
+  accessToken: string,
+  payload: ProfileUpdatePayload
+): Promise<SavedFarmerProfile> {
+  const res = await fetch(`${API_BASE_URL}/farmers/me/profile`, {
+    method: "PUT",
+    headers: authHeaders(accessToken),
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.detail?.message || data?.error?.message || "Profile update failed.");
+  return data as SavedFarmerProfile;
+}
+
+export async function apiGetSavedSchemes(accessToken: string): Promise<SavedScheme[]> {
+  const res = await fetch(`${API_BASE_URL}/farmers/me/saved-schemes`, {
+    headers: authHeaders(accessToken),
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export async function apiSaveScheme(
+  accessToken: string,
+  payload: { scheme_id: string; scheme_name: string; eligibility_status?: string; notes?: string }
+): Promise<SavedScheme> {
+  const res = await fetch(`${API_BASE_URL}/farmers/me/saved-schemes`, {
+    method: "POST",
+    headers: authHeaders(accessToken),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Failed to save scheme.");
+  return res.json();
+}
+
+export async function apiDeleteSavedScheme(
+  accessToken: string,
+  schemeId: string
+): Promise<void> {
+  await fetch(`${API_BASE_URL}/farmers/me/saved-schemes/${schemeId}`, {
+    method: "DELETE",
+    headers: authHeaders(accessToken),
+  });
+}
+
+export async function apiGetSearchHistory(
+  accessToken: string,
+  limit = 10
+): Promise<SearchHistoryEntry[]> {
+  const res = await fetch(
+    `${API_BASE_URL}/farmers/me/search-history?limit=${limit}`,
+    { headers: authHeaders(accessToken) }
+  );
+  if (!res.ok) return [];
+  return res.json();
 }

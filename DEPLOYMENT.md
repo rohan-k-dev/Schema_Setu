@@ -19,9 +19,13 @@ current architecture.
 
 ### Option A — Docker Compose (verified 2026-10-14)
 ```bash
-cp backend/.env.example backend/.env    # add GROQ_API_KEY etc. (optional: compose overrides DATABASE_URL)
+cp backend/.env.example backend/.env    # add GROQ_API_KEY etc.
 docker compose up --build               # postgres → init (migrate, import, check) → backend → frontend
 ```
+To use Neon instead of the local Postgres database, create a root `.env` file and set
+`DATABASE_URL` to the Neon connection string (use the direct, non-pooled URL for migrations and include
+`sslmode=require`). Compose passes it to both the migration job and backend; when unset, Compose uses the
+local Postgres service. Keep this file private; `.env` is git-ignored.
 Open http://localhost:3000 · API http://localhost:8000/docs · health `curl localhost:8000/health`.
 Observed on the reference machine: image build 93 s, stack up in 25 s. `init` logged
 "Running upgrade -> 0001", "[OK] Import completed successfully!", "Schemes: 40", "Rules: 25", and all integrity

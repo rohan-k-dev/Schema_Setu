@@ -11,10 +11,11 @@
 # API keys (GROQ/TAVILY/SARVAM) and REVIEW_API_KEY are read from backend/.env if it
 # exists (copy backend/.env.example). Without keys the app starts and reports which
 # services are unavailable (GET /health/ready).
-# Default database credentials below are for LOCAL use only — change them anywhere else.
+# DATABASE_URL can be set in the root .env file to use an external PostgreSQL database.
+# The default below is for LOCAL use only.
 
 x-backend-env: &backend-env
-  DATABASE_URL: postgresql://schemesetu:schemesetu@postgres:5432/schemesetu
+  DATABASE_URL: ${DATABASE_URL:-postgresql://schemesetu:schemesetu@postgres:5432/schemesetu}
   CORS_ORIGINS: '["http://localhost:3000"]'
 
 services:

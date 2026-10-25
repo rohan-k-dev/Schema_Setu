@@ -6,13 +6,15 @@ at import time if credentials are missing — instead, services validate
 their required config at usage time and return meaningful errors.
 """
 
+from pathlib import Path
 from typing import List, Optional
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
-
 # Single source of truth for the application version (Phase 7 release candidate)
 APP_VERSION = "1.0.0"
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 class Settings(BaseSettings):
@@ -138,8 +140,31 @@ class Settings(BaseSettings):
         description="Allowed CORS origins"
     )
 
+    # --- Auth / JWT ---
+    JWT_SECRET_KEY: str = Field(
+        default="change-me-in-production-use-a-long-random-secret",
+        description="HMAC secret for signing JWTs. MUST be set in production."
+    )
+    JWT_ALGORITHM: str = Field(default="HS256")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(
+        default=60,
+        description="Short-lived access token lifetime in minutes"
+    )
+    REFRESH_TOKEN_EXPIRE_DAYS: int = Field(
+        default=30,
+        description="Long-lived refresh token lifetime in days"
+    )
+    PASSWORD_RESET_EXPIRE_HOURS: int = Field(
+        default=24,
+        description="Password reset token lifetime in hours"
+    )
+
     model_config = {
-        "env_file": ".env",
+        "env_file": (
+            str(_BACKEND_DIR / ".env"),
+            str(_BACKEND_DIR.parent / ".env"),
+            ".env",
+        ),
         "env_file_encoding": "utf-8",
         "case_sensitive": True,
         "extra": "ignore",
