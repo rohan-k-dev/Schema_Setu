@@ -6,16 +6,18 @@
  */
 
 export interface FarmerProfile {
-  state?: string;
-  district?: string;
-  land_size_acres?: number;
-  primary_crop?: string;
-  annual_income?: number;
-  category?: string;
-  gender?: string;
-  has_aadhaar?: boolean;
-  occupation?: string;
-  age?: number;
+  state?: string | null;
+  district?: string | null;
+  land_size_acres?: number | null;
+  primary_crop?: string | null;
+  other_crops?: string[] | null;
+  farming_type?: string | null;
+  annual_income?: number | null;
+  category?: string | null;
+  gender?: string | null;
+  has_aadhaar?: boolean | null;
+  occupation?: string | null;
+  age?: number | null;
 }
 
 export interface SchemeSource {
@@ -112,6 +114,8 @@ export interface ChatResponse {
   retrieval_metadata?: RetrievalMetadata;
   review?: ReviewStatus;
   thread_id?: string;
+  profile_saved?: boolean;
+  profile_save_error?: string;
 }
 
 /** Safe human-review status shown to the user (no reviewer data). */
@@ -133,4 +137,108 @@ export interface HealthResponse {
   graph_available?: boolean;
   environment?: string;
   version: string;
+}
+
+// ─── Auth types ───────────────────────────────────────────────────────────────
+
+export interface AuthUser {
+  farmer_id: string;
+  email: string;
+  full_name?: string | null;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+  farmer_id: string;
+}
+
+export interface RegisterPayload {
+  email: string;
+  password: string;
+  full_name?: string;
+  phone?: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+// ─── Farmer profile & dashboard types ─────────────────────────────────────────
+
+export interface SavedFarmerProfile {
+  farmer_id: string;
+  full_name?: string | null;
+  email: string;
+  state?: string | null;
+  district?: string | null;
+  land_size_acres?: number | null;
+  primary_crop?: string | null;
+  other_crops?: string[] | null;
+  farming_type?: string | null;
+  age?: number | null;
+  gender?: string | null;
+  category?: string | null;
+  annual_income?: number | null;
+  has_aadhaar?: boolean | null;
+  occupation?: string | null;
+  consent_given: boolean;
+  consent_given_at?: string | null;
+  profile_completeness: number;
+}
+
+export interface ProfileUpdatePayload {
+  state?: string;
+  district?: string;
+  land_size_acres?: number;
+  primary_crop?: string;
+  other_crops?: string[];
+  farming_type?: string;
+  age?: number;
+  gender?: string;
+  category?: string;
+  annual_income?: number;
+  has_aadhaar?: boolean;
+  occupation?: string;
+  consent_given: boolean;
+}
+
+export interface SavedScheme {
+  id: number;
+  scheme_id: string;
+  scheme_name: string;
+  eligibility_status?: string | null;
+  notes?: string | null;
+  saved_at?: string | null;
+}
+
+export interface SearchHistoryEntry {
+  id: number;
+  query: string;
+  results_count: number;
+  language: string;
+  searched_at?: string | null;
+}
+
+export interface AccountInfo {
+  farmer_id: string;
+  email: string;
+  full_name?: string | null;
+  phone?: string | null;
+  is_active: boolean;
+  is_verified: boolean;
+  created_at?: string | null;
+  last_login_at?: string | null;
+}
+
+export interface DashboardData {
+  account: AccountInfo;
+  profile: SavedFarmerProfile | null;
+  missing_fields: string[];
+  profile_completeness: number;
+  saved_schemes: SavedScheme[];
+  recent_searches: SearchHistoryEntry[];
 }

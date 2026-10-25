@@ -20,7 +20,7 @@ from app.core.config import settings, APP_VERSION
 from app.core.logging import setup_logging, get_logger
 from app.core.exceptions import SchemSetuError
 from app.database.connection import init_db, close_db
-from app.api import chat, voice, health, schemes, review
+from app.api import chat, voice, health, schemes, review, auth, farmers
 
 # Initialize logging before anything else
 setup_logging()
@@ -95,6 +95,8 @@ app.include_router(chat.router)
 app.include_router(voice.router)
 app.include_router(schemes.router)
 app.include_router(review.router)
+app.include_router(auth.router)
+app.include_router(farmers.router)
 
 
 # --- Language registry endpoint (§11) ---

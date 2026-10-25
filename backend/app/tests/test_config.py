@@ -2,6 +2,8 @@
 Tests for configuration and exceptions.
 """
 
+from pathlib import Path
+
 import pytest
 from app.core.config import Settings
 from app.core.exceptions import (
@@ -36,6 +38,14 @@ class TestConfiguration:
         """CORS defaults to the local frontend origin only."""
         s = Settings(_env_file=None)
         assert s.CORS_ORIGINS == ["http://localhost:3000"]
+
+    def test_env_file_precedence_is_independent_of_working_directory(self):
+        """The repository root env file overrides backend-local defaults."""
+        backend_dir = Path(__file__).resolve().parents[2]
+        assert Settings.model_config["env_file"] == (
+            str(backend_dir / ".env"),
+            str(backend_dir.parent / ".env"),
+        )
 
 
 class TestExceptions:

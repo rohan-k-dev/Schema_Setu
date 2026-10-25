@@ -23,6 +23,7 @@ RULES:
 9. For gender, normalize to: male, female, or other.
 10. If the user calls themselves a farmer (e.g. "I am a farmer", "kisan hoon", "I do farming"),
     set occupation to "farmer". This is an explicit statement, not a guess.
+11. You MUST ALWAYS call the extraction tool to return the FarmerProfile, even if all fields are null (for example, when the user just says "Hi", "Hello", or asks a general question).
 
 FIELDS TO EXTRACT (all optional):
 - state: Indian state name
@@ -36,6 +37,6 @@ FIELDS TO EXTRACT (all optional):
 - occupation: Their occupation (e.g., farmer) — only if the user says what they do
 - age: Age in whole years (integer)
 
-Leave any field as null if the user has NOT explicitly provided that information."""),
+Leave any field as null if the user has NOT explicitly provided that information. Always return the FarmerProfile object."""),
     ("placeholder", "{messages}")
 ])

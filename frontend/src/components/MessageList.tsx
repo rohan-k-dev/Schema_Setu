@@ -38,7 +38,7 @@ export default function MessageList({ messages, loading }: MessageListProps) {
   return (
     <div
       ref={listRef}
-      className="flex-1 p-4 overflow-y-auto space-y-4"
+      className="min-h-0 flex-1 p-4 overflow-y-auto overscroll-contain space-y-4"
       role="log"
       aria-live="polite"
       aria-label="Conversation messages"

@@ -9,13 +9,19 @@ Text and voice use the SAME LangGraph pipeline (§5).
 
 import uuid
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
 from langchain_core.messages import HumanMessage
 
 from app.graph.workflow import kisan_agent
+from app.api.deps import get_optional_farmer_id
 from app.models.requests import ChatRequest
 from app.models.responses import ChatResponse, ErrorDetail
+from app.services.chat_profile_service import (
+    load_saved_chat_profile,
+    merge_chat_profiles,
+    save_chat_profile,
+)
 from app.services.language_service import translate_to_internal, translate_from_internal
 from app.localization.languages import resolve_language_code, INTERNAL_LANGUAGE
 from app.utils.serialization import build_chat_response
@@ -33,7 +39,10 @@ router = APIRouter(tags=["Chat"])
     summary="Text-based conversation with the SchemeSetu Agent",
     description="Send a text message and receive scheme recommendations or follow-up questions.",
 )
-async def chat_with_agent(request: ChatRequest):
+async def chat_with_agent(
+    request: ChatRequest,
+    farmer_id: str | None = Depends(get_optional_farmer_id),
+):
     """Process a text chat message through the LangGraph multi-agent pipeline."""
     request_id = str(uuid.uuid4())[:8]
 
@@ -62,9 +71,32 @@ async def chat_with_agent(request: ChatRequest):
         }
         config = {"configurable": {"thread_id": thread_id}}
 
+        saved_profile, profile_consent = await load_saved_chat_profile(farmer_id)
+        checkpoint = await kisan_agent.aget_state(config)
+        current_profile = checkpoint.values.get("profile")
+        if hasattr(current_profile, "model_dump"):
+            current_profile = current_profile.model_dump()
+        inputs["profile"] = merge_chat_profiles(current_profile, saved_profile)
+
         final_state = await kisan_agent.ainvoke(inputs, config=config)
 
         response_data = build_chat_response(final_state, request_id=request_id)
+        try:
+            response_data["profile_saved"] = await save_chat_profile(
+                farmer_id,
+                final_state.get("profile"),
+                consent_to_save=request.consent_to_save_profile,
+                existing_consent=profile_consent,
+            )
+        except Exception as e:
+            logger.error(
+                f"[{request_id}] Failed to persist chat profile ({type(e).__name__})."
+            )
+            response_data["profile_saved"] = False
+            response_data["profile_save_error"] = (
+                "Your answer was processed, but profile details could not be saved. "
+                "Please try again."
+            )
 
         # 3. Translate response back to user's language (§31)
         if lang_code != INTERNAL_LANGUAGE and response_data.get("reply"):

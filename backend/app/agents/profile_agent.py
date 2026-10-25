@@ -132,6 +132,16 @@ async def profile_agent_node(state: SchemeSetuState) -> dict:
         }
 
     except Exception as e:
+        err_msg = str(e)
+        if "did not call a tool" in err_msg or "tool_use_failed" in err_msg:
+            logger.info("No profile fields in user utterance; continuing conversation.")
+            return {
+                "profile": state.get("profile"),
+                "profile_conflicts": [],
+                "original_query": original_query,
+                "error": None,
+            }
+
         # The language service (LLM) failed or is not configured: keep the known
         # profile and flag it, so the user is told instead of being asked the
         # same question again (Phase 8, failure handling).

@@ -8,13 +8,19 @@ Translation is handled as input normalization (§17).
 
 import uuid
 
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 
 from langchain_core.messages import HumanMessage
 
 from app.graph.workflow import kisan_agent
+from app.api.deps import get_optional_farmer_id
 from app.models.requests import TTSRequest
 from app.models.responses import ChatResponse, TTSResponse, ErrorDetail
+from app.services.chat_profile_service import (
+    load_saved_chat_profile,
+    merge_chat_profiles,
+    save_chat_profile,
+)
 from app.services.voice_service import transcribe_audio, generate_speech, ASRResult
 from app.services.language_service import translate_to_internal, translate_from_internal
 from app.localization.languages import (
@@ -40,6 +46,8 @@ async def chat_with_voice(
     file: UploadFile = File(..., description="Audio file from microphone"),
     thread_id: str = Form("default_session", description="Session thread ID"),
     language: str = Form("en", description="Selected language code (e.g. 'hi', 'kn')"),
+    consent_to_save_profile: bool = Form(False),
+    farmer_id: str | None = Depends(get_optional_farmer_id),
 ):
     """
     Process voice audio: ASR → Translation → LangGraph → Translation → TTS (§19).
@@ -120,6 +128,13 @@ async def chat_with_voice(
         }
         config = {"configurable": {"thread_id": thread_id}}
 
+        saved_profile, profile_consent = await load_saved_chat_profile(farmer_id)
+        checkpoint = await kisan_agent.aget_state(config)
+        current_profile = checkpoint.values.get("profile")
+        if hasattr(current_profile, "model_dump"):
+            current_profile = current_profile.model_dump()
+        inputs["profile"] = merge_chat_profiles(current_profile, saved_profile)
+
         final_state = await kisan_agent.ainvoke(inputs, config=config)
 
         # 5. Build response
@@ -128,6 +143,22 @@ async def chat_with_voice(
             request_id=request_id,
             user_transcript=native_transcript,
         )
+        try:
+            response_data["profile_saved"] = await save_chat_profile(
+                farmer_id,
+                final_state.get("profile"),
+                consent_to_save=consent_to_save_profile,
+                existing_consent=profile_consent,
+            )
+        except Exception as e:
+            logger.error(
+                f"[{request_id}] Failed to persist voice profile ({type(e).__name__})."
+            )
+            response_data["profile_saved"] = False
+            response_data["profile_save_error"] = (
+                "Your answer was processed, but profile details could not be saved. "
+                "Please try again."
+            )
 
         # 6. Translate response to native language (§31)
         if lang_code != INTERNAL_LANGUAGE and response_data.get("reply"):
