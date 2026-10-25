@@ -154,7 +154,7 @@ export default function ProfilePage() {
     <div className="profile-page">
       <header className="profile-header">
         <div className="profile-header-inner">
-          <button onClick={() => router.push("/dashboard")} className="profile-back">
+          <button onClick={() => router.push("/dashboard")} className="profile-back min-h-[44px]">
             ← Dashboard
           </button>
           <div className="profile-header-title">
@@ -301,10 +301,10 @@ export default function ProfilePage() {
 
           {/* Submit */}
           <div className="profile-actions">
-            <button type="button" onClick={() => router.push("/dashboard")} className="profile-cancel">
+            <button type="button" onClick={() => router.push("/dashboard")} className="profile-cancel min-h-[44px]">
               Cancel
             </button>
-            <button type="submit" disabled={saving} className="profile-save">
+            <button type="submit" disabled={saving} className="profile-save min-h-[44px]">
               {saving ? (
                 <span className="profile-btn-loading">
                   <span className="profile-spinner-sm" /> Saving…

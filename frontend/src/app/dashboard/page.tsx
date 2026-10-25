@@ -44,7 +44,7 @@ function ProfileCard({
     <div className="dash-card">
       <div className="dash-card-header">
         <span className="dash-card-title">👤 Your Profile</span>
-        <button onClick={onEdit} className="dash-edit-btn">Edit Profile</button>
+        <button onClick={onEdit} className="dash-edit-btn min-h-[44px]">Edit Profile</button>
       </div>
       <div className="dash-progress-row">
         <span className="dash-progress-label">Completeness</span>
@@ -71,7 +71,7 @@ function ProfileCard({
               </span>
             ))}
           </div>
-          <button onClick={onEdit} className="dash-fill-btn">Fill in now →</button>
+          <button onClick={onEdit} className="dash-fill-btn min-h-[44px]">Fill in now →</button>
         </div>
       )}
     </div>
@@ -120,7 +120,7 @@ function SavedSchemesCard({
               </div>
               <button
                 onClick={() => onRemove(s.scheme_id)}
-                className="dash-scheme-remove"
+                className="dash-scheme-remove min-h-[44px]"
                 aria-label={`Remove ${s.scheme_name}`}
                 title="Remove"
               >
@@ -149,7 +149,7 @@ function RecentSearchesCard({ searches }: { searches: SearchHistoryEntry[] }) {
             <button
               key={s.id}
               onClick={() => router.push("/")}
-              className="dash-search-item"
+              className="dash-search-item min-h-[44px]"
               title={`Search: ${s.query}`}
             >
               <span className="dash-search-icon">🔍</span>
@@ -244,13 +244,13 @@ export default function DashboardPage() {
             <span className="dash-header-name">SchemeSetu</span>
           </div>
           <nav className="dash-header-nav">
-            <button onClick={() => router.push("/")} className="dash-nav-btn">
+            <button onClick={() => router.push("/")} className="dash-nav-btn min-h-[44px]">
               💬 AI Chat
             </button>
-            <button onClick={() => router.push("/profile")} className="dash-nav-btn">
+            <button onClick={() => router.push("/profile")} className="dash-nav-btn min-h-[44px]">
               ✏️ Edit Profile
             </button>
-            <button onClick={handleLogout} className="dash-nav-btn dash-nav-btn--logout">
+            <button onClick={handleLogout} className="dash-nav-btn dash-nav-btn--logout min-h-[44px]">
               Sign Out
             </button>
           </nav>
@@ -287,7 +287,7 @@ export default function DashboardPage() {
         {error && (
           <div className="dash-error" role="alert">
             ⚠️ {error}
-            <button onClick={loadDashboard} className="dash-retry">Retry</button>
+            <button onClick={loadDashboard} className="dash-retry min-h-[44px]">Retry</button>
           </div>
         )}
 
@@ -299,7 +299,7 @@ export default function DashboardPage() {
               Chat with our AI assistant in your language to discover eligible government schemes.
             </p>
           </div>
-          <button onClick={() => router.push("/")} className="dash-cta-btn">
+          <button onClick={() => router.push("/")} className="dash-cta-btn min-h-[44px]">
             Start Chatting →
           </button>
         </div>
@@ -354,7 +354,7 @@ export default function DashboardPage() {
             <div className="dash-card">
               <div className="dash-card-header">
                 <span className="dash-card-title">🌱 Profile Summary</span>
-                <button onClick={() => router.push("/profile")} className="dash-edit-btn">
+                <button onClick={() => router.push("/profile")} className="dash-edit-btn min-h-[44px]">
                   Edit
                 </button>
               </div>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                 Set up your profile to get personalized scheme recommendations tailored
                 to your state, crop, land size, and more.
               </p>
-              <button onClick={() => router.push("/profile")} className="dash-fill-btn">
+              <button onClick={() => router.push("/profile")} className="dash-fill-btn min-h-[44px]">
                 Set Up Profile →
               </button>
             </div>

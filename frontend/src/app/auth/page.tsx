@@ -117,7 +117,7 @@ export default function AuthPage() {
             <button
               role="tab"
               aria-selected={mode === "login"}
-              className={`auth-tab ${mode === "login" ? "auth-tab--active" : ""}`}
+              className={`auth-tab min-h-[44px] ${mode === "login" ? "auth-tab--active" : ""}`}
               onClick={() => { setMode("login"); setError(null); setSuccess(null); }}
             >
               Sign In
@@ -125,7 +125,7 @@ export default function AuthPage() {
             <button
               role="tab"
               aria-selected={mode === "register"}
-              className={`auth-tab ${mode === "register" ? "auth-tab--active" : ""}`}
+              className={`auth-tab min-h-[44px] ${mode === "register" ? "auth-tab--active" : ""}`}
               onClick={() => { setMode("register"); setError(null); setSuccess(null); }}
             >
               Create Account
@@ -137,7 +137,7 @@ export default function AuthPage() {
           <div className="auth-back-row">
             <button
               onClick={() => { setMode("login"); setError(null); setSuccess(null); }}
-              className="auth-back-btn"
+              className="auth-back-btn min-h-[44px]"
             >
               ← Back to Sign In
             </button>
@@ -219,7 +219,7 @@ export default function AuthPage() {
                 />
                 <button
                   type="button"
-                  className="auth-show-password"
+                  className="auth-show-password min-h-[44px]"
                   onClick={() => setShowPassword((p) => !p)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
@@ -229,7 +229,7 @@ export default function AuthPage() {
               {mode === "login" && (
                 <button
                   type="button"
-                  className="auth-forgot-link"
+                  className="auth-forgot-link min-h-[44px]"
                   onClick={() => { setMode("forgot"); setError(null); setSuccess(null); }}
                 >
                   Forgot password?
@@ -274,7 +274,7 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="auth-submit"
+            className="auth-submit min-h-[44px]"
           >
             {submitting ? (
               <span className="auth-btn-loading">

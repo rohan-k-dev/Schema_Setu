@@ -525,6 +525,7 @@ export default function Home() {
           {isAuthenticated && !authLoading && !profileLoading && !profileConsentGiven && (
             <label className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-600">
               <input
+                id="consent-to-save-profile"
                 type="checkbox"
                 checked={consentToSaveProfile}
                 onChange={(event) => setConsentToSaveProfile(event.target.checked)}
