@@ -520,20 +520,28 @@ def _page_src():
 def test_bug031_frontend_does_not_send_constant_thread_id():
     src = _page_src()
     assert "const THREAD_ID" not in src
-    assert "sendChat(userMsg, threadIdRef.current" in src and "threadIdRef.current, language)" in src
+    assert re.search(
+        r"sendChat\(\s*userMsg,\s*threadIdRef\.current,\s*language,",
+        src,
+    )
 
 
 def test_bug031_backend_echoes_thread_id(monkeypatch):
     from fastapi.testclient import TestClient
     from app.main import app
     import app.api.chat as chat
+    from types import SimpleNamespace
 
     class FakeAgent:
+        async def aget_state(self, config):
+            return SimpleNamespace(values={})
+
         async def ainvoke(self, inputs, config):
             return {"response_status": "asking_question", "response_text": "Which state?", "messages": []}
 
     monkeypatch.setattr(chat, "kisan_agent", FakeAgent())
     body = TestClient(app).post("/chat", json={"message": "hi", "thread_id": "abc-123"}).json()
+    assert body["status"] == "asking_question"
     assert body["thread_id"] == "abc-123"
 
 
