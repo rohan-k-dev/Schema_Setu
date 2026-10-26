@@ -57,19 +57,23 @@ async def test_save_chat_profile_persists_extracted_details_with_explicit_consen
         email="farmer@example.com",
         state="Karnataka",
         district=None,
+        land_size=2.5,
+        land_unit="acre",
         land_size_acres=2.5,
         primary_crop="maize",
         other_crops=None,
         farming_type=None,
+        occupation=None,
         age=None,
         gender=None,
         category=None,
-        annual_income=None,
-        has_aadhaar=None,
-        occupation=None,
+        income_range=None,
+        residence=None,
         consent_given=True,
         consent_given_at=None,
         profile_completeness=30,
+        version=1,
+        updated_at=None,
     )
     with patch(
         "app.services.chat_profile_service.update_profile",
@@ -86,7 +90,7 @@ async def test_save_chat_profile_persists_extracted_details_with_explicit_consen
     assert saved is True
     request = update.await_args.args[1]
     assert request.state == "Karnataka"
-    assert request.land_size_acres == 2.5
+    assert request.land_size == 2.5 and request.land_unit == "acre"
     assert request.primary_crop == "maize"
     assert request.consent_given is True
 

@@ -65,6 +65,7 @@ def merge_results(
             official_url=r.official_url,
             retrieval_sources=[SourceType.DATABASE],
             matched_fields=list((r.evidence or {}).get("targeting", [])),
+            scheme_meta=(r.evidence or {}).get("scheme_meta"),
             source_records=[SourceRecord(
                 source_name=r.source_name,
                 source_url=r.source_url or r.official_url,

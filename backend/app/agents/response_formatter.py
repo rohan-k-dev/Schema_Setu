@@ -38,6 +38,31 @@ REVIEW_NOTICE = (
 )
 
 
+def live_check_note(report, schemes) -> str:
+    """
+    One deterministic sentence on freshness (docs/LIVE_VERIFICATION.md) — never written by the LLM,
+    and it never claims more than was checked.
+    """
+    if not report:
+        return ""
+    if not report.get("performed"):
+        return " ".join(report.get("warnings") or [])
+    live = [s.get("name") for s in schemes or []
+            if (s.get("freshness") or {}).get("status") == "LIVE_VERIFIED"]
+    hosts = report.get("hosts_accessed") or []
+    parts = []
+    if live:
+        parts.append(f"Checked live on official websites just now ({', '.join(hosts)}): {', '.join(live[:5])}.")
+    elif hosts:
+        parts.append(f"Official websites were reached just now ({', '.join(hosts)}), but no scheme details could "
+                     "be read from them.")
+    others = [s for s in schemes or [] if (s.get("freshness") or {}).get("status") != "LIVE_VERIFIED"]
+    if others:
+        parts.append("Other schemes show our stored information, which was not re-checked for this question.")
+    parts.extend(report.get("warnings") or [])
+    return " ".join(parts)
+
+
 def _build_deterministic_response(
     candidates: list,
     query: str,
@@ -174,13 +199,14 @@ def _build_detail_section(intent: str, response_schemes: List[Dict[str, Any]],
 
 _CANDIDATE_FIELDS = (
     "description", "benefit_summary", "eligibility_summary", "documents", "application_steps",
-    "official_url", "sources", "retrieval_sources", "matched_fields", "graph_evidence",
+    "official_url", "sources", "retrieval_sources", "matched_fields", "graph_evidence", "freshness",
 )
 
 
 def _build_response_schemes(
     candidates: list,
     recommendation_results: list = None,
+    sections: Dict[str, Any] = None,
 ) -> List[Dict[str, Any]]:
     """
     Build structured scheme cards for the API response (§92, §50).
@@ -210,9 +236,50 @@ def _build_response_schemes(
             scheme['rank_reasons'] = getattr(r, 'rank_reasons', [])
             scheme['xai_explanation'] = getattr(r, 'explanation', None)
             schemes.append(scheme)
-        return schemes
+        return _apply_sections(schemes, by_id, sections)
 
     return candidates
+
+
+def _apply_sections(schemes: List[Dict[str, Any]], by_id: Dict[str, Any],
+                    sections: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+    """
+    Tag each card ELIGIBLE / ALTERNATIVE / NOT_MATCHING with its reasons (app/recommendation/alternatives.py),
+    add stored provenance (application link, last verification date), drop hidden duplicates, and order:
+    eligible (ranker order) → alternatives (relevance) → not matching. Eligibility fields are untouched.
+    """
+    if not sections:
+        return schemes
+    notes = sections.get("by_scheme") or {}
+    order = {sid: i for i, sid in enumerate(sections.get("order") or [])}
+    out = []
+    for s in schemes:
+        note = notes.get(s["scheme_id"])
+        if note is None:                      # a hidden duplicate of a scheme already shown
+            continue
+        meta = (by_id.get(s["scheme_id"]) or {}).get("scheme_meta") or {}
+        s.update({"recommendation_section": note["section"],
+                  "recommendation_status": note["recommendation_status"],
+                  "status_text": note["status_text"], "relevance": note.get("relevance") or {},
+                  "conditions_to_verify": note.get("conditions_to_verify") or [],
+                  "mismatches": note.get("mismatches") or [],
+                  "application_url": meta.get("application_url"),
+                  "last_verified_at": meta.get("last_verified_at"),
+                  "applicable_states": meta.get("states") or [], "level": meta.get("level")})
+        if note.get("missing_information") and not s.get("missing_information"):
+            s["missing_information"] = note["missing_information"]
+        out.append(s)
+    out.sort(key=lambda s: order.get(s["scheme_id"], len(order)))
+    return out
+
+
+def alternatives_note(sections: Dict[str, Any] = None) -> str:
+    """Deterministic sentence on the alternatives section — never written by the LLM."""
+    n = ((sections or {}).get("summary") or {}).get("alternatives") or 0
+    if not n:
+        return ""
+    return (f"I also found {n} related scheme(s) and alternatives that may help you. Your eligibility for those "
+            f"is not confirmed: each shows why it may be relevant and what still needs checking.")
 
 
 async def response_formatter_node(state: SchemeSetuState) -> dict:
@@ -264,7 +331,8 @@ async def response_formatter_node(state: SchemeSetuState) -> dict:
     )
 
     # Build response schemes with eligibility data (§92)
-    response_schemes = _build_response_schemes(candidates, recommendation_results)
+    response_schemes = _build_response_schemes(candidates, recommendation_results,
+                                               state.get("recommendation_sections"))
 
     # Try LLM formatting
     try:
@@ -307,6 +375,12 @@ async def response_formatter_node(state: SchemeSetuState) -> dict:
         if detail:
             response_text = f"{detail}\n\n{response_text}"
 
+    alt = alternatives_note(state.get("recommendation_sections"))
+    if alt:
+        response_text += "\n\n" + alt
+    note = live_check_note(state.get("live_check"), response_schemes)
+    if note:
+        response_text += "\n\n" + note
     if state.get("needs_review"):
         response_text += REVIEW_NOTICE
 

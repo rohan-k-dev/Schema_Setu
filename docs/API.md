@@ -11,7 +11,8 @@
 |---|---|
 | 200 | Success. Conversation endpoints also return 200 for handled failures, with `status:"error"` and an `error {code, message, request_id}` object |
 | 400 | Invalid review action or status transition |
-| 403 | Review API without a valid `X-Review-Key`, or the review API is not configured |
+| 401 | Not signed in (no session cookie / expired / deactivated account) |
+| 403 | Role lacks the permission (`FORBIDDEN`), missing CSRF token, or a wrong / disabled `X-Review-Key` |
 | 404 | Unknown scheme ID, review case or route |
 | 422 | Request validation (bad JSON, missing file, message > 2000 chars, blank message, out-of-range query params) |
 | 500 | Unhandled server error: `{"status":"error","error":{"code","message"}}`. No stack traces are returned |
@@ -84,10 +85,11 @@ Request `{"text": "...", "language_code": "kn"}` (≤5000 chars; `kn` or `kn-IN`
 | GET | `/schemes?state=&crop=&query=&limit=` | Search canonical schemes (`limit` ≥ 1) |
 | GET | `/schemes/{scheme_id}` | Full record with rules, documents, steps, sources. 404 if unknown |
 
-## Human review (header `X-Review-Key`)
+## Human review (signed-in REVIEWER; dev-only `X-Review-Key`; see [RBAC.md](RBAC.md))
 See `docs/HUMAN_REVIEW.md`. `GET /review-cases[?status=]`, `GET /review-cases/{id}`,
-`POST /review-cases/{id}/resolve` `{"action":"REQUEST_INFORMATION|APPROVE|REJECT|MARK_UNVERIFIABLE","reviewer_id","note"}`,
-`POST /review-cases/{id}/dismiss` `{"reviewer_id","note"}`, `GET /review-cases/stats/summary`.
+`POST /review-cases/{id}/resolve` `{"action":"REQUEST_INFORMATION|APPROVE|REJECT|MARK_UNVERIFIABLE","note"}`,
+`POST /review-cases/{id}/dismiss` `{"note"}`, `GET /review-cases/stats/summary`. The reviewer is the
+authenticated principal (`reviewer_id` in the body → 422).
 Example: `curl -H "X-Review-Key: $REVIEW_API_KEY" http://localhost:8000/review-cases?status=PENDING`.
 
 ## CORS & authentication

@@ -72,7 +72,8 @@ def main():
     if manifest_path:
         with open(manifest_path, "r", encoding="utf-8") as f:
             manifest = json.load(f)
-            corpus_version = manifest.get("version", "1.0.0")
+            # the manifest key is corpus_version (older files: version)
+            corpus_version = manifest.get("corpus_version") or manifest.get("version", "1.0.0")
 
     print(f"Schemes: {len(schemes)}")
     print(f"Corpus version: {corpus_version}")

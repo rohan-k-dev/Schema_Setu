@@ -1,0 +1,277 @@
+{
+  "corpus_before": 40,
+  "candidates_added": 0,
+  "seeds_checked": 18,
+  "network_requests": 48,
+  "results": [
+    {
+      "scheme_id": "PMMSY",
+      "url": "https://pmmsy.dof.gov.in/",
+      "checked_at": "2026-10-26T06:07:11.116368+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://pmmsy.dof.gov.in/",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "RASHTRIYA_GOKUL_MISSION",
+      "url": "https://dahd.gov.in/schemes/programmes/rashtriya_gokul_mission",
+      "checked_at": "2026-10-26T06:07:11.371880+00:00",
+      "fetch_status": "ACCESS_DENIED",
+      "http_status": 403,
+      "final_url": "https://www.dahd.gov.in/schemes/programmes/rashtriya_gokul_mission",
+      "result": "NOT_ADDED",
+      "detail": "The site refused automated access (HTTP 401/403/429)."
+    },
+    {
+      "scheme_id": "NPDD",
+      "url": "https://dahd.gov.in/schemes/programmes/npdd",
+      "checked_at": "2026-10-26T06:07:11.903886+00:00",
+      "fetch_status": "ACCESS_DENIED",
+      "http_status": 403,
+      "final_url": "https://www.dahd.gov.in/schemes/programmes/npdd",
+      "result": "NOT_ADDED",
+      "detail": "The site refused automated access (HTTP 401/403/429)."
+    },
+    {
+      "scheme_id": "AHIDF",
+      "url": "https://dahd.gov.in/schemes/programmes/ahidf",
+      "checked_at": "2026-10-26T06:07:13.140081+00:00",
+      "fetch_status": "ACCESS_DENIED",
+      "http_status": 403,
+      "final_url": "https://www.dahd.gov.in/schemes/programmes/ahidf",
+      "result": "NOT_ADDED",
+      "detail": "The site refused automated access (HTTP 401/403/429)."
+    },
+    {
+      "scheme_id": "NMNF",
+      "url": "https://naturalfarming.dac.gov.in/",
+      "checked_at": "2026-10-26T06:07:14.383173+00:00",
+      "fetch_status": "OK",
+      "http_status": 200,
+      "final_url": "https://naturalfarming.dac.gov.in/",
+      "subpages": [
+        {
+          "url": "https://naturalfarming.dac.gov.in/AboutUs/login",
+          "status": "CAPTCHA"
+        },
+        {
+          "url": "https://naturalfarming.dac.gov.in/AboutUs/MissionAndObjectives",
+          "status": "OK"
+        },
+        {
+          "url": "https://naturalfarming.dac.gov.in/Schemes/NMNFManual",
+          "status": "OK"
+        },
+        {
+          "url": "https://naturalfarming.dac.gov.in/Schemes/NMNFManualHindi",
+          "status": "OK"
+        }
+      ],
+      "pages_used": [
+        "https://naturalfarming.dac.gov.in/",
+        "https://naturalfarming.dac.gov.in/AboutUs/MissionAndObjectives"
+      ],
+      "fields_found": [
+        "benefit_amounts",
+        "description",
+        "land_requirement",
+        "ministry",
+        "name"
+      ],
+      "quality": "EMPTY",
+      "page_title": "National Mission on Natural Farming National Mission on Natural Farming",
+      "result": "NOT_ADDED",
+      "detail": "page doesn't state a description plus eligibility or benefits"
+    },
+    {
+      "scheme_id": "NBHM",
+      "url": "https://nbb.gov.in/",
+      "checked_at": "2026-10-26T06:07:19.704107+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://nbb.gov.in/",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "PMFME",
+      "url": "https://pmfme.mofpi.gov.in/",
+      "checked_at": "2026-10-26T06:07:19.906933+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://pmfme.mofpi.gov.in/",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "PM_KISAN_SAMPADA",
+      "url": "https://www.mofpi.gov.in/Schemes/pradhan-mantri-kisan-sampada-yojana",
+      "checked_at": "2026-10-26T06:07:20.102367+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://www.mofpi.gov.in/Schemes/pradhan-mantri-kisan-sampada-yojana",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "NMEO_OP",
+      "url": "https://nmeo.dac.gov.in/",
+      "checked_at": "2026-10-26T06:07:23.722010+00:00",
+      "fetch_status": "OK",
+      "http_status": 200,
+      "final_url": "https://nmeo.dac.gov.in/",
+      "subpages": [
+        {
+          "url": "https://nmeo.dac.gov.in/NMEOUploadDocuments/Circulars_02052022_637871111808016791__NMEO-OPGUIEDELINES.pdf",
+          "status": "TOO_LARGE"
+        },
+        {
+          "url": "https://nmeo.dac.gov.in/aboutus.aspx",
+          "status": "OK"
+        }
+      ],
+      "pages_used": [
+        "https://nmeo.dac.gov.in/"
+      ],
+      "fields_found": [],
+      "quality": "EMPTY",
+      "page_title": "Home | National Mission on Edible Oils (NMEO)",
+      "result": "NOT_ADDED",
+      "detail": "page doesn't state a description plus eligibility or benefits"
+    },
+    {
+      "scheme_id": "PDMC",
+      "url": "https://pdmc.da.gov.in/",
+      "checked_at": "2026-10-26T06:07:27.568929+00:00",
+      "fetch_status": "OK",
+      "http_status": 200,
+      "final_url": "https://pdmc.da.gov.in/",
+      "subpages": [
+        {
+          "url": "https://pdmc.da.gov.in/files/General-Information/Circular/1-1740477551.pdf",
+          "status": "OK"
+        },
+        {
+          "url": "https://pdmc.da.gov.in/files/General-Information/Circular/1-1740477524.pdf",
+          "status": "EMPTY"
+        },
+        {
+          "url": "https://pdmc.da.gov.in/files/General-Information/Circular/1-1731471265.pdf",
+          "status": "TOO_LARGE"
+        },
+        {
+          "url": "https://pdmc.da.gov.in/files/General-Information/Circular/1-1726681266.pdf",
+          "status": "OK"
+        }
+      ],
+      "pages_used": [
+        "https://pdmc.da.gov.in/",
+        "https://pdmc.da.gov.in/files/General-Information/Circular/1-1740477551.pdf"
+      ],
+      "fields_found": [
+        "benefit_amounts",
+        "benefits",
+        "description",
+        "income_requirement",
+        "land_requirement",
+        "ministry",
+        "name"
+      ],
+      "quality": "PARTIAL",
+      "page_title": "PDMC - Micro Irrigation PDMC - Micro Irrigation",
+      "result": "DUPLICATE_SKIPPED",
+      "detail": "names 'per drop more crop', already in the corpus as PMKSY (same scheme or its component)"
+    },
+    {
+      "scheme_id": "FIDF",
+      "url": "https://dof.gov.in/fidf",
+      "checked_at": "2026-10-26T06:07:34.066030+00:00",
+      "fetch_status": "ACCESS_DENIED",
+      "http_status": 403,
+      "final_url": "https://www.dof.gov.in/fidf",
+      "result": "NOT_ADDED",
+      "detail": "The site refused automated access (HTTP 401/403/429)."
+    },
+    {
+      "scheme_id": "MISS_KISAN_RIN",
+      "url": "https://fasalrin.gov.in/",
+      "checked_at": "2026-10-26T06:07:34.592315+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://fasalrin.gov.in/",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "RWBCIS",
+      "url": "https://pmfby.gov.in/rwbcis",
+      "checked_at": "2026-10-26T06:07:34.749547+00:00",
+      "fetch_status": "JS_REQUIRED",
+      "http_status": 200,
+      "final_url": "https://pmfby.gov.in/rwbcis",
+      "result": "NOT_ADDED",
+      "detail": "The page builds its content with JavaScript, so its text isn't in the page we can read."
+    },
+    {
+      "scheme_id": "STATE_OD_KALIA",
+      "url": "https://kalia.odisha.gov.in/",
+      "checked_at": "2026-10-26T06:07:34.903538+00:00",
+      "fetch_status": "NETWORK_ERROR",
+      "http_status": null,
+      "final_url": null,
+      "result": "NOT_ADDED",
+      "detail": "The site couldn't be reached."
+    },
+    {
+      "scheme_id": "STATE_JH_MMKAY",
+      "url": "https://mmkay.jharkhand.gov.in/",
+      "checked_at": "2026-10-26T06:07:35.030931+00:00",
+      "fetch_status": "NETWORK_ERROR",
+      "http_status": null,
+      "final_url": null,
+      "result": "NOT_ADDED",
+      "detail": "The site couldn't be reached."
+    },
+    {
+      "scheme_id": "STATE_CG_RGKNY",
+      "url": "https://rgkny.cg.nic.in/",
+      "checked_at": "2026-10-26T06:07:35.174948+00:00",
+      "fetch_status": "TIMEOUT",
+      "http_status": null,
+      "final_url": null,
+      "result": "NOT_ADDED",
+      "detail": "The site didn't answer in time."
+    },
+    {
+      "scheme_id": "STATE_HR_MFMB",
+      "url": "https://fasal.haryana.gov.in/",
+      "checked_at": "2026-10-26T06:07:47.203957+00:00",
+      "fetch_status": "OK",
+      "http_status": 200,
+      "final_url": "https://fasal.haryana.gov.in/",
+      "pages_used": [
+        "https://fasal.haryana.gov.in/"
+      ],
+      "fields_found": [
+        "important_dates",
+        "name"
+      ],
+      "quality": "EMPTY",
+      "page_title": "मेरी फसल, मेरा ब्योरा मेरी फसल, मेरा ब्योरा",
+      "result": "NOT_ADDED",
+      "detail": "page doesn't state a description plus eligibility or benefits"
+    },
+    {
+      "scheme_id": "STATE_TS_RYTHU_BIMA",
+      "url": "https://rythubima.telangana.gov.in/",
+      "checked_at": "2026-10-26T06:07:47.574086+00:00",
+      "fetch_status": "NETWORK_ERROR",
+      "http_status": null,
+      "final_url": null,
+      "result": "NOT_ADDED",
+      "detail": "The site couldn't be reached."
+    }
+  ]
+}

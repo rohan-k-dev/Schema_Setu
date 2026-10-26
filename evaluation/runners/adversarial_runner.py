@@ -225,7 +225,8 @@ def run(corpus_db) -> Dict[str, Any]:
             elif kind == "review_auth":
                 headers = {"X-Review-Key": case["header"]} if case["header"] else {}
                 r = client.get("/review-cases", headers=headers)
-                ok, details = r.status_code == 403, {"http": r.status_code}
+                # refused: 401 without credentials (RBAC, docs/RBAC.md), 403 with a wrong key
+                ok, details = r.status_code in (401, 403), {"http": r.status_code}
 
             elif kind == "review_unauthorized_resolve":
                 from app.services import review_service as rs

@@ -2,10 +2,13 @@
 Tests for Farmer Accounts, Authentication, Saved Profiles, and Personalized Dashboard.
 
 Covers:
-  1. Security: bcrypt hashing, password verification, JWT tokens, expiry, reset tokens.
+  1. Security: Argon2id hashing, password verification, opaque token generation.
   2. Profile Service: completeness scoring, missing field identification, profile updates.
-  3. Auth API: registration, login, token refresh, logout, password recovery.
+  3. Auth API: request validation (the full account flows are in test_auth_security.py).
   4. Farmers API: profile CRUD, consent enforcement, saved schemes CRUD, search history, dashboard.
+
+Updated for server-managed cookie sessions: protected routes are exercised with a
+dependency override of get_current_principal (a FARMER) instead of a bearer JWT.
 """
 
 from __future__ import annotations
@@ -16,13 +19,12 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api.deps import get_current_principal
+from app.core.permissions import Principal, Role, permissions_for
 from app.core.security import (
-    create_access_token,
-    decode_access_token,
-    generate_refresh_token,
-    generate_reset_token,
+    generate_token,
     hash_password,
-    hash_refresh_token,
+    hash_token,
     verify_password,
 )
 from app.main import app
@@ -40,6 +42,20 @@ from app.services.profile_service import (
 client = TestClient(app)
 
 
+def _signed_in_as(farmer_id: str):
+    """Authenticate requests as FARMER *farmer_id* (replaces the former bearer-JWT helper).
+    Routes check permissions on the principal (docs/RBAC.md), so that is what is overridden."""
+    app.dependency_overrides[get_current_principal] = lambda: Principal(
+        role=Role.FARMER, label="test@example.com", account_pk=1, farmer_id=farmer_id,
+        permissions=permissions_for(Role.FARMER))
+
+
+@pytest.fixture(autouse=True)
+def _clear_overrides():
+    yield
+    app.dependency_overrides.pop(get_current_principal, None)
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # 1. SECURITY & TOKEN TESTS
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -49,7 +65,7 @@ class TestSecurityUtils:
         raw = "Kisan@Secure123"
         hashed = hash_password(raw)
         assert hashed != raw
-        assert hashed.startswith("$2b$") or hashed.startswith("$2a$")
+        assert hashed.startswith("$argon2id$")
         assert verify_password(raw, hashed) is True
         assert verify_password("WrongPassword999", hashed) is False
 
@@ -61,35 +77,14 @@ class TestSecurityUtils:
         assert verify_password(raw, hash1) is True
         assert verify_password(raw, hash2) is True
 
-    def test_access_token_creation_and_decoding(self):
-        farmer_id = "test-uuid-123"
-        token = create_access_token(farmer_id=farmer_id)
-        sub = decode_access_token(token)
-        assert sub == farmer_id
-
-    def test_expired_access_token(self):
-        farmer_id = "test-uuid-123"
-        token = create_access_token(
-            farmer_id=farmer_id,
-            expires_delta=datetime.timedelta(seconds=-10),
-        )
-        assert decode_access_token(token) is None
-
-    def test_tampered_access_token(self):
-        token = create_access_token(farmer_id="abc")
-        tampered = token[:-4] + "abcd"
-        assert decode_access_token(tampered) is None
-
-    def test_refresh_token_generation_and_hashing(self):
-        raw, hashed = generate_refresh_token()
+    def test_opaque_token_generation_and_hashing(self):
+        raw, hashed = generate_token()
         assert len(raw) > 30
         assert len(hashed) == 64  # SHA-256 hex
-        assert hash_refresh_token(raw) == hashed
+        assert hash_token(raw) == hashed
 
-    def test_reset_token_generation(self):
-        raw, hashed = generate_reset_token()
-        assert len(raw) > 20
-        assert len(hashed) == 64
+    def test_tokens_are_unique(self):
+        assert len({generate_token()[0] for _ in range(50)}) == 50
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -133,8 +128,8 @@ class TestProfileService:
             age=42,
             gender="male",
             category="small_farmer",
-            annual_income=120000.0,
-            has_aadhaar=True,
+            income_range="1_to_2.5_lakh",
+            residence="rural",
             occupation="cultivator",
         )
         score = compute_completeness(row)
@@ -147,6 +142,14 @@ class TestProfileService:
 # 3. AUTH API ENDPOINTS
 # ═══════════════════════════════════════════════════════════════════════════════
 
+@pytest.fixture
+def _db_up(monkeypatch):
+    """The auth endpoints answer 503 without a database; pretend one is configured."""
+    monkeypatch.setattr("app.api.auth.is_db_available", lambda: True)
+    monkeypatch.setattr("app.api.deps.is_db_available", lambda: True)
+
+
+@pytest.mark.usefixtures("_db_up")
 class TestAuthAPI:
     def test_register_weak_password_fails(self):
         res = client.post(
@@ -162,95 +165,15 @@ class TestAuthAPI:
         )
         assert res.status_code == 422
 
-    @patch("app.services.auth_service.get_farmer_by_email", new_callable=AsyncMock)
-    def test_register_conflict_on_existing_email(self, mock_get_email):
-        mock_get_email.return_value = FarmerRow(
-            id=1,
-            farmer_id="uuid-1",
-            email="existing@example.com",
-            password_hash="dummy",
-        )
-        res = client.post(
-            "/auth/register",
-            json={"email": "existing@example.com", "password": "SecurePassword123!"},
-        )
-        assert res.status_code == 409
-        assert "already exists" in res.json()["detail"]["message"]
-
-    @patch("app.services.auth_service.create_farmer", new_callable=AsyncMock)
-    @patch("app.services.auth_service.get_farmer_by_email", new_callable=AsyncMock)
-    @patch("app.services.auth_service.create_refresh_token", new_callable=AsyncMock)
-    @patch("app.services.auth_service.get_farmer_pk", new_callable=AsyncMock)
-    def test_register_success(self, mock_get_pk, mock_create_rt, mock_get_email, mock_create):
+    @patch("app.services.auth_service.repo.get_farmer_by_email", new_callable=AsyncMock)
+    def test_forgot_password_generic_message(self, mock_get_email):
         mock_get_email.return_value = None
-        mock_get_pk.return_value = 10
-        mock_create.return_value = FarmerRow(
-            id=10,
-            farmer_id="new-farmer-uuid",
-            email="newfarmer@example.com",
-            password_hash="dummyhash",
-            full_name="Rajesh Kumar",
-        )
-        res = client.post(
-            "/auth/register",
-            json={
-                "email": "newfarmer@example.com",
-                "password": "StrongPassword123!",
-                "full_name": "Rajesh Kumar",
-            },
-        )
-        assert res.status_code == 201
-        data = res.json()
-        assert "access_token" in data
-        assert "refresh_token" in data
-        assert data["farmer_id"] == "new-farmer-uuid"
-
-    @patch("app.services.auth_service.get_farmer_by_email", new_callable=AsyncMock)
-    def test_login_invalid_password(self, mock_get_email):
-        mock_get_email.return_value = FarmerRow(
-            id=1,
-            farmer_id="uuid-1",
-            email="farmer@example.com",
-            password_hash=hash_password("CorrectPass123!"),
-        )
-        res = client.post(
-            "/auth/login",
-            json={"email": "farmer@example.com", "password": "WrongPassword999"},
-        )
-        assert res.status_code == 401
-        data = res.json()
-        assert "Invalid" in (data.get("error", {}).get("message") or data.get("detail", {}).get("message", ""))
-
-    @patch("app.services.auth_service.update_farmer_last_login", new_callable=AsyncMock)
-    @patch("app.services.auth_service.create_refresh_token", new_callable=AsyncMock)
-    @patch("app.services.auth_service.get_farmer_pk", new_callable=AsyncMock)
-    @patch("app.services.auth_service.get_farmer_by_email", new_callable=AsyncMock)
-    def test_login_success(self, mock_get_email, mock_get_pk, mock_create_rt, mock_last_login):
-        mock_get_pk.return_value = 1
-        mock_get_email.return_value = FarmerRow(
-            id=1,
-            farmer_id="uuid-1",
-            email="farmer@example.com",
-            password_hash=hash_password("CorrectPass123!"),
-            full_name="Ramesh Patil",
-        )
-        res = client.post(
-            "/auth/login",
-            json={"email": "farmer@example.com", "password": "CorrectPass123!"},
-        )
-        assert res.status_code == 200
-        data = res.json()
-        assert "access_token" in data
-        assert "refresh_token" in data
-        assert data["farmer_id"] == "uuid-1"
-
-    def test_forgot_password_generic_message(self):
         res = client.post(
             "/auth/forgot-password",
             json={"email": "nonexistent@example.com"},
         )
         assert res.status_code == 202
-        assert "reset link" in res.json()["message"]
+        assert "If an account exists" in res.json()["message"]
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -258,21 +181,21 @@ class TestAuthAPI:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class TestFarmersAPI:
-    def test_protected_routes_require_bearer_token(self):
+    def test_protected_routes_require_a_session(self, monkeypatch):
+        monkeypatch.setattr("app.api.deps.is_db_available", lambda: True)
         res = client.get("/farmers/me/dashboard")
-        # FastAPI HTTPBearer returns 403 when Authorization header is absent
-        assert res.status_code in (401, 403)
+        assert res.status_code == 401
 
-    @patch("app.services.profile_service.get_farmer_pk", new_callable=AsyncMock)
-    @patch("app.services.profile_service.upsert_farmer_profile", new_callable=AsyncMock)
-    @patch("app.services.profile_service.get_farmer_profile", new_callable=AsyncMock)
-    def test_profile_update_without_consent_fails(self, mock_get_profile, mock_upsert, mock_get_pk):
-        mock_get_pk.return_value = 1
+    @patch("app.services.profile_service.profile_repo.get_farmer_by_farmer_id", new_callable=AsyncMock)
+    @patch("app.services.profile_service.profile_repo.save_profile", new_callable=AsyncMock)
+    @patch("app.services.profile_service.profile_repo.get_profile", new_callable=AsyncMock)
+    def test_profile_update_without_consent_fails(self, mock_get_profile, mock_save, mock_get_farmer):
+        mock_get_farmer.return_value = FarmerRow(
+            id=1, farmer_id="test-farmer-id", email="f@example.com", password_hash="h")
         mock_get_profile.return_value = None
-        token = create_access_token(farmer_id="test-farmer-id")
+        _signed_in_as("test-farmer-id")
         res = client.put(
             "/farmers/me/profile",
-            headers={"Authorization": f"Bearer {token}"},
             json={
                 "state": "Maharashtra",
                 "consent_given": False,
@@ -281,13 +204,12 @@ class TestFarmersAPI:
         # CONSENT_REQUIRED maps to 403 Forbidden
         assert res.status_code == 403
         assert "Consent" in res.json()["detail"]["message"]
+        mock_save.assert_not_called()
 
-    @patch("app.services.profile_service.get_farmer_by_id", new_callable=AsyncMock)
-    @patch("app.services.profile_service.get_farmer_profile", new_callable=AsyncMock)
-    @patch("app.services.profile_service.get_farmer_pk", new_callable=AsyncMock)
-    @patch("app.services.profile_service.upsert_farmer_profile", new_callable=AsyncMock)
-    def test_profile_update_with_consent_succeeds(self, mock_upsert, mock_get_pk, mock_get_profile, mock_get_farmer):
-        mock_get_pk.return_value = 1
+    @patch("app.services.profile_service.profile_repo.get_farmer_by_farmer_id", new_callable=AsyncMock)
+    @patch("app.services.profile_service.profile_repo.get_profile", new_callable=AsyncMock)
+    @patch("app.services.profile_service.profile_repo.save_profile", new_callable=AsyncMock)
+    def test_profile_update_with_consent_succeeds(self, mock_upsert, mock_get_profile, mock_get_farmer):
         mock_get_profile.return_value = None
         mock_get_farmer.return_value = FarmerRow(
             id=1,
@@ -302,17 +224,19 @@ class TestFarmersAPI:
             state="Punjab",
             district="Ludhiana",
             land_size_acres=5.0,
+            land_size_value=5.0,
+            land_unit="acre",
             primary_crop="Wheat",
             consent_given=True,
         )
-        token = create_access_token(farmer_id="test-farmer-id")
+        _signed_in_as("test-farmer-id")
         res = client.put(
             "/farmers/me/profile",
-            headers={"Authorization": f"Bearer {token}"},
             json={
                 "state": "Punjab",
                 "district": "Ludhiana",
-                "land_size_acres": 5.0,
+                "land_size": 5.0,
+                "land_unit": "acre",
                 "primary_crop": "Wheat",
                 "consent_given": True,
             },
@@ -323,7 +247,7 @@ class TestFarmersAPI:
         assert data["district"] == "Ludhiana"
         assert data["profile_completeness"] > 0
 
-    @patch("app.services.profile_service.get_search_history", new_callable=AsyncMock)
+    @patch("app.services.profile_service.history_repo.list_page", new_callable=AsyncMock)
     @patch("app.services.profile_service.get_saved_schemes", new_callable=AsyncMock)
     @patch("app.services.profile_service.get_farmer_profile", new_callable=AsyncMock)
     @patch("app.services.profile_service.get_farmer_by_id", new_callable=AsyncMock)
@@ -361,19 +285,16 @@ class TestFarmersAPI:
                 scheme_name="PM-KISAN",
             )
         ]
-        mock_history.return_value = [
+        mock_history.return_value = ([
             SearchHistoryRow(
                 id=1,
                 farmer_id=1,
                 query="Drip irrigation subsidies",
             )
-        ]
+        ], 1)
 
-        token = create_access_token(farmer_id="fid-123")
-        res = client.get(
-            "/farmers/me/dashboard",
-            headers={"Authorization": f"Bearer {token}"},
-        )
+        _signed_in_as("fid-123")
+        res = client.get("/farmers/me/dashboard")
         assert res.status_code == 200
         dashboard = res.json()
         assert dashboard["account"]["email"] == "ramesh@example.com"

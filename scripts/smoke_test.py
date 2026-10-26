@@ -127,7 +127,8 @@ def run_checks(client, offline: bool, review_key: str = None):
     else:
         record("review API", False, "no --review-key given", skipped=True)
     r = client.get("/review-cases")
-    record("review API rejects missing key", r.status_code == 403)
+    # no credentials at all: 401 since role-based access control (docs/RBAC.md); 403 before
+    record("review API rejects missing key", r.status_code in (401, 403), f"status={r.status_code}")
 
 
 def main():

@@ -7,9 +7,9 @@ their required config at usage time and return meaningful errors.
 """
 
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Literal, Optional
 from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import Field, field_validator
 
 # Single source of truth for the application version (Phase 7 release candidate)
 APP_VERSION = "1.0.0"
@@ -88,15 +88,16 @@ class Settings(BaseSettings):
     # --- Phase 4: Candidate limits (§106, §107, §195) ---
     # Candidates are evaluated (cheap, deterministic) BEFORE truncation for display,
     # so relevant schemes are never cut off alphabetically (Phase 7 BUG-006).
-    MAX_DB_RESULTS: int = Field(default=25, description="Max DB results per search")
+    MAX_DB_RESULTS: int = Field(default=60, description="Max DB results per search (all schemes applicable to a "
+                                "state are evaluated; the UI pages the alternatives)")
     MAX_GRAPH_RESULTS: int = Field(default=25, description="Max graph candidates")
     MAX_WEB_RESULTS: int = Field(default=5, description="Max Tavily web results")
     MAX_CANDIDATES: int = Field(
-        default=25,
+        default=60,
         description="Max merged candidates evaluated for eligibility"
     )
     MAX_RESPONSE_SCHEMES: int = Field(
-        default=25,
+        default=60,
         description="Max ranked schemes returned to the user (NOT_ELIGIBLE / UNVERIFIABLE "
                     "results are kept so the user can see why a scheme does not apply)"
     )
@@ -140,24 +141,100 @@ class Settings(BaseSettings):
         description="Allowed CORS origins"
     )
 
-    # --- Auth / JWT ---
-    JWT_SECRET_KEY: str = Field(
-        default="change-me-in-production-use-a-long-random-secret",
-        description="HMAC secret for signing JWTs. MUST be set in production."
-    )
-    JWT_ALGORITHM: str = Field(default="HS256")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(
-        default=60,
-        description="Short-lived access token lifetime in minutes"
-    )
-    REFRESH_TOKEN_EXPIRE_DAYS: int = Field(
-        default=30,
-        description="Long-lived refresh token lifetime in days"
-    )
-    PASSWORD_RESET_EXPIRE_HOURS: int = Field(
-        default=24,
-        description="Password reset token lifetime in hours"
-    )
+    # --- Accounts: server-managed sessions (HttpOnly cookie) ---
+    SESSION_COOKIE_NAME: str = Field(default="ss_session")
+    SESSION_IDLE_MINUTES: int = Field(
+        default=720, description="Session ends after this much inactivity (12 h)")
+    SESSION_ABSOLUTE_HOURS: int = Field(
+        default=168, description="Session ends this long after login regardless of activity (7 days)")
+    COOKIE_SECURE: Optional[bool] = Field(
+        default=None,
+        description="Secure cookie flag. Default: on when ENVIRONMENT=production (HTTPS required)")
+    SESSION_SECRET: Optional[str] = Field(
+        default=None,
+        description="Key for deriving CSRF tokens. Unset = random per process (tokens refresh on restart)")
+
+    # --- Accounts: e-mail verification and password reset ---
+    REQUIRE_EMAIL_VERIFICATION: bool = Field(
+        default=True, description="Users must verify their e-mail before they can log in")
+    EMAIL_VERIFY_EXPIRE_HOURS: int = Field(default=24)
+    PASSWORD_RESET_EXPIRE_MINUTES: int = Field(default=30)
+    FRONTEND_BASE_URL: str = Field(
+        default="http://localhost:3000", description="Used to build links in e-mails")
+
+    # --- Accounts: brute-force protection ---
+    LOGIN_MAX_FAILURES: int = Field(default=5, description="Failed logins before a temporary lock")
+    LOGIN_LOCK_MINUTES: int = Field(default=15)
+    RATE_LIMIT_ENABLED: bool = Field(default=True)
+
+    # --- Outgoing e-mail (SMTP). Unset in development: e-mails are written to the log ---
+    SMTP_HOST: Optional[str] = None
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: Optional[str] = None
+    SMTP_PASSWORD: Optional[str] = None
+    SMTP_FROM: str = "SchemeSetu <no-reply@schemesetu.local>"
+    SMTP_STARTTLS: bool = True
+
+    # --- Staff sessions and the reviewer access policy (docs/HUMAN_REVIEW.md) ---
+    STAFF_SESSION_IDLE_MINUTES: int = Field(default=30, ge=5, le=720,
+                                            description="Idle timeout for REVIEWER / ADMIN sessions")
+    STAFF_SESSION_ABSOLUTE_HOURS: int = Field(default=12, ge=1, le=168,
+                                              description="Absolute lifetime of REVIEWER / ADMIN sessions")
+    REAUTH_WINDOW_MINUTES: int = Field(default=10, ge=1, le=120,
+                                       description="Sensitive actions need a sign-in or password re-entry this recent")
+    REVIEW_SELF_ASSIGN: bool = Field(default=True, description="Approved reviewers may take unassigned pending "
+                                     "cases; False = only administrators assign")
+    REVIEW_GRANT_MAX_HOURS: int = Field(default=168, ge=1, le=720)
+    REVIEW_VIEWS_PER_10_MIN: int = Field(default=120, ge=10, le=2000,
+                                         description="Case-detail views per reviewer per 10 minutes (anti-scraping)")
+
+    # --- Query-time discovery and verification (docs/LIVE_VERIFICATION.md) ---
+    LIVE_VERIFICATION_ENABLED: bool = Field(default=True, description="Search and verify official sources per question")
+    LIVE_BUDGET_SECONDS: float = Field(default=9.0, ge=1, le=60, description="Time budget for the live check of one question")
+    LIVE_MAX_SOURCES: int = Field(default=8, ge=1, le=30, description="Official pages fetched per question at most")
+    LIVE_DIRECT_FETCH_SCHEMES: int = Field(default=4, ge=0, le=20,
+                                           description="Top stored schemes whose official pages are re-checked per question")
+    LIVE_TAVILY_RESULTS: int = Field(default=5, ge=1, le=20, description="Results per scoped Tavily search")
+    LIVE_FETCH_TIMEOUT: float = Field(default=6.0, ge=1, le=30)
+    LIVE_MAX_BYTES: int = Field(default=3_000_000, ge=10_000)
+    LIVE_HOST_MIN_INTERVAL: float = Field(default=1.0, ge=0, le=30, description="Seconds between requests to one host")
+    LIVE_USER_AGENT: str = Field(default="SchemeSetuBot/1.0 (scheme verification for Indian farmers; "
+                                         "respects robots.txt)")
+
+    # --- Data retention (docs/PRIVACY.md) ---
+    RETENTION_SESSION_DAYS: int = Field(default=30, ge=1, description="Delete sessions this long after they ended")
+    RETENTION_TOKEN_DAYS: int = Field(default=7, ge=1, description="Delete used / expired one-time tokens after this")
+    RETENTION_NOTIFICATION_DAYS: int = Field(default=365, ge=30, description="Delete in-app notifications after this")
+    RETENTION_REVIEW_CASE_DAYS: int = Field(default=365, ge=30,
+                                            description="Anonymise closed review cases after this")
+    RETENTION_PURGE_INTERVAL_HOURS: int = Field(default=24, ge=0, description="Background purge interval; 0 = off")
+
+    # --- Scheme-update notifications (docs/SCHEME_UPDATES.md) ---
+    NOTIFY_MAX_ATTEMPTS: int = Field(default=5, ge=1, le=10, description="Delivery attempts before giving up")
+    NOTIFY_DISPATCH_INTERVAL_SECONDS: int = Field(
+        default=60, ge=0, description="Background retry of due deliveries; 0 = off (dispatch only on publish / admin)")
+    # SMS / phone: off unless a provider is configured. "http" = a provider API reached with
+    # SMS_HTTP_URL + SMS_HTTP_TOKEN; "log" = development only (refused in production).
+    SMS_PROVIDER: Optional[Literal["http", "log"]] = None
+    SMS_HTTP_URL: Optional[str] = None
+    SMS_HTTP_TOKEN: Optional[str] = None
+    SMS_STATUS_SECRET: Optional[str] = Field(
+        default=None, description="HMAC key the provider signs delivery-status callbacks with")
+    API_BASE_URL: str = Field(default="http://localhost:8000",
+                              description="Public backend URL (SMS delivery-status callbacks)")
+    SMS_SENDER_ID: str = "SCHSTU"
+    SMS_CONSENT_VERSION: str = "1"
+
+    @field_validator("SMS_PROVIDER", mode="before")
+    @classmethod
+    def _sms_provider_blank_is_none(cls, v):
+        return v or None                 # "SMS_PROVIDER=" in .env means "not configured"
+
+    @property
+    def cookie_secure(self) -> bool:
+        if self.COOKIE_SECURE is not None:
+            return self.COOKIE_SECURE
+        return self.ENVIRONMENT == "production"
 
     model_config = {
         "env_file": (

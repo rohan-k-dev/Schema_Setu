@@ -146,6 +146,7 @@ class MergedCandidate(BaseModel):
     graph_evidence: Optional[List[str]] = None
     source_records: List[SourceRecord] = Field(default_factory=list)
     source_conflicts: List[SourceConflict] = Field(default_factory=list)
+    scheme_meta: Optional[Dict[str, Any]] = None      # stored attributes (DB): level, states, crops, dates…
 
     def to_response_dict(self) -> Dict[str, Any]:
         """Convert to API-safe dictionary for response formatting."""
@@ -165,6 +166,7 @@ class MergedCandidate(BaseModel):
             "retrieval_sources": [s.value for s in self.retrieval_sources],
             "matched_fields": self.matched_fields,
             "graph_evidence": self.graph_evidence or [],
+            "scheme_meta": self.scheme_meta or {},
         }
 
 

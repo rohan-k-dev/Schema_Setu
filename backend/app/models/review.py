@@ -41,6 +41,11 @@ class ReviewAction(str, Enum):
     REJECT = "REJECT"
     REQUEST_INFORMATION = "REQUEST_INFORMATION"
     MARK_UNVERIFIABLE = "MARK_UNVERIFIABLE"
+    RESOLVE = "RESOLVE"        # handled, no verdict on the result (e.g. a transient retrieval failure)
+
+
+# Final decisions (IN_REVIEW → RESOLVED); REQUEST_INFORMATION keeps the case open.
+DECISIONS = (ReviewAction.APPROVE, ReviewAction.REJECT, ReviewAction.MARK_UNVERIFIABLE, ReviewAction.RESOLVE)
 
 
 # Valid status transitions (§125)
@@ -80,6 +85,19 @@ class ReviewCase:
     reviewer_note: Optional[str] = None
     reviewer_action: Optional[str] = None
     reviewed_at: Optional[str] = None
+    # Reviewer dashboard (docs/HUMAN_REVIEW.md) — defaults keep older callers working
+    schemes: List[Dict[str, Any]] = field(default_factory=list)          # scheme_id, name, official_url
+    evidence: List[Dict[str, Any]] = field(default_factory=list)         # source text + URL per rule
+    rule_conflicts: List[Dict[str, Any]] = field(default_factory=list)
+    failed_channels: List[str] = field(default_factory=list)
+    farmer_pk: Optional[int] = None          # who triggered it (never shown to reviewers)
+    assignee: Optional[str] = None
+    assigned_at: Optional[str] = None
+    awaiting_verification: bool = False
+    decision: Optional[str] = None
+    data_correction_needed: bool = False
+    version: int = 1
+    updated_at: Optional[str] = None
 
     def sanitize_profile(self) -> None:
         """Strip sensitive fields from profile snapshot (§61)."""
@@ -95,6 +113,8 @@ class ReviewAuditEntry:
     reviewer: str = "system"
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     note: str = ""
+    from_status: Optional[str] = None
+    to_status: Optional[str] = None
 
 
 def is_valid_transition(current: ReviewStatus, target: ReviewStatus) -> bool:

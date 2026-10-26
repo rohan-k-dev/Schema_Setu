@@ -75,10 +75,12 @@ class SchemeSetuState(TypedDict):
     source_conflicts: List[Dict[str, Any]]
     graph_evidence: List[Dict[str, Any]]
     retrieval_metadata: Optional[Dict[str, Any]]
+    live_check: Optional[Dict[str, Any]]        # query-time official-source check (docs/LIVE_VERIFICATION.md)
 
     # ─── Eligibility (Phase 5) ───────────────────────────────
     eligibility_results: List[Any]
     recommendation_results: List[Any]
+    recommendation_sections: Optional[Dict[str, Any]]   # eligible / alternatives (docs/RECOMMENDATIONS.md)
     missing_eligibility_fields: List[str]
     eligibility_errors: List[str]
 

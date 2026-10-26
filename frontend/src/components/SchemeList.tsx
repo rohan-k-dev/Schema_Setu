@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import type { Scheme, EligibilityStatus } from "@/lib/types";
+import Link from "next/link";
+import type { Scheme, EligibilityStatus, LiveCheckReport } from "@/lib/types";
+import { FreshnessPanel, LiveCheckSummary } from "@/components/LiveCheck";
+import AlternativesSection from "@/components/AlternativesSection";
 import {
   CheckCircle2, AlertCircle, Sparkles, XCircle, HelpCircle, Info,
   ChevronDown, ChevronUp, FileText, ExternalLink, ListChecks, AlertTriangle,
@@ -9,7 +12,18 @@ import {
 
 interface SchemeListProps {
   schemes: Scheme[];
+  /** Signed in: show Save on schemes from SchemeSetu's database (they have a scheme_id). */
+  save?: {
+    savedIds: Set<string>;
+    savingId: string | null;
+    error: { schemeId: string; message: string } | null;
+    onSave: (scheme: Scheme) => void;
+  };
+  /** What the query-time check of official websites did for the latest question. */
+  liveCheck?: LiveCheckReport | null;
 }
+
+type SaveProps = SchemeListProps["save"];
 
 /**
  * Status badge configuration — text + icon, never color-only (§249, §50).
@@ -216,7 +230,30 @@ function SchemeDetails({ scheme }: { scheme: Scheme }) {
 /**
  * Single expandable scheme card.
  */
-function SchemeCard({ scheme, idx }: { scheme: Scheme; idx: number }) {
+function SaveButton({ scheme, save }: { scheme: Scheme; save: NonNullable<SaveProps> }) {
+  const id = scheme.scheme_id;
+  if (!id) return null;
+  const name = scheme.scheme_name || scheme.name;
+  if (save.savedIds.has(id)) {
+    return (
+      <Link href="/dashboard#saved-schemes"
+            className="inline-flex items-center min-h-[44px] text-xs font-semibold text-emerald-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded">
+        ★ Saved — checklist on your dashboard<span className="sr-only"> for {name}</span>
+      </Link>
+    );
+  }
+  return (
+    <button
+      onClick={() => save.onSave(scheme)}
+      disabled={save.savingId === id}
+      className="inline-flex items-center min-h-[44px] px-3 rounded-lg border border-emerald-200 bg-white text-xs font-semibold text-emerald-800 hover:bg-emerald-50 disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+    >
+      {save.savingId === id ? "Saving…" : "☆ Save scheme"}<span className="sr-only"> {name}</span>
+    </button>
+  );
+}
+
+function SchemeCard({ scheme, idx, save }: { scheme: Scheme; idx: number; save?: SaveProps }) {
   const [expanded, setExpanded] = useState(false);
   const status = scheme.eligibility_status;
   const cardBorder = status === "ELIGIBLE" ? "border-emerald-100 bg-emerald-50/30"
@@ -261,6 +298,16 @@ function SchemeCard({ scheme, idx }: { scheme: Scheme; idx: number }) {
 
       {/* Eligibility status badge — text + icon, not color-only (§249, §50) */}
       {status && <EligibilityBadge status={status} />}
+
+      {/* Freshness: verified live / re-used / stored, with sources and timestamps */}
+      <FreshnessPanel freshness={scheme.freshness} />
+
+      {/* Conditions that still need official verification (docs/RECOMMENDATIONS.md) */}
+      {status === "ELIGIBLE" && (scheme.conditions_to_verify?.length ?? 0) > 0 && (
+        <p className="text-[11px] text-slate-600" data-testid="conditions-to-verify">
+          <span className="font-semibold">Still confirm with the department: </span>{scheme.conditions_to_verify!.join(" · ")}
+        </p>
+      )}
 
       {/* Benefit */}
       {scheme.benefit && (
@@ -317,11 +364,25 @@ function SchemeCard({ scheme, idx }: { scheme: Scheme; idx: number }) {
 
       {/* Expandable details — documents, steps, source (§51–§55) */}
       {expanded && <SchemeDetails scheme={scheme} />}
+
+      {save && scheme.scheme_id && (
+        <div>
+          <SaveButton scheme={scheme} save={save} />
+          {save.error?.schemeId === scheme.scheme_id && (
+            <p className="text-xs text-red-700 mt-1" role="alert">{save.error.message}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
-export default function SchemeList({ schemes }: SchemeListProps) {
+export default function SchemeList({ schemes, save, liveCheck }: SchemeListProps) {
+  // Sectioned replies: eligible first; related alternatives below (older replies have no sections)
+  const sectioned = schemes.some((s) => s.recommendation_section);
+  const eligible = sectioned ? schemes.filter((s) => s.recommendation_section === "ELIGIBLE") : schemes;
+  const alternatives = schemes.filter((s) => s.recommendation_section === "ALTERNATIVE");
+  const notMatching = schemes.filter((s) => s.recommendation_section === "NOT_MATCHING");
   return (
     <div
       className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-200 flex-1 flex flex-col"
@@ -329,7 +390,8 @@ export default function SchemeList({ schemes }: SchemeListProps) {
       aria-label="Personalized scheme recommendations"
     >
       <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center">
-        <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-600" /> Personalized Schemes ({schemes.length})
+        <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-600" />
+        {sectioned ? <>Eligible Schemes ({eligible.length})</> : <>Personalized Schemes ({schemes.length})</>}
       </h2>
 
       {schemes.length > 0 && (
@@ -339,11 +401,20 @@ export default function SchemeList({ schemes }: SchemeListProps) {
         </p>
       )}
 
+      {schemes.length > 0 && <LiveCheckSummary report={liveCheck} />}
+
       {schemes.length > 0 ? (
         <div className="space-y-4 overflow-y-auto flex-1 pr-1">
-          {schemes.map((scheme, idx) => (
-            <SchemeCard key={idx} scheme={scheme} idx={idx} />
+          {sectioned && eligible.length === 0 && (
+            <p className="text-xs text-slate-600 border border-dashed border-slate-200 rounded-xl p-3" data-testid="eligible-empty">
+              No scheme is confirmed as matching all its published criteria from the details you shared yet.
+              Related schemes are listed below — adding missing details (such as land size or age) may confirm more.
+            </p>
+          )}
+          {eligible.map((scheme, idx) => (
+            <SchemeCard key={scheme.scheme_id ?? idx} scheme={scheme} idx={idx} save={save} />
           ))}
+          {sectioned && <AlternativesSection alternatives={alternatives} notMatching={notMatching} />}
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-slate-200 rounded-xl">

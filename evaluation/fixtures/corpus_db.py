@@ -65,6 +65,9 @@ class CorpusDB:
                 application_mode=s.get("application_mode") or None,
                 aadhaar_requirement=s.get("aadhaar_requirement"),
                 last_verified_at=s.get("last_verified_at"),
+                scheme_type=s.get("scheme_type"),
+                possible_duplicate=bool(s.get("possible_duplicate")),
+                needs_review=bool(s.get("needs_review")),
             )
             rules = []
             for order, r in enumerate(s.get("eligibility_rules", [])):

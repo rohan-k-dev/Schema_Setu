@@ -15,6 +15,8 @@ pytest==8.1.1
 pytest-asyncio==0.23.6
 alembic==1.13.1
 networkx==3.2.1
-passlib[bcrypt]==1.7.4
-python-jose[cryptography]==3.3.0
+bcrypt==5.0.0          # verifies legacy (pre-Argon2) password hashes only
+argon2-cffi==23.1.0
 email-validator==2.1.1
+lxml==5.3.0            # official-page parsing for query-time verification (docs/LIVE_VERIFICATION.md)
+pypdf==5.1.0           # official guideline PDFs

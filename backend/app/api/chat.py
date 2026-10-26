@@ -22,6 +22,8 @@ from app.services.chat_profile_service import (
     merge_chat_profiles,
     save_chat_profile,
 )
+from app.services.profile_service import SEARCH_STATUSES, record_search
+from app.services.review_workflow import link_review_case
 from app.services.language_service import translate_to_internal, translate_from_internal
 from app.localization.languages import resolve_language_code, INTERNAL_LANGUAGE
 from app.utils.serialization import build_chat_response
@@ -68,6 +70,7 @@ async def chat_with_agent(
             "session_id": thread_id,
             # per-turn flags: a previous turn's review notice must not carry over
             "needs_review": False, "review_reason": None, "review_case_id": None,
+            "live_check": None,           # per turn: never show an earlier turn's live check
         }
         config = {"configurable": {"thread_id": thread_id}}
 
@@ -76,7 +79,8 @@ async def chat_with_agent(
         current_profile = checkpoint.values.get("profile")
         if hasattr(current_profile, "model_dump"):
             current_profile = current_profile.model_dump()
-        inputs["profile"] = merge_chat_profiles(current_profile, saved_profile)
+        inputs["profile"] = merge_chat_profiles(
+            current_profile, saved_profile, saved_is_authoritative=profile_consent)
 
         final_state = await kisan_agent.ainvoke(inputs, config=config)
 
@@ -87,6 +91,7 @@ async def chat_with_agent(
                 final_state.get("profile"),
                 consent_to_save=request.consent_to_save_profile,
                 existing_consent=profile_consent,
+                previous=inputs["profile"],
             )
         except Exception as e:
             logger.error(
@@ -97,6 +102,14 @@ async def chat_with_agent(
                 "Your answer was processed, but profile details could not be saved. "
                 "Please try again."
             )
+
+        # Recent searches: kept only per the retention policy (docs/DASHBOARD.md)
+        if response_data.get("status") in SEARCH_STATUSES:
+            await record_search(farmer_id, request.message, len(response_data.get("schemes") or []), lang_code)
+
+        # Let a signed-in farmer follow the review case their search raised (docs/HUMAN_REVIEW.md)
+        if farmer_id and (response_data.get("review") or {}).get("case_id"):
+            await link_review_case(response_data["review"]["case_id"], farmer_id)
 
         # 3. Translate response back to user's language (§31)
         if lang_code != INTERNAL_LANGUAGE and response_data.get("reply"):

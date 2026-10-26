@@ -332,59 +332,6 @@ async def get_farmer_profile(farmer_pk: int) -> Optional[FarmerProfileRow]:
         return None
 
 
-async def upsert_farmer_profile(farmer_pk: int, data: dict) -> Optional[FarmerProfileRow]:
-    """
-    Insert or update the farmer profile.
-
-    *data* is a dict of columns to set (may be partial).
-    Consent must be True in *data* before personal fields are persisted.
-    """
-    if not is_db_available():
-        return None
-    try:
-        async with get_db_connection() as conn:
-            # Check if profile exists
-            existing = await _fetchone(
-                conn,
-                "SELECT id FROM farmer_profiles WHERE farmer_id = %s",
-                (farmer_pk,),
-            )
-            if existing:
-                # Build SET clause dynamically from provided keys
-                allowed = {
-                    "state", "district", "land_size_acres", "primary_crop",
-                    "other_crops", "farming_type", "age", "gender", "category",
-                    "annual_income", "has_aadhaar", "occupation",
-                    "consent_given", "consent_given_at", "consent_version",
-                }
-                updates = {k: v for k, v in data.items() if k in allowed}
-                updates["updated_at"] = _now()
-                set_clause = ", ".join(f"{col} = %s" for col in updates)
-                values = tuple(updates.values()) + (farmer_pk,)
-                query = "UPDATE farmer_profiles SET " + set_clause + " WHERE farmer_id = %s RETURNING *"
-                row = await _execute_returning(
-                    conn,
-                    query,
-                    values,
-                )
-            else:
-                data.setdefault("farmer_id", farmer_pk)
-                cols = list(data.keys())
-                placeholders = ", ".join(["%s"] * len(cols))
-                col_str = ", ".join(cols)
-                query = "INSERT INTO farmer_profiles (" + col_str + ") VALUES (" + placeholders + ") RETURNING *"
-                row = await _execute_returning(
-                    conn,
-                    query,
-                    tuple(data.values()),
-                )
-            await conn.commit()
-            return FarmerProfileRow(**row) if row else None
-    except Exception as exc:
-        logger.error(f"upsert_farmer_profile failed: {exc}")
-        return None
-
-
 # ─── Saved Schemes ────────────────────────────────────────────────────────────
 
 async def get_saved_schemes(farmer_pk: int) -> List[SavedSchemeRow]:
@@ -404,57 +351,7 @@ async def get_saved_schemes(farmer_pk: int) -> List[SavedSchemeRow]:
         return []
 
 
-async def save_scheme(
-    farmer_pk: int,
-    scheme_id: str,
-    scheme_name: str,
-    eligibility_status: Optional[str] = None,
-    notes: Optional[str] = None,
-) -> Optional[SavedSchemeRow]:
-    """Save or update a scheme for the farmer (upsert on farmer_id + scheme_id)."""
-    if not is_db_available():
-        return None
-    try:
-        async with get_db_connection() as conn:
-            row = await _execute_returning(
-                conn,
-                """
-                INSERT INTO saved_schemes (farmer_id, scheme_id, scheme_name, eligibility_status, notes)
-                VALUES (%s, %s, %s, %s, %s)
-                ON CONFLICT (farmer_id, scheme_id)
-                DO UPDATE SET
-                    scheme_name = EXCLUDED.scheme_name,
-                    eligibility_status = EXCLUDED.eligibility_status,
-                    notes = EXCLUDED.notes,
-                    saved_at = NOW()
-                RETURNING *
-                """,
-                (farmer_pk, scheme_id, scheme_name, eligibility_status, notes),
-            )
-            await conn.commit()
-            return SavedSchemeRow(**row) if row else None
-    except Exception as exc:
-        logger.error(f"save_scheme failed: {exc}")
-        return None
-
-
-async def remove_saved_scheme(farmer_pk: int, scheme_id: str) -> bool:
-    """Delete a saved scheme. Returns True if a row was deleted."""
-    if not is_db_available():
-        return False
-    try:
-        async with get_db_connection() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
-                    "DELETE FROM saved_schemes WHERE farmer_id = %s AND scheme_id = %s",
-                    (farmer_pk, scheme_id),
-                )
-                deleted = cur.rowcount
-            await conn.commit()
-            return deleted > 0
-    except Exception as exc:
-        logger.error(f"remove_saved_scheme failed: {exc}")
-        return False
+# Saving / unsaving (with checklists): saved_scheme_repository.py
 
 
 # ─── Search History ───────────────────────────────────────────────────────────

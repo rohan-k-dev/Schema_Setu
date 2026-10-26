@@ -76,6 +76,11 @@ def _find_manifest_path() -> Optional[str]:
     return None
 
 
+def manifest_version(manifest: dict) -> str:
+    """The corpus version from the manifest (key ``corpus_version``; older files used ``version``)."""
+    return manifest.get("corpus_version") or manifest.get("version") or "1.0.0"
+
+
 def load_corpus(corpus_path: Optional[str] = None) -> tuple:
     """Load corpus data and manifest. Returns (schemes_list, manifest_dict)."""
     path = corpus_path or _find_corpus_path()
@@ -109,7 +114,7 @@ async def import_corpus(
     # 1. Load corpus
     schemes, manifest = load_corpus(corpus_path)
     stats.records_read = len(schemes)
-    corpus_version = manifest.get("version", "1.0.0")
+    corpus_version = manifest_version(manifest)   # was manifest.get("version"): the key is corpus_version
     schema_version = manifest.get("schema_version", "1.0.0")
     manifest_hash = manifest.get("content_hash", "")
 

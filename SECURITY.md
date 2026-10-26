@@ -22,7 +22,9 @@ returned by search, and a misbehaving or manipulated LLM.
 | Malicious upload | ≤10 MB, MIME allow-list, magic-byte check, server-generated filename, audio never stored | A24–A26, VF05–VF09 |
 | Oversized / blank input | 2000-character message limit, blank rejected (HTTP 422) | A32, A33 |
 | Session leakage | Per-tab random `thread_id`; per-thread checkpoints; isolation tests | A27, PL22 |
-| Unauthorised review actions | `X-Review-Key` compared in constant time; API disabled if no key | A28–A30, test_bug020 |
+| Unauthorised review actions | Role-based access control: REVIEWER accounts decide, ADMIN reads only, others 403 ([docs/RBAC.md](docs/RBAC.md)); dev-only `X-Review-Key` compared in constant time, refused in production | A28–A30, test_bug020, test_rbac.py |
+| Unsafe admin operations / tampered audit trail | Admin-only ops API; dry run by default, typed confirmation, one job at a time, validation gates, graph staging + backup + auto-restore; hash-chained append-only audit log with outcome + correlation id; redaction of secrets / personal data ([docs/ADMIN_OPERATIONS.md](docs/ADMIN_OPERATIONS.md)) | test_admin_ops.py, test_admin_ops_pg.py, ui_admin_test.py |
+| Privilege escalation | Role only from the account row; no self role/status change; last admin protected; first admin only via `scripts/set_role.py`; append-only audit log | test_rbac.py, test_rbac_pg.py |
 | Secret exposure | Secrets only in server env (`backend/.env`, git-ignored); no secret in code (static scan); `/health` returns booleans only; configuration errors shown to clients without names | A31, test_phase8_configuration_errors_hidden |
 | Personal data in logs | Logs record field names, lengths and IDs only; no profile values or transcripts | A34, test_bug021 |
 | Unnecessary data to third parties | Groq gets a minimal profile summary; sensitive values in scheme cards are redacted; Tavily gets state + crop only | A35, test_bug022 |
@@ -46,7 +48,8 @@ reviewers need access. Containers run as non-root users. See `DEPLOYMENT.md`.
 - **No end-user authentication.** Anyone holding a `thread_id` can continue that conversation (IDs are
   random UUIDs and never listed).
 - **No rate limiting.** Abuse can drain the Groq/Tavily/Sarvam quota.
-- **Shared reviewer key**, not per-reviewer accounts. The audit log records the self-declared `reviewer_id`.
+- **Reviewer accounts** (role `REVIEWER`) are used for review; the audit log records the signed-in account. The shared
+  reviewer key remains for development only (refused when `ENVIRONMENT=production`).
 - The LLM-reply validator is pattern-based. A paraphrased false claim could evade it, but the structured
   per-scheme status shown in the UI always comes from the engine.
 - Conversation text is sent to Groq and Sarvam (third-party processors) under their terms.

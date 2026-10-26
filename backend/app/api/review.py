@@ -1,209 +1,238 @@
 """
-Human Review API — Phase 6 (§122–§126).
+Human Review API — Phase 6 (§122–§126), role-based (docs/RBAC.md), reviewer dashboard
+workflow (docs/HUMAN_REVIEW.md).
 
-Simple reviewer endpoints for the human-in-the-loop workflow.
-Protected with a simple API key header for development (§68).
+Who may call it (checked on the server, in the dependency and in the service):
+  - REVIEWER accounts: read cases, claim / release them, comment, request verification, decide, dismiss;
+  - ADMIN accounts: read (oversight) and assign / reassign cases — decisions need a reviewer;
+  - FARMER accounts and anonymous callers: nothing (403 / 401); a farmer sees the plain-language
+    status of their own cases at GET /farmers/me/review-cases;
+  - the development-only shared key (X-Review-Key, REVIEW_API_KEY): read and decide, acting for
+    no account; refused when unset or in production (§68, BUG-020).
 
-IMPORTANT: Reviewers must NOT directly edit schemes or
-eligibility_rules from this UI (§64).
+Access policy (docs/HUMAN_REVIEW.md, enforced in app.services.review_workflow on every call):
+only APPROVED reviewer accounts; full cases only when assigned or explicitly granted (otherwise
+404, audited); the queue is summaries only; views are audited and rate-limited; responses are
+never cached (Cache-Control: no-store); final decisions, dismissals, assignments and grants need
+a recent sign-in or password confirmation (403 REAUTH_REQUIRED → POST /auth/reauthenticate).
+
+Every change takes the case version the reviewer saw (``expected_version``; 409 if it moved on).
+The reviewer recorded is the authenticated principal; a reviewer name in the body is rejected.
+
+IMPORTANT: Reviewers must NOT directly edit schemes or eligibility_rules from here (§64): a wrong
+rule is corrected through the verified, versioned scheme-update process (docs/SCHEME_UPDATES.md).
 """
 
-import hmac
-from typing import Optional
+from datetime import datetime
+from typing import Annotated, Any, Dict, Literal, Optional
 
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from app.models.review import ReviewStatus, ReviewAction
-from app.services.review_service import (
-    get_all_cases, get_case, resolve_case, dismiss_case,
-    get_audit_log, get_queue_stats,
-)
-from app.core.config import settings
+from app.api.deps import ensure_recent_auth, require
 from app.core.logging import get_logger
+from app.core.permissions import Permission, Principal
+from app.models.review import ReviewAction, ReviewReason, ReviewStatus
+from app.services import review_workflow as wf
 
 logger = get_logger(__name__)
 
-router = APIRouter(prefix="/review-cases", tags=["Human Review"])
-
-def _check_reviewer_auth(x_review_key: Optional[str] = Header(None)):
-    """
-    Development-level reviewer authentication (§68, §111).
-
-    The key comes from the REVIEW_API_KEY environment variable — never from
-    source code (Phase 7 BUG-020). When it is not configured the review API is
-    disabled rather than open. This is a shared-secret scheme, not per-user
-    authentication; see docs/phase7-limitations.md.
-    """
-    expected = settings.REVIEW_API_KEY
-    if not expected:
-        raise HTTPException(status_code=403, detail="Review API is not configured.")
-    if not x_review_key or not hmac.compare_digest(x_review_key.encode(), expected.encode()):
-        raise HTTPException(status_code=403, detail="Unauthorized reviewer access.")
+async def _no_store(response: Response) -> None:
+    """Case data must not be kept by browsers or proxies (no export through caches)."""
+    response.headers["Cache-Control"] = "no-store, max-age=0"
+    response.headers["Pragma"] = "no-cache"
 
 
-# ═══════════════════════════════════════════════════════════════
-# REQUEST SCHEMAS (§123)
-# ═══════════════════════════════════════════════════════════════
+router = APIRouter(prefix="/review-cases", tags=["Human Review"], dependencies=[Depends(_no_store)])
 
-class ResolveRequest(BaseModel):
-    """Request body to resolve a review case."""
-    action: str = Field(
-        ...,
-        description="Reviewer action: APPROVE, REJECT, REQUEST_INFORMATION, MARK_UNVERIFIABLE"
-    )
-    reviewer_id: str = Field(default="admin", description="Reviewer identifier")
-    note: str = Field(default="", description="Reviewer note")
+can_read = require(Permission.REVIEW_CASE_READ, allow_review_key=True)
+can_decide = require(Permission.REVIEW_CASE_DECIDE, allow_review_key=True)
+can_assign = require(Permission.REVIEW_CASE_ASSIGN)
+
+CaseId = Annotated[str, Path(pattern=r"^[A-Za-z0-9-]{1,36}$")]
+Version = Optional[int]
 
 
-class DismissRequest(BaseModel):
-    """Request body to dismiss a review case."""
-    reviewer_id: str = Field(default="admin")
-    note: str = Field(default="")
+# ─── request bodies (strict: unknown fields such as reviewer_id give 422) ─────
+
+class _Body(BaseModel):
+    model_config = {"extra": "forbid"}
 
 
-# ═══════════════════════════════════════════════════════════════
-# ENDPOINTS (§122)
-# ═══════════════════════════════════════════════════════════════
+class ResolveRequest(_Body):
+    action: str = Field(..., description="APPROVE, REJECT, MARK_UNVERIFIABLE, RESOLVE, or REQUEST_INFORMATION "
+                                         "(request additional verification)")
+    note: str = Field(default="", max_length=2000, description="Required for decisions")
+    expected_version: Version = Field(default=None, ge=1)
+    data_correction_needed: bool = Field(default=False, description="REJECT only: the scheme data needs a "
+                                         "correction through the scheme-update process")
 
-@router.get("", summary="List all review cases")
+
+class DismissRequest(_Body):
+    note: str = Field(default="", max_length=2000)
+    expected_version: Version = Field(default=None, ge=1)
+
+
+class VersionRequest(_Body):
+    expected_version: Version = Field(default=None, ge=1)
+
+
+class AssignRequest(_Body):
+    reviewer_email: str = Field(..., min_length=3, max_length=254)
+    expected_version: Version = Field(default=None, ge=1)
+
+
+class GrantRequest(_Body):
+    reviewer_email: str = Field(..., min_length=3, max_length=254)
+    hours: int = Field(default=72, ge=1, le=720)
+
+
+class RevokeGrantRequest(_Body):
+    reviewer_email: str = Field(..., min_length=3, max_length=254)
+
+
+class CommentRequest(_Body):
+    text: str = Field(..., min_length=1, max_length=2000)
+
+
+# ─── helpers ──────────────────────────────────────────────────────────────────
+
+def _iso(v):
+    return v.isoformat() if isinstance(v, datetime) else v
+
+
+_INTERNAL = ("farmer_pk", "session_id")      # never shown: who the farmer is / their chat thread
+
+
+def _case(c: Dict[str, Any]) -> Dict[str, Any]:
+    """A case for reviewers: evidence and the minimal profile, never the farmer's account."""
+    out = {k: _iso(v) for k, v in c.items() if k not in _INTERNAL}
+    out["farmer_follows_case"] = c.get("farmer_pk") is not None
+    return out
+
+
+def _summary(c: Dict[str, Any]) -> Dict[str, Any]:
+    return {k: _iso(v) for k, v in c.items()}
+
+
+async def _grant_view(g: Dict[str, Any]) -> Dict[str, Any]:
+    from app.services import auth_service
+    who = await auth_service.repo.get_farmer_by_pk(g["reviewer_pk"])
+    return {"reviewer": who.email if who else None, "granted_by": g["granted_by"], "granted_at": _iso(g["granted_at"]),
+            "expires_at": _iso(g["expires_at"]), "revoked_at": _iso(g.get("revoked_at"))}
+
+
+def _event(e: Dict[str, Any]) -> Dict[str, Any]:
+    return {k: _iso(v) for k, v in e.items() if k not in ("id", "case_id")}
+
+
+async def _run(coro):
+    try:
+        return await coro
+    except wf.ReviewError as exc:
+        raise HTTPException(status_code=exc.status, detail={"code": exc.code, "message": exc.message})
+
+
+# ─── reads ────────────────────────────────────────────────────────────────────
+
+@router.get("", summary="Review queue (filters: status, reason, assignment)")
 async def list_cases(
     status: Optional[str] = None,
-    x_review_key: Optional[str] = Header(None),
+    reason: Optional[str] = None,
+    assigned: Optional[Literal["me", "unassigned"]] = None,
+    limit: int = Query(default=20, ge=1, le=50),
+    offset: int = Query(default=0, ge=0, le=100_000),
+    principal: Principal = Depends(can_read),
 ):
-    """GET /review-cases — list review cases with optional status filter."""
-    _check_reviewer_auth(x_review_key)
+    """
+    Summaries of the cases in your scope: assigned to you, granted to you, and the unassigned
+    pending queue (administrators: all). Open cases oldest first; others newest first.
+    """
+    try:
+        status_value = ReviewStatus(status.upper()).value if status else None
+        reason_value = ReviewReason(reason.upper()).value if reason else None
+    except ValueError:
+        raise HTTPException(status_code=400, detail={
+            "code": "BAD_FILTER", "message": f"Valid statuses: {[s.value for s in ReviewStatus]}; "
+                                             f"reasons: {[r.value for r in ReviewReason]}."})
+    out = await _run(wf.list_cases(principal, status_value, reason_value, assigned, limit, offset))
+    return {"cases": [_summary(c) for c in out["cases"]], "total": out["total"], "stats": out["stats"]}
 
-    status_filter = None
-    if status:
-        try:
-            status_filter = ReviewStatus(status.upper())
-        except ValueError:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid status: {status}. Valid: {[s.value for s in ReviewStatus]}"
-            )
 
-    cases = get_all_cases(status_filter)
+@router.get("/stats/summary", summary="Counts per status")
+async def queue_stats(principal: Principal = Depends(can_read)):
+    return await _run(wf.stats(principal))
+
+
+@router.get("/{case_id}", summary="One case with its history")
+async def get_single_case(case_id: CaseId, principal: Principal = Depends(can_read)):
+    out = await _run(wf.get_case(principal, case_id))
+    history = [_event(e) for e in out["history"]]
     return {
-        "cases": [_case_to_dict(c) for c in cases],
-        "stats": get_queue_stats(),
+        "case": _case(out["case"]),
+        "access": out["access"],
+        **({"grants": [await _grant_view(g) for g in out["grants"]]} if "grants" in out else {}),
+        "history": history,
+        # earlier shape (phase 6), kept for existing clients
+        "audit_log": [{"action": e["event"], "reviewer": e["actor"], "timestamp": e["created_at"],
+                       "note": e["note"] or ""} for e in history],
     }
 
 
-@router.get("/{case_id}", summary="Get a single review case")
-async def get_single_case(
-    case_id: str,
-    x_review_key: Optional[str] = Header(None),
-):
-    """GET /review-cases/{id} — get case details."""
-    _check_reviewer_auth(x_review_key)
+# ─── workflow ─────────────────────────────────────────────────────────────────
 
-    case = get_case(case_id)
-    if not case:
-        raise HTTPException(status_code=404, detail=f"Case {case_id} not found.")
-
-    audit = get_audit_log(case_id)
-    return {
-        "case": _case_to_dict(case),
-        "audit_log": [
-            {
-                "action": e.action,
-                "reviewer": e.reviewer,
-                "timestamp": e.timestamp,
-                "note": e.note,
-            }
-            for e in audit
-        ],
-    }
+@router.post("/{case_id}/claim", summary="Take a pending case (assign it to yourself)")
+async def claim(case_id: CaseId, req: VersionRequest = VersionRequest(), principal: Principal = Depends(can_decide)):
+    return {"case": _case(await _run(wf.claim(principal, case_id, req.expected_version)))}
 
 
-@router.post("/{case_id}/resolve", summary="Resolve a review case")
-async def resolve_review_case(
-    case_id: str,
-    request: ResolveRequest,
-    x_review_key: Optional[str] = Header(None),
-):
-    """POST /review-cases/{id}/resolve — reviewer action (§63)."""
-    _check_reviewer_auth(x_review_key)
+@router.post("/{case_id}/release", summary="Give a case back to the queue")
+async def release(case_id: CaseId, req: VersionRequest = VersionRequest(), principal: Principal = Depends(can_decide)):
+    return {"case": _case(await _run(wf.release(principal, case_id, req.expected_version)))}
 
-    # Validate action (§123)
+
+@router.post("/{case_id}/assign", summary="Assign or reassign a case to an approved reviewer (administrators)")
+async def assign(case_id: CaseId, req: AssignRequest, request: Request, principal: Principal = Depends(can_assign)):
+    ensure_recent_auth(request, principal)
+    return {"case": _case(await _run(wf.assign(principal, case_id, req.reviewer_email, req.expected_version)))}
+
+
+@router.post("/{case_id}/grants", status_code=201,
+             summary="Let another approved reviewer read and comment on a case, for a limited time (administrators)")
+async def grant(case_id: CaseId, req: GrantRequest, request: Request, principal: Principal = Depends(can_assign)):
+    ensure_recent_auth(request, principal)
+    out = await _run(wf.grant_access(principal, case_id, req.reviewer_email, req.hours))
+    return {"grant": {"reviewer": out["reviewer"], "expires_at": _iso(out["expires_at"])}}
+
+
+@router.post("/{case_id}/grants/revoke", status_code=204, summary="End a reviewer's grant (administrators)")
+async def revoke_grant(case_id: CaseId, req: RevokeGrantRequest, principal: Principal = Depends(can_assign)):
+    await _run(wf.revoke_access(principal, case_id, req.reviewer_email))
+
+
+@router.post("/{case_id}/comments", status_code=201, summary="Add a reviewer comment")
+async def add_comment(case_id: CaseId, req: CommentRequest, principal: Principal = Depends(can_decide)):
+    return {"comment": _event(await _run(wf.comment(principal, case_id, req.text)))}
+
+
+@router.post("/{case_id}/resolve", summary="Approve, reject, mark unverifiable, resolve, or request verification")
+async def resolve_review_case(case_id: CaseId, request: ResolveRequest, http: Request,
+                              principal: Principal = Depends(can_decide)):
     try:
         action = ReviewAction(request.action.upper())
     except ValueError:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid action: {request.action}. Valid: {[a.value for a in ReviewAction]}"
-        )
-
-    result = resolve_case(
-        case_id=case_id,
-        action=action,
-        reviewer_id=request.reviewer_id,
-        note=request.note,
-    )
-
-    if not result:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Cannot resolve case {case_id}. Case not found or invalid status transition."
-        )
-
-    return {"case": _case_to_dict(result), "message": f"Case {action.value} successfully."}
+        raise HTTPException(status_code=400, detail={
+            "code": "BAD_ACTION", "message": f"Valid actions: {[a.value for a in ReviewAction]}."})
+    if action != ReviewAction.REQUEST_INFORMATION:          # final decisions: recent sign-in required
+        ensure_recent_auth(http, principal)
+    case = await _run(wf.act(principal, case_id, action, request.note, request.expected_version,
+                             request.data_correction_needed))
+    return {"case": _case(case), "message": f"Case {action.value} recorded."}
 
 
-@router.post("/{case_id}/dismiss", summary="Dismiss a review case")
-async def dismiss_review_case(
-    case_id: str,
-    request: DismissRequest,
-    x_review_key: Optional[str] = Header(None),
-):
-    """POST /review-cases/{id}/dismiss (§125)."""
-    _check_reviewer_auth(x_review_key)
-
-    result = dismiss_case(
-        case_id=case_id,
-        reviewer_id=request.reviewer_id,
-        note=request.note,
-    )
-
-    if not result:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Cannot dismiss case {case_id}. Not found or invalid transition."
-        )
-
-    return {"case": _case_to_dict(result), "message": "Case dismissed."}
-
-
-@router.get("/stats/summary", summary="Review queue stats")
-async def queue_stats(
-    x_review_key: Optional[str] = Header(None),
-):
-    """Get review queue summary stats."""
-    _check_reviewer_auth(x_review_key)
-    return get_queue_stats()
-
-
-# ═══════════════════════════════════════════════════════════════
-# HELPERS
-# ═══════════════════════════════════════════════════════════════
-
-def _case_to_dict(case) -> dict:
-    """Convert ReviewCase to serializable dict."""
-    return {
-        "case_id": case.case_id,
-        "session_id": case.session_id,
-        "created_at": case.created_at,
-        "status": case.status.value,
-        "reason": case.reason.value,
-        "query": case.query,
-        "profile_snapshot": case.profile_snapshot,
-        "scheme_ids": case.scheme_ids,
-        "eligibility_results": case.eligibility_results,
-        "source_conflicts": case.source_conflicts,
-        "reviewer_id": case.reviewer_id,
-        "reviewer_action": case.reviewer_action,
-        "reviewer_note": case.reviewer_note,
-        "reviewed_at": case.reviewed_at,
-    }
+@router.post("/{case_id}/dismiss", summary="Dismiss a case (no action needed)")
+async def dismiss_review_case(case_id: CaseId, request: DismissRequest, http: Request,
+                              principal: Principal = Depends(can_decide)):
+    ensure_recent_auth(http, principal)
+    case = await _run(wf.dismiss(principal, case_id, request.note, request.expected_version))
+    return {"case": _case(case), "message": "Case dismissed."}

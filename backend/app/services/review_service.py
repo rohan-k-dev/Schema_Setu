@@ -4,9 +4,10 @@ Review Service — Human-in-the-Loop escalation (§56–§67).
 Manages the review queue for cases that cannot be reliably
 resolved by the automated eligibility engine.
 
-This is implemented as a controlled project simulation (§67):
-cases are stored in-memory for academic demonstration.
-In production, this would use PostgreSQL.
+Since the reviewer dashboard (docs/HUMAN_REVIEW.md) cases are stored in PostgreSQL and every
+reviewer action goes through app.services.review_workflow. The in-memory queue below is kept for
+running without a database (keyless demo, offline evaluation runners) and its synchronous
+functions keep their original behaviour.
 
 IMPORTANT: Human review must NOT silently change the canonical database (§64).
 """
@@ -19,6 +20,7 @@ from app.models.review import (
     ReviewAction, is_valid_transition, SENSITIVE_FIELDS,
 )
 from app.core.logging import get_logger
+from app.core.permissions import Permission, Principal, authorize
 
 logger = get_logger(__name__)
 
@@ -27,6 +29,7 @@ logger = get_logger(__name__)
 # ═══════════════════════════════════════════════════════════════
 _review_cases: Dict[str, ReviewCase] = {}
 _audit_log: List[ReviewAuditEntry] = []
+_review_grants: Dict[str, Dict[int, dict]] = {}   # case_id → reviewer pk → grant (docs/HUMAN_REVIEW.md)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -236,7 +239,15 @@ def resolve_case(
         return None
 
     # Update case
+    if target_status == ReviewStatus.IN_REVIEW and not case.assignee:
+        case.assignee = reviewer_id
+        case.assigned_at = datetime.utcnow().isoformat()
+    case.awaiting_verification = action == ReviewAction.REQUEST_INFORMATION
+    if target_status == ReviewStatus.RESOLVED:
+        case.decision = action.value
     case.status = target_status
+    case.version += 1
+    case.updated_at = datetime.utcnow().isoformat()
     case.reviewer_id = reviewer_id
     case.reviewer_action = action.value
     case.reviewer_note = note
@@ -270,6 +281,9 @@ def dismiss_case(
         return None
 
     case.status = ReviewStatus.DISMISSED
+    case.awaiting_verification = False
+    case.version += 1
+    case.updated_at = datetime.utcnow().isoformat()
     case.reviewer_id = reviewer_id
     case.reviewer_note = note
     case.reviewed_at = datetime.utcnow().isoformat()
@@ -289,6 +303,48 @@ def get_audit_log(case_id: Optional[str] = None) -> List[ReviewAuditEntry]:
     if case_id:
         return [e for e in _audit_log if e.case_id == case_id]
     return list(_audit_log)
+
+
+# ═══════════════════════════════════════════════════════════════
+# ACCESS-CONTROLLED ENTRY POINTS (docs/RBAC.md)
+# ═══════════════════════════════════════════════════════════════
+# The API calls these, never the functions above directly. Each authorizes the
+# server-established Principal (again — the route dependency already did), and the
+# reviewer recorded on the case is the authenticated principal, never a name sent
+# by the client. The functions above stay for the pipeline and the evaluation.
+
+def list_cases_for(principal: Principal, status_filter: Optional[ReviewStatus] = None) -> List[ReviewCase]:
+    authorize(principal, Permission.REVIEW_CASE_READ)
+    return get_all_cases(status_filter)
+
+
+def get_case_for(principal: Principal, case_id: str) -> Optional[ReviewCase]:
+    authorize(principal, Permission.REVIEW_CASE_READ)
+    return get_case(case_id)
+
+
+def audit_log_for(principal: Principal, case_id: str) -> List[ReviewAuditEntry]:
+    """A case's own review history (reviewers); the full audit log is administrators-only."""
+    authorize(principal, Permission.REVIEW_CASE_READ)
+    return get_audit_log(case_id)
+
+
+def queue_stats_for(principal: Principal) -> Dict:
+    authorize(principal, Permission.REVIEW_CASE_READ)
+    return get_queue_stats()
+
+
+async def resolve_case_as(principal: Principal, case_id: str, action: ReviewAction,
+                          note: str = "", expected_version: Optional[int] = None) -> Dict:
+    """Reviewer action through the workflow (authorized, versioned, audited)."""
+    from app.services import review_workflow
+    return await review_workflow.act(principal, case_id, action, note, expected_version)
+
+
+async def dismiss_case_as(principal: Principal, case_id: str, note: str = "",
+                          expected_version: Optional[int] = None) -> Dict:
+    from app.services import review_workflow
+    return await review_workflow.dismiss(principal, case_id, note, expected_version)
 
 
 def get_queue_stats() -> Dict:

@@ -184,6 +184,7 @@ def offline_environment(
     graph_available: False simulates a Knowledge Graph outage.
     """
     import app.services.llm_service as llm_service
+    from app.core.config import settings
     import app.services.search_service as search_service
     import app.services.language_service as language_service
     import app.services.knowledge_graph_service as kg_service
@@ -204,7 +205,9 @@ def offline_environment(
         "asr": voice_api.transcribe_audio,
         "tts": voice_api.generate_speech,
         "graph_available": kg_service._graph_available,
+        "live": settings.LIVE_VERIFICATION_ENABLED,
     }
+    settings.LIVE_VERIFICATION_ENABLED = False      # offline: never reach real government sites
 
     llm_service._get_structured_llm = lambda: profile_llm.runnable()
     llm_service._get_llm = lambda: text_llm.runnable()
@@ -234,6 +237,7 @@ def offline_environment(
         voice_api.transcribe_audio = saved["asr"]
         voice_api.generate_speech = saved["tts"]
         kg_service._graph_available = kg_service.get_graph_repo() is not None
+        settings.LIVE_VERIFICATION_ENABLED = saved["live"]
 
 
 def run(coro):

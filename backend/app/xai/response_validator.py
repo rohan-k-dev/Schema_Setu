@@ -104,12 +104,34 @@ def validate_llm_response(text: str, schemes: List[Dict[str, Any]]) -> Tuple[boo
 
     # 4. Scheme names must be retrieved candidates (§105)
     for bold in _BOLD_RE.findall(text):
-        # Section headings ("**Schemes that need more information**") are not scheme names;
-        # real scheme names are singular ("... Scheme", "... Yojana"). Found in the first live run.
-        if re.search(r"\bschemes\b", bold, re.I):
-            continue
-        if re.search(r"(yojana|scheme|mission|pariyojana|abhiyan|programme|card|nidhi|bima)", bold, re.I) \
-                and not _known_scheme(bold, schemes):
-            reasons.append(f"unknown scheme name '{bold}'")
+        for part in _HEADING_SPLIT.split(bold):
+            if _names_a_scheme(part) and not _known_scheme(part, schemes):
+                reasons.append(f"unknown scheme name '{part.strip()}'")
 
     return (not reasons), reasons
+
+
+# A bold phrase is checked part by part: headings join a label and a description with a dash or colon
+# ("**Scheme Search – Dairy cattle farmers in Telangana**", seen in a live reply), and a made-up scheme
+# name must not hide next to a description.
+_HEADING_SPLIT = re.compile(r"\s+[–—|-]\s+|:\s*|\s*\|\s*")
+_NAME_WORDS = re.compile(r"(yojana|mission|pariyojana|abhiyan|programme|card|nidhi|bima|\bscheme\b)", re.I)
+# Words that make up generic headings ("Scheme Search", "Scheme Summary", "Other Schemes"), never a name
+_HEADING_WORDS = {"scheme", "schemes", "search", "result", "results", "summary", "overview", "detail", "details",
+                  "option", "options", "recommendation", "recommendations", "recommended", "eligibility",
+                  "eligible", "list", "your", "you", "for", "top", "available", "matching", "matched", "key", "next",
+                  "steps", "information", "info", "more", "other", "related", "relevant", "alternatives",
+                  "alternative", "suggested", "possible", "government", "the", "and", "of", "to", "my", "found",
+                  "need", "needs", "that", "check", "checking", "apply", "applying", "how", "about", "with"}
+
+
+def _names_a_scheme(part: str) -> bool:
+    """Does this part of a bold phrase present itself as a scheme name (not a generic heading)?"""
+    if not _NAME_WORDS.search(part) and not re.search(r"\bschemes\b", part, re.I):
+        return False
+    words = re.findall(r"[a-z0-9]+", part.lower())
+    if all(w in _HEADING_WORDS for w in words):
+        return False                                     # "Scheme Search", "Other relevant schemes"
+    if re.search(r"\bschemes\b", part, re.I) and not _NAME_WORDS.search(part):
+        return False                                     # plural heading: "Schemes that need more information"
+    return True

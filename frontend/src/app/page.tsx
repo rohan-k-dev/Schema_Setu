@@ -4,8 +4,8 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 
 // Centralized types and API client
-import type { ChatResponse, FarmerProfile, Scheme, Message } from "@/lib/types";
-import { sendChat, sendVoice, generateTTS, apiGetProfile } from "@/lib/api";
+import type { ChatResponse, FarmerProfile, LiveCheckReport, Scheme, Message } from "@/lib/types";
+import { sendChat, sendVoice, generateTTS, apiGetProfile, apiGetSavedSchemes, apiSaveScheme } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 
 // Extracted components
@@ -41,6 +41,7 @@ export default function Home() {
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const [profile, setProfile] = useState<FarmerProfile | null>(null);
   const [schemes, setSchemes] = useState<Scheme[]>([]);
+  const [liveCheck, setLiveCheck] = useState<LiveCheckReport | null>(null);
   const [language, setLanguage] = useState("en");
   const [failedMessage, setFailedMessage] = useState<string | null>(null);
   const [demoMode, setDemoMode] = useState(false);
@@ -50,22 +51,23 @@ export default function Home() {
 
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const { user, accessToken, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const signedInId = user?.farmer_id ?? null;
   const profileFetchedForRef = useRef<string | null>(null);
 
   // Auto-sync saved farmer profile if user is logged in
   useEffect(() => {
-    if (!isAuthenticated || !accessToken) {
+    if (!isAuthenticated || !signedInId) {
       profileFetchedForRef.current = null;
       setProfileConsentGiven(false);
       setConsentToSaveProfile(false);
       return;
     }
-    if (profileFetchedForRef.current === accessToken) return;
+    if (profileFetchedForRef.current === signedInId) return;
 
-    profileFetchedForRef.current = accessToken;
+    profileFetchedForRef.current = signedInId;
     setProfileLoading(true);
-    apiGetProfile(accessToken)
+    apiGetProfile()
       .then((saved) => {
         setProfileConsentGiven(saved?.consent_given ?? false);
         if (saved) {
@@ -79,9 +81,8 @@ export default function Home() {
             age: saved.age,
             gender: saved.gender,
             category: saved.category,
-            annual_income: saved.annual_income,
-            has_aadhaar: saved.has_aadhaar,
             occupation: saved.occupation,
+            residence: saved.residence,
           });
         }
       })
@@ -89,7 +90,37 @@ export default function Home() {
         console.error("Saved farmer profile could not be loaded:", error);
       })
       .finally(() => setProfileLoading(false));
-  }, [isAuthenticated, accessToken]);
+  }, [isAuthenticated, signedInId]);
+
+  // Saved schemes (signed in): which cards show "Saved", and saving from a card
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<{ schemeId: string; message: string } | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated || !signedInId) {
+      setSavedIds(new Set());
+      return;
+    }
+    apiGetSavedSchemes()
+      .then((list) => setSavedIds(new Set(list.map((s) => s.scheme_id))))
+      .catch(() => { /* cards just show "Save"; saving again is harmless (no duplicates) */ });
+  }, [isAuthenticated, signedInId]);
+
+  const handleSaveScheme = useCallback(async (scheme: Scheme) => {
+    const id = scheme.scheme_id;
+    if (!id) return;
+    setSavingId(id);
+    setSaveError(null);
+    try {
+      await apiSaveScheme({ scheme_id: id, eligibility_status: scheme.eligibility_status ?? null });
+      setSavedIds((prev) => new Set(prev).add(id));
+    } catch (err) {
+      setSaveError({ schemeId: id, message: err instanceof Error ? err.message : "Failed to save scheme." });
+    } finally {
+      setSavingId(null);
+    }
+  }, []);
 
   // Conversation session for this tab
   const threadIdRef = useRef<string>("");
@@ -178,8 +209,10 @@ export default function Home() {
       }
       if (data.schemes && data.schemes.length > 0) {
         setSchemes(data.schemes);
+        setLiveCheck(data.live_check ?? null);
       } else if (data.status === "no_results") {
         setSchemes([]);
+        setLiveCheck(null);
       }
 
       const fallback =
@@ -193,11 +226,15 @@ export default function Home() {
         setMessages((prev) => [...prev, { sender: "agent", text: reply }]);
         if (data.status !== "error") playAudioResponse(reply);
       }
+      if (data.review?.needs_review && isAuthenticated) {
+        setMessages((prev) => [...prev, { sender: "agent", text:
+          "You can follow this check under \"Checks by our team\" on your dashboard. We'll show the outcome there." }]);
+      }
       if (data.profile_save_error) {
         setMessages((prev) => [...prev, { sender: "agent", text: data.profile_save_error! }]);
       }
     },
-    [playAudioResponse]
+    [playAudioResponse, isAuthenticated]
   );
 
   /**
@@ -211,7 +248,6 @@ export default function Home() {
         userMsg,
         threadIdRef.current,
         language,
-        accessToken,
         profileConsentGiven || consentToSaveProfile
       );
       handleResponseData(data);
@@ -249,6 +285,7 @@ export default function Home() {
     setMessages([INITIAL_MESSAGE]);
     setProfile(null);
     setSchemes([]);
+    setLiveCheck(null);
     setFailedMessage(null);
     setInput("");
   };
@@ -274,7 +311,6 @@ export default function Home() {
         filename,
         threadIdRef.current,
         language,
-        accessToken,
         profileConsentGiven || consentToSaveProfile
       );
 
@@ -538,7 +574,11 @@ export default function Home() {
             </label>
           )}
           <ProfilePanel profile={profile} />
-          <SchemeList schemes={schemes} />
+          <SchemeList
+            schemes={schemes}
+            liveCheck={liveCheck}
+            save={isAuthenticated ? { savedIds, savingId, error: saveError, onSave: handleSaveScheme } : undefined}
+          />
         </div>
       </main>
 

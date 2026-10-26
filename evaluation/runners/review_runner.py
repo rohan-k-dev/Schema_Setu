@@ -116,14 +116,15 @@ def run(corpus_db) -> Dict[str, Any]:
     finally:
         if hasattr(settings, "REVIEW_API_KEY"):
             settings.REVIEW_API_KEY = saved_key
-    checks.append(check("API_NO_KEY_403", r_none.status_code == 403, got=r_none.status_code, area="auth"))
+    # No credentials at all: 401 since role-based access control (docs/RBAC.md); 403 before.
+    checks.append(check("API_NO_KEY_403", r_none.status_code in (401, 403), got=r_none.status_code, area="auth"))
     checks.append(check("API_WRONG_KEY_403", r_bad.status_code == 403, got=r_bad.status_code, area="auth"))
     checks.append(check("API_VALID_KEY_200", r_ok is not None and r_ok.status_code == 200,
                         got=getattr(r_ok, "status_code", None), area="auth"))
     c4 = rs.create_review_case("eval-auth", "q", ReviewReason.UNVERIFIABLE, {}, [], [], [])
     r_res = client.post(f"/review-cases/{c4.case_id}/resolve", json={"action": "APPROVE"})
     checks.append(check("API_UNAUTHORIZED_RESOLVE_BLOCKED",
-                        r_res.status_code == 403 and rs.get_case(c4.case_id).status == ReviewStatus.PENDING,
+                        r_res.status_code in (401, 403) and rs.get_case(c4.case_id).status == ReviewStatus.PENDING,
                         got=r_res.status_code, area="auth"))
 
     summary = summarize_checks(checks)

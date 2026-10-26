@@ -182,6 +182,9 @@ def run_live() -> Dict[str, Any]:
     for c in cases:
         try:
             out = asyncio.run(chain.ainvoke({"messages": [("human", c["input"])]}))
+            if isinstance(out, dict):            # JSON-mode models return a dict (as in profile_agent)
+                from app.models.profile import FarmerProfile
+                out = FarmerProfile(**out)
             got = out.model_dump(exclude_none=True) if out else {}
         except Exception as e:
             got = {"_error": repr(e)}

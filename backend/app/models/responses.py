@@ -67,6 +67,8 @@ class ChatResponse(BaseModel):
     error: Optional[ErrorDetail] = None
     request_id: Optional[str] = None
     retrieval_metadata: Optional[Dict[str, Any]] = None
+    live_check: Optional[Dict[str, Any]] = None       # which official sources were checked now (and which failed)
+    recommendation_summary: Optional[Dict[str, Any]] = None   # eligible / alternatives counts (docs/RECOMMENDATIONS.md)
     review: Optional[Dict[str, Any]] = None
     thread_id: Optional[str] = None
     profile_saved: Optional[bool] = None

@@ -10,28 +10,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
-import { apiGetProfile, apiUpdateProfile } from "@/lib/api";
+import { apiGetProfile, apiUpdateProfile, ApiError } from "@/lib/api";
 import type { SavedFarmerProfile, ProfileUpdatePayload } from "@/lib/types";
+import { CROPS, INCOME_RANGES, INDIAN_STATES, LAND_UNITS, OCCUPATIONS } from "@/lib/profileOptions";
 
-const INDIAN_STATES = [
-  "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa",
-  "Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala",
-  "Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland",
-  "Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
-  "Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands",
-  "Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi",
-  "Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry",
-];
-
-const CROPS = [
-  "rice","wheat","maize","ragi","groundnut","mustard","soybean","cotton",
-  "sugarcane","sorghum","pearl millet","tur","chickpea","lentil","mung bean",
-  "onion","potato","tomato","banana","mango","coconut","jute","tea","coffee",
-];
-
+// Fields the eligibility engine and scheme search use (Aadhaar status and exact
+// income are not collected: no eligibility rule needs them).
 const PROFILE_FIELDS = [
-  "state","district","land_size_acres","primary_crop",
-  "age","gender","category","annual_income","has_aadhaar","occupation",
+  "state","district","land_size","primary_crop",
+  "age","gender","category","income_range","occupation","residence",
+];
+
+// Every editable field is sent on save; an empty field is sent as null = "unknown".
+const EDITABLE: (keyof ProfileUpdatePayload)[] = [
+  "state", "district", "land_size", "land_unit", "primary_crop", "farming_type", "occupation",
+  "age", "gender", "category", "income_range", "residence",
 ];
 
 function computeCompleteness(p: Partial<ProfileUpdatePayload>): number {
@@ -42,9 +35,27 @@ function computeCompleteness(p: Partial<ProfileUpdatePayload>): number {
   return Math.round((filled.length / PROFILE_FIELDS.length) * 100);
 }
 
+/** Form state from a saved profile (null → empty field = unknown). */
+const formFromProfile = (p: SavedFarmerProfile): ProfileUpdatePayload => ({
+  state: p.state ?? undefined,
+  district: p.district ?? undefined,
+  land_size: p.land_size ?? undefined,
+  land_unit: p.land_unit ?? undefined,
+  primary_crop: p.primary_crop ?? undefined,
+  farming_type: p.farming_type ?? undefined,
+  occupation: p.occupation ?? undefined,
+  age: p.age ?? undefined,
+  gender: p.gender ?? undefined,
+  category: p.category ?? undefined,
+  income_range: p.income_range ?? undefined,
+  residence: p.residence ?? undefined,
+  consent_given: p.consent_given,
+});
+
 export default function ProfilePage() {
   const router = useRouter();
-  const { isAuthenticated, isLoading, accessToken } = useAuth();
+  const { isAuthenticated, isLoading, user, handleUnauthorized } = useAuth();
+  const signedInId = user?.farmer_id ?? null;
 
   const [profile, setProfile] = useState<SavedFarmerProfile | null>(null);
   const [form, setForm] = useState<ProfileUpdatePayload>({ consent_given: false });
@@ -53,6 +64,16 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [showConsent, setShowConsent] = useState(false);
+  // Set when the profile was changed elsewhere (chat / another device) since it was loaded.
+  const [conflict, setConflict] = useState(false);
+
+
+  const reloadLatest = useCallback(async () => {
+    const p = await apiGetProfile();
+    if (p) { setProfile(p); setForm(formFromProfile(p)); }
+    setConflict(false);
+    setError(null);
+  }, []);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -61,33 +82,21 @@ export default function ProfilePage() {
   }, [isAuthenticated, isLoading, router]);
 
   useEffect(() => {
-    if (!accessToken) return;
+    if (!signedInId) return;
     (async () => {
       try {
-        const p = await apiGetProfile(accessToken);
+        const p = await apiGetProfile();
         if (p) {
           setProfile(p);
-          setForm({
-            state: p.state ?? undefined,
-            district: p.district ?? undefined,
-            land_size_acres: p.land_size_acres ?? undefined,
-            primary_crop: p.primary_crop ?? undefined,
-            other_crops: p.other_crops ?? undefined,
-            farming_type: p.farming_type ?? undefined,
-            age: p.age ?? undefined,
-            gender: p.gender ?? undefined,
-            category: p.category ?? undefined,
-            annual_income: p.annual_income ?? undefined,
-            has_aadhaar: p.has_aadhaar ?? undefined,
-            occupation: p.occupation ?? undefined,
-            consent_given: p.consent_given,
-          });
+          setForm(formFromProfile(p));
         }
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) handleUnauthorized();
       } finally {
         setPageLoading(false);
       }
     })();
-  }, [accessToken]);
+  }, [signedInId, handleUnauthorized]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -119,24 +128,37 @@ export default function ProfilePage() {
         setError("Please give consent before saving your personal data.");
         return;
       }
-      if (!accessToken) return;
+      if (!signedInId) return;
+      if (form.land_size != null && !form.land_unit) {
+        setError("Please choose the unit for your land size.");
+        return;
+      }
       setSaving(true);
       setError(null);
       try {
-        const updated = await apiUpdateProfile(accessToken, {
-          ...form,
+        const payload: ProfileUpdatePayload = {
           consent_given: form.consent_given || profile?.consent_given || false,
-        });
+        };
+        for (const key of EDITABLE) {
+          const v = form[key];
+          (payload as unknown as Record<string, unknown>)[key] = v === undefined || v === "" ? null : v;
+        }
+        if (payload.land_size == null) payload.land_unit = null;
+        if (profile) payload.expected_version = profile.version;
+        const updated = await apiUpdateProfile(payload);
         setProfile(updated);
+        setForm(formFromProfile(updated));
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } catch (err: unknown) {
+        if (err instanceof ApiError && err.status === 401) handleUnauthorized();
+        if (err instanceof ApiError && err.status === 409) setConflict(true);
         setError(err instanceof Error ? err.message : "Save failed. Please try again.");
       } finally {
         setSaving(false);
       }
     },
-    [form, profile, accessToken]
+    [form, profile, signedInId, handleUnauthorized]
   );
 
   if (isLoading || pageLoading) {
@@ -206,8 +228,17 @@ export default function ProfilePage() {
             <h2 className="profile-section-title">🌱 Farming Details</h2>
             <div className="profile-grid">
               <div className="profile-field">
-                <label htmlFor="land_size_acres" className="profile-label">Land Size (acres)</label>
-                <input id="land_size_acres" name="land_size_acres" type="number" min={0} step={0.01} value={form.land_size_acres ?? ""} onChange={handleChange} className="profile-input" placeholder="e.g. 2.5" />
+                <label htmlFor="land_size" className="profile-label">Land Size</label>
+                <div className="profile-land-row">
+                  <input id="land_size" name="land_size" type="number" min={0} step={0.01} value={form.land_size ?? ""} onChange={handleChange} className="profile-input" placeholder="e.g. 2.5" />
+                  <select id="land_unit" name="land_unit" aria-label="Land unit" value={form.land_unit ?? ""} onChange={handleChange} className="profile-select">
+                    <option value="">Unit…</option>
+                    {LAND_UNITS.map((u) => <option key={u.value} value={u.value}>{u.label}</option>)}
+                  </select>
+                </div>
+                {profile?.land_size_acres != null && profile.land_unit !== "acre" && (
+                  <p className="profile-hint">= {profile.land_size_acres} acres</p>
+                )}
               </div>
               <div className="profile-field">
                 <label htmlFor="primary_crop" className="profile-label">Primary Crop</label>
@@ -227,7 +258,11 @@ export default function ProfilePage() {
               </div>
               <div className="profile-field">
                 <label htmlFor="occupation" className="profile-label">Occupation</label>
-                <input id="occupation" name="occupation" type="text" value={form.occupation ?? ""} onChange={handleChange} className="profile-input" placeholder="e.g. farmer" />
+                <select id="occupation" name="occupation" value={form.occupation ?? ""} onChange={handleChange} className="profile-select">
+                  <option value="">Not given</option>
+                  {[...OCCUPATIONS, ...(form.occupation && !OCCUPATIONS.includes(form.occupation) ? [form.occupation] : [])]
+                    .map((o) => <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
+                </select>
               </div>
             </div>
           </section>
@@ -243,7 +278,7 @@ export default function ProfilePage() {
               <div className="profile-field">
                 <label htmlFor="gender" className="profile-label">Gender</label>
                 <select id="gender" name="gender" value={form.gender ?? ""} onChange={handleChange} className="profile-select">
-                  <option value="">Select…</option>
+                  <option value="">Prefer not to say</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
@@ -252,20 +287,30 @@ export default function ProfilePage() {
               <div className="profile-field">
                 <label htmlFor="category" className="profile-label">Category</label>
                 <select id="category" name="category" value={form.category ?? ""} onChange={handleChange} className="profile-select">
-                  <option value="">Select…</option>
+                  <option value="">Prefer not to say</option>
                   {["General","OBC","SC","ST","EWS"].map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div className="profile-field">
-                <label htmlFor="annual_income" className="profile-label">Annual Income (₹)</label>
-                <input id="annual_income" name="annual_income" type="number" min={0} value={form.annual_income ?? ""} onChange={handleChange} className="profile-input" placeholder="e.g. 120000" />
+                <label htmlFor="income_range" className="profile-label">Yearly Household Income</label>
+                <select id="income_range" name="income_range" value={form.income_range ?? ""} onChange={handleChange} className="profile-select">
+                  <option value="">Prefer not to say</option>
+                  {INCOME_RANGES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+                </select>
+              </div>
+              <div className="profile-field">
+                <label htmlFor="residence" className="profile-label">Where you live</label>
+                <select id="residence" name="residence" value={form.residence ?? ""} onChange={handleChange} className="profile-select">
+                  <option value="">Not given</option>
+                  <option value="rural">Village (rural)</option>
+                  <option value="urban">Town / city (urban)</option>
+                </select>
               </div>
             </div>
-
-            <div className="profile-checkbox-row">
-              <input id="has_aadhaar" name="has_aadhaar" type="checkbox" checked={form.has_aadhaar ?? false} onChange={handleChange} className="profile-checkbox" />
-              <label htmlFor="has_aadhaar" className="profile-checkbox-label">I have an Aadhaar card</label>
-            </div>
+            <p className="profile-hint">
+              All personal details are optional. Leave a field empty if you are not sure — it is
+              kept as &quot;unknown&quot;, never as &quot;no&quot;. We never ask for your Aadhaar number.
+            </p>
           </section>
 
           {/* Consent */}
@@ -275,7 +320,7 @@ export default function ProfilePage() {
               <h3 className="profile-consent-title">Data Consent</h3>
             </div>
             <p className="profile-consent-body">
-              Your personal information (state, age, income, crop, etc.) will be securely
+              Your details (state, land, crop, age, income range, etc.) will be securely
               stored to provide personalized government scheme recommendations. You can
               edit or delete your data at any time. We will never share your data with
               third parties without your permission.
@@ -293,10 +338,20 @@ export default function ProfilePage() {
                 I understand and agree to save my personal data for scheme recommendations.
               </label>
             </div>
+            <p className="profile-hint">
+              What is kept, why, which outside services receive some details, and how to download or delete them:{" "}
+              <a href="/privacy" className="underline">Privacy and data settings</a>. You can withdraw this consent there
+              at any time (your saved details are then deleted).
+            </p>
           </section>
 
           {/* Error / Success */}
           {error && <div className="profile-alert profile-alert--error" role="alert">⚠️ {error}</div>}
+          {conflict && (
+            <button type="button" onClick={reloadLatest} className="profile-cancel min-h-[44px]">
+              Reload latest profile
+            </button>
+          )}
           {saved && <div className="profile-alert profile-alert--success" role="status">✅ Profile saved successfully!</div>}
 
           {/* Submit */}
@@ -471,6 +526,8 @@ export default function ProfilePage() {
           box-shadow: 0 0 0 3px rgba(5,150,105,0.12);
           background: white;
         }
+        .profile-land-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .profile-hint { font-size: 0.78rem; color: #6b7280; margin-top: 0.35rem; }
         .profile-checkbox-row {
           display: flex;
           align-items: flex-start;

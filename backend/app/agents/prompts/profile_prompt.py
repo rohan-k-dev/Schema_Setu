@@ -36,6 +36,7 @@ FIELDS TO EXTRACT (all optional):
 - has_aadhaar: Whether they have an Aadhaar card (boolean)
 - occupation: Their occupation (e.g., farmer) — only if the user says what they do
 - age: Age in whole years (integer)
+- residence: "rural" or "urban" — only if the user says where they live (e.g. "in a village" → rural)
 
 Leave any field as null if the user has NOT explicitly provided that information. Always return the FarmerProfile object."""),
     ("placeholder", "{messages}")

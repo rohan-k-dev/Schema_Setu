@@ -69,6 +69,12 @@ def build_chat_response(
 
         if retrieval_metadata:
             response["retrieval_metadata"] = retrieval_metadata
+        if final_state.get("live_check"):
+            response["live_check"] = final_state["live_check"]
+        summary = (final_state.get("recommendation_sections") or {}).get("summary")
+        if summary and response_schemes:
+            response["recommendation_summary"] = {k: summary[k] for k in
+                                                  ("eligible", "alternatives", "not_matching", "stated_needs")}
 
     else:
         # Fallback to Phase 0 behavior for backward compatibility

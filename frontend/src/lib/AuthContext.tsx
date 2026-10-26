@@ -3,194 +3,119 @@
 /**
  * AuthContext — global authentication state for the SchemeSetu frontend.
  *
- * Provides:
- *  - Current auth user (farmer_id, email, full_name)
- *  - Access token (kept in memory; never in localStorage for XSS safety)
- *  - Refresh token (stored in localStorage with a short-expiry flag)
- *  - login(), register(), logout(), refreshSession() helpers
- *
- * Token strategy:
- *  - Access token → React state (in-memory, lost on refresh → use refreshSession)
- *  - Refresh token → localStorage (persisted, but rotate on every use)
- *
- * Session expiry:
- *  - An interval calls refreshSession() 2 minutes before access token expires.
- *  - If refresh fails, the user is signed out automatically.
+ * Session strategy (server-managed):
+ *  - The session token is an HttpOnly cookie set by the backend. JavaScript can
+ *    never read it, so a script injected into the page cannot steal it.
+ *  - Nothing is stored in localStorage. On load, GET /auth/session tells us
+ *    whether the cookie is still valid and returns the user + CSRF token.
+ *  - The CSRF token is kept in memory (lib/api.ts) and sent in the
+ *    X-CSRF-Token header on state-changing requests.
+ *  - Sessions expire on the server (idle and absolute limits) and are revoked on
+ *    logout or password change; a periodic check signs the UI out when that happens.
  */
 
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {
+  apiChangePassword,
+  apiGetSession,
   apiLogin,
   apiLogout,
-  apiRefreshToken,
+  apiLogoutAll,
   apiRegister,
+  setCsrfToken,
 } from "@/lib/api";
-import type { AuthUser, LoginPayload, RegisterPayload } from "@/lib/types";
+import type { AuthUser, LoginPayload, RegisterPayload, SessionResponse } from "@/lib/types";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface AuthState {
+interface AuthContextValue {
   user: AuthUser | null;
-  accessToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-}
-
-interface AuthContextValue extends AuthState {
   login: (payload: LoginPayload) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
+  /** Creates an unverified account; resolves with the server's "check your e-mail" message. */
+  register: (payload: RegisterPayload) => Promise<string>;
   logout: () => Promise<void>;
+  logoutAll: () => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  /** Re-checks the session with the server; returns false when signed out. */
   refreshSession: () => Promise<boolean>;
+  /** Call when an API request returned 401: clears the local signed-in state. */
+  handleUnauthorized: () => void;
 }
-
-// ─── Context ──────────────────────────────────────────────────────────────────
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const REFRESH_TOKEN_KEY = "schemesetu_refresh_token";
-const FARMER_ID_KEY = "schemesetu_farmer_id";
-
-// ─── Provider ─────────────────────────────────────────────────────────────────
+const SESSION_CHECK_MS = 5 * 60 * 1000;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Track the interval for auto-refresh
-  const refreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // ── Helpers ─────────────────────────────────────────────────────────────────
-
-  const clearSession = useCallback(() => {
-    setUser(null);
-    setAccessToken(null);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    localStorage.removeItem(FARMER_ID_KEY);
-    if (refreshIntervalRef.current) {
-      clearInterval(refreshIntervalRef.current);
-      refreshIntervalRef.current = null;
-    }
+  const applySession = useCallback((s: SessionResponse | null) => {
+    setCsrfToken(s?.csrf_token ?? null);
+    setUser(s?.user ?? null);
   }, []);
 
-  const persistSession = useCallback(
-    (tokens: { access_token: string; refresh_token: string; farmer_id: string; expires_in: number },
-     userInfo: AuthUser) => {
-      setAccessToken(tokens.access_token);
-      setUser(userInfo);
-      localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refresh_token);
-      localStorage.setItem(FARMER_ID_KEY, tokens.farmer_id);
-
-      // Schedule a silent refresh 2 minutes before the access token expires
-      if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
-      const refreshMs = Math.max((tokens.expires_in - 120) * 1000, 30_000);
-      refreshIntervalRef.current = setInterval(async () => {
-        const ok = await refreshSession();
-        if (!ok) clearSession();
-      }, refreshMs);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  // ── refreshSession ───────────────────────────────────────────────────────────
-
   const refreshSession = useCallback(async (): Promise<boolean> => {
-    const storedRefresh = localStorage.getItem(REFRESH_TOKEN_KEY);
-    if (!storedRefresh) return false;
     try {
-      const tokens = await apiRefreshToken(storedRefresh);
-      const userInfo: AuthUser = { farmer_id: tokens.farmer_id, email: "" };
-      persistSession(tokens, userInfo);
-      return true;
+      const s = await apiGetSession();
+      applySession(s);
+      return s !== null;
     } catch {
-      clearSession();
-      return false;
+      return false;          // network error: keep the current state, try again later
     }
-  }, [clearSession, persistSession]);
+  }, [applySession]);
 
-  // ── Boot: restore session from stored refresh token ─────────────────────────
-
+  // Restore the session from the cookie on load, then re-check periodically.
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const storedRefresh = localStorage.getItem(REFRESH_TOKEN_KEY);
-      if (storedRefresh) {
-        await refreshSession();
-      }
-      setIsLoading(false);
+      await refreshSession();
+      if (!cancelled) setIsLoading(false);
     })();
-    return () => {
-      if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
-    };
+    const id = setInterval(refreshSession, SESSION_CHECK_MS);
+    return () => { cancelled = true; clearInterval(id); };
   }, [refreshSession]);
 
-  // ── login ────────────────────────────────────────────────────────────────────
+  const login = useCallback(async (payload: LoginPayload) => {
+    applySession(await apiLogin(payload));
+  }, [applySession]);
 
-  const login = useCallback(
-    async (payload: LoginPayload) => {
-      const tokens = await apiLogin(payload);
-      const userInfo: AuthUser = {
-        farmer_id: tokens.farmer_id,
-        email: payload.email,
-      };
-      persistSession(tokens, userInfo);
-    },
-    [persistSession]
-  );
-
-  // ── register ─────────────────────────────────────────────────────────────────
-
-  const register = useCallback(
-    async (payload: RegisterPayload) => {
-      const tokens = await apiRegister(payload);
-      const userInfo: AuthUser = {
-        farmer_id: tokens.farmer_id,
-        email: payload.email,
-        full_name: payload.full_name,
-      };
-      persistSession(tokens, userInfo);
-    },
-    [persistSession]
-  );
-
-  // ── logout ───────────────────────────────────────────────────────────────────
+  const register = useCallback(async (payload: RegisterPayload) => apiRegister(payload), []);
 
   const logout = useCallback(async () => {
-    const storedRefresh = localStorage.getItem(REFRESH_TOKEN_KEY);
-    if (storedRefresh) {
-      try { await apiLogout(storedRefresh); } catch { /* best-effort */ }
-    }
-    clearSession();
-  }, [clearSession]);
+    try { await apiLogout(); } catch { /* the cookie may already be gone */ }
+    applySession(null);
+  }, [applySession]);
 
-  // ─────────────────────────────────────────────────────────────────────────────
+  const logoutAll = useCallback(async () => {
+    try { await apiLogoutAll(); } finally { applySession(null); }
+  }, [applySession]);
+
+  const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
+    applySession(await apiChangePassword(currentPassword, newPassword));
+  }, [applySession]);
+
+  const handleUnauthorized = useCallback(() => applySession(null), [applySession]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        accessToken,
         isLoading,
-        isAuthenticated: !!user && !!accessToken,
+        isAuthenticated: !!user,
         login,
         register,
         logout,
+        logoutAll,
+        changePassword,
         refreshSession,
+        handleUnauthorized,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);

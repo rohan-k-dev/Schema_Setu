@@ -121,5 +121,20 @@ def _scheme_row_to_result(scheme, retrieved_at: str, details: Dict[str, Any],
         source_url=scheme.official_url,
         source_trust=SourceTrust.OFFICIAL,
         retrieved_at=retrieved_at,
-        evidence={"source": "postgresql", "scheme_id": scheme.scheme_id, "targeting": targeted},
+        evidence={"source": "postgresql", "scheme_id": scheme.scheme_id, "targeting": targeted,
+                  "scheme_meta": _scheme_meta(scheme, details)},
     )
+
+
+def _scheme_meta(scheme, details: Dict[str, Any]) -> Dict[str, Any]:
+    """Stored attributes used to explain relevance and show provenance (docs/RECOMMENDATIONS.md)."""
+    verified = scheme.last_verified_at
+    return {
+        "level": scheme.level, "scheme_type": scheme.scheme_type, "ministry": scheme.ministry,
+        "states": list(details.get("states") or []), "crops": list(details.get("crops") or []),
+        "benefit_types": list(dict.fromkeys(getattr(b, "benefit_type", None) for b in details.get("benefits") or []
+                                            if getattr(b, "benefit_type", None))),
+        "application_url": scheme.application_url,
+        "last_verified_at": verified.isoformat() if hasattr(verified, "isoformat") else verified,
+        "needs_review": bool(scheme.needs_review), "possible_duplicate": bool(scheme.possible_duplicate),
+    }

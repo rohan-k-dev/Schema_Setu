@@ -90,6 +90,7 @@ class FarmerProfile(BaseModel):
     has_aadhaar: Optional[bool] = None
     occupation: Optional[str] = Field(None, description="e.g. farmer (required by several schemes)")
     age: Optional[int] = Field(None, description="Age in years (required by PM-KMY, PMJJBY, PMSBY)")
+    residence: Optional[str] = Field(None, description="rural or urban (required by MGNREGA)")
 
     # Critical fields for completeness checking (class constant, not a profile field)
     CRITICAL_FIELDS: ClassVar[List[str]] = ["state", "land_size_acres", "primary_crop"]
@@ -151,6 +152,18 @@ class FarmerProfile(BaseModel):
         if n is None or not (0 < n < 120):
             return None
         return int(n)
+
+    @field_validator("residence", mode="before")
+    @classmethod
+    def _v_residence(cls, v):
+        if v is None:
+            return None
+        s = str(v).strip().lower()
+        if s in ("rural", "village", "gaon", "gaanv", "gram"):
+            return "rural"
+        if s in ("urban", "city", "town", "shahar"):
+            return "urban"
+        return None
 
     @field_validator("has_aadhaar", mode="before")
     @classmethod
