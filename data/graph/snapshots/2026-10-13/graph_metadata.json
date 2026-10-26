@@ -1,0 +1,43 @@
+{
+  "graph_version": "1.0.0",
+  "corpus_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-13T18:40:40.602970+00:00",
+  "node_count": 179,
+  "edge_count": 356,
+  "node_type_counts": {
+    "COUNTRY": 1,
+    "SCHEME": 40,
+    "BENEFICIARY": 35,
+    "MINISTRY": 13,
+    "BENEFIT": 8,
+    "SOURCE": 5,
+    "DOCUMENT": 15,
+    "ELIGIBILITY_RULE": 25,
+    "CATEGORY": 2,
+    "OCCUPATION": 1,
+    "CROP": 18,
+    "GENDER": 1,
+    "STATE": 14,
+    "DEPARTMENT": 1
+  },
+  "edge_type_counts": {
+    "GLOBAL_APPLICABILITY": 33,
+    "TARGETS_BENEFICIARY": 78,
+    "OFFERED_BY_MINISTRY": 40,
+    "PROVIDES_BENEFIT": 40,
+    "HAS_SOURCE": 40,
+    "REQUIRES_DOCUMENT": 41,
+    "HAS_ELIGIBILITY_RULE": 25,
+    "TARGETS_CATEGORY": 2,
+    "TARGETS_OCCUPATION": 8,
+    "TARGETS_CROP": 18,
+    "TARGETS_GENDER": 1,
+    "APPLIES_TO_STATE": 14,
+    "PART_OF": 14,
+    "BELONGS_TO_DEPARTMENT": 2
+  },
+  "source_corpus_hash": "",
+  "graph_hash": "9d21030841b02734",
+  "builder_version": "1.0.0"
+}

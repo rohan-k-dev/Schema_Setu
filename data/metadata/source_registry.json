@@ -1,0 +1,86 @@
+[
+    {
+        "source_id": "MYSCHEME_GOV",
+        "source_name": "MyScheme.gov.in",
+        "organization": "Government of India - Ministry of Electronics and IT",
+        "source_type": "OFFICIAL_SCHEME_PORTAL",
+        "base_url": "https://www.myscheme.gov.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "National portal aggregating government schemes across ministries"
+    },
+    {
+        "source_id": "PMKISAN_GOV",
+        "source_name": "PM-KISAN Official Portal",
+        "organization": "Ministry of Agriculture and Farmers Welfare",
+        "source_type": "OFFICIAL_CENTRAL",
+        "base_url": "https://pmkisan.gov.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "Official PM-KISAN scheme portal"
+    },
+    {
+        "source_id": "PMFBY_GOV",
+        "source_name": "PMFBY Official Portal",
+        "organization": "Ministry of Agriculture and Farmers Welfare",
+        "source_type": "OFFICIAL_CENTRAL",
+        "base_url": "https://pmfby.gov.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "Official Pradhan Mantri Fasal Bima Yojana portal"
+    },
+    {
+        "source_id": "AGRICOOP_GOV",
+        "source_name": "Department of Agriculture and Cooperation",
+        "organization": "Ministry of Agriculture and Farmers Welfare",
+        "source_type": "OFFICIAL_CENTRAL",
+        "base_url": "https://agricoop.nic.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "Central agriculture department with scheme details"
+    },
+    {
+        "source_id": "PIB_GOV",
+        "source_name": "Press Information Bureau",
+        "organization": "Government of India",
+        "source_type": "OFFICIAL_CENTRAL",
+        "base_url": "https://pib.gov.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "Official press releases about government schemes"
+    },
+    {
+        "source_id": "INDIA_GOV",
+        "source_name": "India.gov.in National Portal",
+        "organization": "Government of India",
+        "source_type": "OFFICIAL_CENTRAL",
+        "base_url": "https://www.india.gov.in",
+        "official_status": "official",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "National government portal with scheme information"
+    },
+    {
+        "source_id": "VIKASPEDIA",
+        "source_name": "Vikaspedia",
+        "organization": "Ministry of Electronics and IT",
+        "source_type": "SECONDARY",
+        "base_url": "https://vikaspedia.in",
+        "official_status": "government_secondary",
+        "allowed_use": "public_information",
+        "retrieval_method": "manual",
+        "last_checked": "2026-09-26",
+        "notes": "Government-run knowledge portal with scheme descriptions"
+    }
+]

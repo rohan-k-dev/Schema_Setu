@@ -1,0 +1,40 @@
+{
+  "dataset": "multilingual",
+  "version": "multilingual_v1",
+  "created": "2026-10-13",
+  "label_method": "Native-language utterances and their English meanings were written by hand. In OFFLINE mode the Sarvam translator is replaced by a lookup table built from these pairs, so offline results measure the pipeline's language invariance (same meaning -> same profile, candidates and eligibility; translation used for presentation only; structured facts never sent through translation). They do NOT measure Sarvam translation quality, which requires --live mode.",
+  "note_on_existing_data": "data/evaluation/multilingual_cases.json (8 cases, Phase 6) is kept unchanged for the Phase 6 tests; this file is the Phase 7 canonical multilingual dataset.",
+  "parity_groups": {
+    "G1": {"meaning": "I am a farmer from Karnataka. I have 2 acres of land and I grow ragi.", "extraction": {"state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi", "occupation": "farmer"}},
+    "G2": {"meaning": "I am a farmer from Maharashtra with 5 acres of cotton.", "extraction": {"state": "Maharashtra", "land_size_acres": 5, "primary_crop": "cotton", "occupation": "farmer"}},
+    "G3": {"meaning": "I have 2 acres of land.", "extraction": {"land_size_acres": 2}},
+    "G4": {"meaning": "My annual income is one and a half lakh rupees.", "extraction": {"annual_income": 150000}}
+  },
+  "cases": [
+    {"case_id": "ML01", "group": "G1", "language": "en", "input": "I am a farmer from Karnataka. I have 2 acres of land and I grow ragi."},
+    {"case_id": "ML02", "group": "G1", "language": "hi", "input": "मैं कर्नाटक का किसान हूँ। मेरे पास 2 एकड़ ज़मीन है और मैं रागी उगाता हूँ।"},
+    {"case_id": "ML03", "group": "G1", "language": "kn", "input": "ನಾನು ಕರ್ನಾಟಕದ ರೈತ. ನನಗೆ 2 ಎಕರೆ ಜಮೀನು ಇದೆ ಮತ್ತು ನಾನು ರಾಗಿ ಬೆಳೆಯುತ್ತೇನೆ."},
+    {"case_id": "ML04", "group": "G1", "language": "ta", "input": "நான் கர்நாடகாவைச் சேர்ந்த விவசாயி. எனக்கு 2 ஏக்கர் நிலம் உள்ளது, நான் ராகி பயிரிடுகிறேன்."},
+    {"case_id": "ML05", "group": "G1", "language": "te", "input": "నేను కర్ణాటకకు చెందిన రైతును. నాకు 2 ఎకరాల భూమి ఉంది, నేను రాగి పండిస్తాను."},
+    {"case_id": "ML06", "group": "G1", "language": "mr", "input": "मी कर्नाटकातील शेतकरी आहे. माझ्याकडे 2 एकर जमीन आहे आणि मी नाचणी पिकवतो."},
+    {"case_id": "ML07", "group": "G1", "language": "bn", "input": "আমি কর্ণাটকের একজন কৃষক। আমার 2 একর জমি আছে এবং আমি রাগি চাষ করি।"},
+    {"case_id": "ML08", "group": "G1", "language": "gu", "input": "હું કર્ણાટકનો ખેડૂત છું. મારી પાસે 2 એકર જમીન છે અને હું રાગી ઉગાડું છું."},
+    {"case_id": "ML09", "group": "G1", "language": "od", "input": "ମୁଁ କର୍ଣ୍ଣାଟକର ଜଣେ କୃଷକ। ମୋର 2 ଏକର ଜମି ଅଛି ଏବଂ ମୁଁ ମାଣ୍ଡିଆ ଚାଷ କରେ।"},
+    {"case_id": "ML10", "group": "G1", "language": "pa", "input": "ਮੈਂ ਕਰਨਾਟਕ ਦਾ ਕਿਸਾਨ ਹਾਂ। ਮੇਰੇ ਕੋਲ 2 ਏਕੜ ਜ਼ਮੀਨ ਹੈ ਅਤੇ ਮੈਂ ਰਾਗੀ ਉਗਾਉਂਦਾ ਹਾਂ।"},
+    {"case_id": "ML11", "group": "G1", "language": "ml", "input": "ഞാൻ കർണാടകയിലെ ഒരു കർഷകനാണ്. എനിക്ക് 2 ഏക്കർ ഭൂമിയുണ്ട്, ഞാൻ റാഗി കൃഷി ചെയ്യുന്നു."},
+    {"case_id": "ML12", "group": "G2", "language": "en", "input": "I am a farmer from Maharashtra with 5 acres of cotton."},
+    {"case_id": "ML13", "group": "G2", "language": "hi", "input": "मैं महाराष्ट्र का किसान हूँ, मेरे पास 5 एकड़ कपास है।"},
+    {"case_id": "ML14", "group": "G2", "language": "mr", "input": "मी महाराष्ट्रातील शेतकरी आहे, माझ्याकडे 5 एकर कापूस आहे."},
+    {"case_id": "ML15", "group": "G2", "language": "gu", "input": "હું મહારાષ્ટ્રનો ખેડૂત છું, મારી પાસે 5 એકર કપાસ છે."},
+    {"case_id": "ML16", "group": "G3", "language": "hi", "input": "मेरे पास दो एकड़ ज़मीन है।"},
+    {"case_id": "ML17", "group": "G3", "language": "kn", "input": "ನನಗೆ ಎರಡು ಎಕರೆ ಜಮೀನು ಇದೆ."},
+    {"case_id": "ML18", "group": "G3", "language": "te", "input": "నాకు రెండు ఎకరాల భూమి ఉంది."},
+    {"case_id": "ML19", "group": "G3", "language": "ta", "input": "எனக்கு இரண்டு ஏக்கர் நிலம் உள்ளது."},
+    {"case_id": "ML20", "group": "G3", "language": "mr", "input": "माझ्याकडे दोन एकर जमीन आहे."},
+    {"case_id": "ML21", "group": "G4", "language": "hi", "input": "मेरी सालाना आय डेढ़ लाख रुपये है।"}
+  ],
+  "failure_cases": [
+    {"case_id": "MLF1", "language": "hi", "input": "मैं कर्नाटक का किसान हूँ।", "translator": "fail_both", "expect": "No crash; untranslated text goes to the pipeline; nothing is fabricated; reply stays in English"},
+    {"case_id": "MLF2", "language": "kn", "input": "ನಾನು ಕರ್ನಾಟಕದ ರೈತ. ನನಗೆ 2 ಎಕರೆ ಜಮೀನು ಇದೆ ಮತ್ತು ನಾನು ರಾಗಿ ಬೆಳೆಯುತ್ತೇನೆ.", "translator": "fail_outbound", "expect": "Inbound works; outbound failure keeps the English reply; structured schemes unchanged"}
+  ]
+}

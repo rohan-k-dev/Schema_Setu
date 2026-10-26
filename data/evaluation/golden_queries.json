@@ -1,0 +1,113 @@
+[
+    {
+        "case_id": "GQ_001",
+        "description": "Basic PM-KISAN lookup by name",
+        "query": "PM Kisan",
+        "expected_scheme_ids": ["PM_KISAN"],
+        "search_type": "name"
+    },
+    {
+        "case_id": "GQ_002",
+        "description": "Alias-based lookup",
+        "query": "Crop Insurance",
+        "expected_scheme_ids": ["PMFBY"],
+        "search_type": "alias"
+    },
+    {
+        "case_id": "GQ_003",
+        "description": "State-specific search - Karnataka farmer",
+        "profile": {"state": "Karnataka"},
+        "expected_contains": ["PM_KISAN", "STATE_KA_KRUSHAK"],
+        "search_type": "state"
+    },
+    {
+        "case_id": "GQ_004",
+        "description": "Crop-specific search - ragi grower",
+        "profile": {"primary_crop": "ragi"},
+        "expected_contains": ["STATE_KA_KRUSHAK"],
+        "search_type": "crop"
+    },
+    {
+        "case_id": "GQ_005",
+        "description": "Combined state + crop search - Karnataka ragi farmer",
+        "profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2},
+        "expected_contains": ["PM_KISAN", "STATE_KA_KRUSHAK"],
+        "search_type": "combined"
+    },
+    {
+        "case_id": "GQ_006",
+        "description": "Multiple condition scheme - PM-KMY age+land",
+        "profile": {"age": 30, "land_size_acres": 3},
+        "expected_scheme_ids": ["PM_KMY"],
+        "search_type": "eligibility_check",
+        "expected_rules": [
+            {"field": "land_size_acres", "operator": "LTE", "value": 5},
+            {"field": "age", "operator": "BETWEEN", "value": [18, 40]}
+        ]
+    },
+    {
+        "case_id": "GQ_007",
+        "description": "OR condition - category SC or ST",
+        "profile": {"category": "SC"},
+        "note": "Future eligibility engine should match schemes with category IN [SC, ST]",
+        "search_type": "eligibility_rule"
+    },
+    {
+        "case_id": "GQ_008",
+        "description": "Missing field handling - unknown income",
+        "profile": {"state": "Karnataka", "land_size_acres": 2, "income": null},
+        "note": "Schemes with unknown income requirement should still be returned as candidates",
+        "search_type": "missing_field"
+    },
+    {
+        "case_id": "GQ_009",
+        "description": "Women-specific scheme",
+        "profile": {"gender": "female"},
+        "expected_contains": ["MKSP"],
+        "search_type": "gender"
+    },
+    {
+        "case_id": "GQ_010",
+        "description": "NE region specific scheme",
+        "profile": {"state": "Assam"},
+        "expected_contains": ["MOVCDNER"],
+        "search_type": "state"
+    },
+    {
+        "case_id": "GQ_011",
+        "description": "Duplicate detection case",
+        "scheme_id": "PMKISAN_MAN_DHAN",
+        "expected_flags": {"possible_duplicate": true, "needs_review": true},
+        "search_type": "duplicate_check"
+    },
+    {
+        "case_id": "GQ_012",
+        "description": "Scheme by stable ID",
+        "query_id": "PMFBY",
+        "expected_name": "Pradhan Mantri Fasal Bima Yojana",
+        "search_type": "id_lookup"
+    },
+    {
+        "case_id": "GQ_013",
+        "description": "Central scheme with no state restriction",
+        "query_id": "PM_KISAN",
+        "expected_applicable_states": null,
+        "note": "null means all states",
+        "search_type": "state_scope"
+    },
+    {
+        "case_id": "GQ_014",
+        "description": "Oilseed crop specific scheme",
+        "profile": {"primary_crop": "groundnut"},
+        "expected_contains": ["NMOOP"],
+        "search_type": "crop"
+    },
+    {
+        "case_id": "GQ_015",
+        "description": "Full profile - Karnataka Mandya ragi 2 acres",
+        "profile": {"state": "Karnataka", "district": "Mandya", "primary_crop": "ragi", "land_size_acres": 2},
+        "expected_min_results": 5,
+        "note": "Should return central + Karnataka schemes applicable to ragi/small farmer",
+        "search_type": "full_profile"
+    }
+]

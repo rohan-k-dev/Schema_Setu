@@ -1,0 +1,127 @@
+[
+    {
+        "scheme_id": "TEST_SCHEME_001",
+        "name": "Test Agriculture Scheme",
+        "short_name": "TAS",
+        "aliases": ["TAS", "Test Ag Scheme"],
+        "description": "A test scheme for database integration testing.",
+        "ministry": "Ministry of Test",
+        "level": "central",
+        "status": "ACTIVE",
+        "eligibility_summary": "All farmers with land less than 5 acres.",
+        "target_beneficiaries": ["farmers", "small farmers"],
+        "applicable_states": null,
+        "applicable_crops": null,
+        "benefits": [
+            {"type": "financial_assistance", "description": "Rs. 6000 per year", "amount": "6000", "currency": "INR"}
+        ],
+        "eligibility_rules": [
+            {"field": "land_size_acres", "operator": "LTE", "value": 5, "logical_group": "AND", "required": true, "source_text": "Land <= 5 acres"}
+        ],
+        "required_documents": [
+            {"name": "Aadhaar Card", "mandatory": true},
+            {"name": "Land Record", "mandatory": true}
+        ],
+        "application_steps": [
+            {"step_number": 1, "description": "Visit portal", "mode": "online"}
+        ],
+        "source_records": [
+            {"source_id": "TEST_SOURCE", "url": "https://test.gov.in/tas", "source_type": "OFFICIAL_CENTRAL", "retrieved_at": "2026-09-27"}
+        ],
+        "official_url": "https://test.gov.in/tas",
+        "data_version": "1.0",
+        "last_verified_at": "2026-09-27"
+    },
+    {
+        "scheme_id": "TEST_SCHEME_002",
+        "name": "Test State Scheme Karnataka",
+        "short_name": "TSSK",
+        "aliases": ["TSSK", "Karnataka Test"],
+        "description": "A state-specific test scheme for Karnataka.",
+        "ministry": "State Agriculture Dept",
+        "level": "state",
+        "status": "ACTIVE",
+        "eligibility_summary": "Karnataka farmers growing ragi.",
+        "target_beneficiaries": ["farmers"],
+        "applicable_states": ["Karnataka"],
+        "applicable_crops": ["ragi", "finger millet"],
+        "benefits": [
+            {"type": "subsidy", "description": "50% subsidy on seeds", "source_text": "Subsidy for ragi seeds"}
+        ],
+        "eligibility_rules": [
+            {"field": "state", "operator": "EQ", "value": "Karnataka", "logical_group": "AND", "required": true},
+            {"field": "primary_crop", "operator": "IN", "value": ["ragi", "finger millet"], "logical_group": "AND", "required": true}
+        ],
+        "required_documents": [
+            {"name": "State ID", "mandatory": true}
+        ],
+        "source_records": [
+            {"source_id": "TEST_SOURCE", "url": "https://test.ka.gov.in/tssk", "source_type": "OFFICIAL_STATE", "retrieved_at": "2026-09-27"}
+        ],
+        "official_url": "https://test.ka.gov.in/tssk",
+        "data_version": "1.0",
+        "last_verified_at": "2026-09-27"
+    },
+    {
+        "scheme_id": "TEST_SCHEME_003",
+        "name": "Test Crop Insurance",
+        "aliases": ["TCI", "Test Insurance"],
+        "description": "Test crop insurance scheme.",
+        "level": "central",
+        "status": "ACTIVE",
+        "eligibility_summary": "All farmers.",
+        "target_beneficiaries": ["farmers"],
+        "applicable_states": null,
+        "applicable_crops": ["rice", "wheat", "ragi"],
+        "benefits": [
+            {"type": "insurance", "description": "Crop insurance coverage"}
+        ],
+        "eligibility_rules": [
+            {"field": "occupation", "operator": "EQ", "value": "farmer", "logical_group": "AND", "required": true}
+        ],
+        "source_records": [
+            {"source_id": "TEST_SOURCE", "source_type": "OFFICIAL_CENTRAL", "retrieved_at": "2026-09-27"}
+        ],
+        "data_version": "1.0"
+    },
+    {
+        "scheme_id": "TEST_SCHEME_004",
+        "name": "Test OR Logic Scheme",
+        "aliases": ["TOLS"],
+        "description": "Test scheme with OR eligibility logic.",
+        "level": "central",
+        "status": "ACTIVE",
+        "eligibility_summary": "SC or ST farmers.",
+        "target_beneficiaries": ["SC farmers", "ST farmers"],
+        "benefits": [
+            {"type": "financial_assistance", "description": "Special assistance for SC/ST"}
+        ],
+        "eligibility_rules": [
+            {"field": "category", "operator": "EQ", "value": "SC", "logical_group": "OR", "required": false},
+            {"field": "category", "operator": "EQ", "value": "ST", "logical_group": "OR", "required": false}
+        ],
+        "source_records": [
+            {"source_id": "TEST_SOURCE", "source_type": "OFFICIAL_CENTRAL", "retrieved_at": "2026-09-27"}
+        ],
+        "data_version": "1.0"
+    },
+    {
+        "scheme_id": "TEST_SCHEME_005",
+        "name": "Test Unknown Rule Scheme",
+        "aliases": ["TURS"],
+        "description": "Test scheme with UNKNOWN operator rule.",
+        "level": "central",
+        "status": "UNKNOWN",
+        "eligibility_summary": "Eligibility criteria not clearly defined in source.",
+        "benefits": [
+            {"type": "unknown", "description": "Benefits not specified"}
+        ],
+        "eligibility_rules": [
+            {"field": "income", "operator": "UNKNOWN", "value": null, "logical_group": "AND", "required": false, "source_text": "Income requirement unclear"}
+        ],
+        "source_records": [
+            {"source_id": "TEST_SOURCE", "source_type": "SECONDARY", "retrieved_at": "2026-09-27"}
+        ],
+        "data_version": "1.0"
+    }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "case_id": "ml_01_hindi_state",
+    "language": "hi",
+    "input": "मैं कर्नाटक से हूँ",
+    "expected_profile": {
+      "state": "Karnataka"
+    },
+    "description": "Hindi input for state extraction"
+  },
+  {
+    "case_id": "ml_02_kannada_state",
+    "language": "kn",
+    "input": "ನಾನು ಕರ್ನಾಟಕದಿಂದ ಬಂದಿದ್ದೇನೆ",
+    "expected_profile": {
+      "state": "Karnataka"
+    },
+    "description": "Kannada input for state extraction"
+  },
+  {
+    "case_id": "ml_03_tamil_crop",
+    "language": "ta",
+    "input": "நான் நெல் பயிர் செய்கிறேன்",
+    "expected_profile": {
+      "primary_crop": "rice"
+    },
+    "description": "Tamil input for crop extraction"
+  },
+  {
+    "case_id": "ml_04_telugu_land",
+    "language": "te",
+    "input": "నాకు రెండు ఎకరాల భూమి ఉంది",
+    "expected_profile": {
+      "land_size_acres": 2
+    },
+    "description": "Telugu input for land size extraction"
+  },
+  {
+    "case_id": "ml_05_marathi_full",
+    "language": "mr",
+    "input": "मी महाराष्ट्रातून आहे, माझ्याकडे 3 एकर जमीन आहे",
+    "expected_profile": {
+      "state": "Maharashtra",
+      "land_size_acres": 3
+    },
+    "description": "Marathi input for state + land extraction"
+  },
+  {
+    "case_id": "ml_06_hindi_mixed",
+    "language": "hi",
+    "input": "2 acre land hai aur ragi grow karta hoon",
+    "expected_profile": {
+      "land_size_acres": 2,
+      "primary_crop": "ragi"
+    },
+    "description": "Hindi-English mixed input (§14)"
+  },
+  {
+    "case_id": "ml_07_bengali_state",
+    "language": "bn",
+    "input": "আমি পশ্চিমবঙ্গ থেকে এসেছি",
+    "expected_profile": {
+      "state": "West Bengal"
+    },
+    "description": "Bengali input for state extraction"
+  },
+  {
+    "case_id": "ml_08_gujarati_income",
+    "language": "gu",
+    "input": "મારી વાર્ષિક આવક 1.5 લાખ છે",
+    "expected_profile": {
+      "annual_income": 150000
+    },
+    "description": "Gujarati input for income extraction"
+  }
+]

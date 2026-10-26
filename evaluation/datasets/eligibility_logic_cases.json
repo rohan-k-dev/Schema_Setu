@@ -1,0 +1,127 @@
+{
+  "dataset": "eligibility_logic",
+  "version": "eligibility_logic_v1",
+  "created": "2026-10-13",
+  "label_method": "Kleene strong three-valued logic truth tables (PASS=true, FAIL=false, UNKNOWN=unknown), written by hand. Group semantics follow the documented Phase 5 design: rules in the same OR group combine with OR, groups combine with AND.",
+  "truth_table": [
+    {"op": "AND", "inputs": ["PASS", "PASS"], "expected": "PASS"},
+    {"op": "AND", "inputs": ["PASS", "UNKNOWN"], "expected": "UNKNOWN"},
+    {"op": "AND", "inputs": ["PASS", "FAIL"], "expected": "FAIL"},
+    {"op": "AND", "inputs": ["UNKNOWN", "UNKNOWN"], "expected": "UNKNOWN"},
+    {"op": "AND", "inputs": ["FAIL", "UNKNOWN"], "expected": "FAIL"},
+    {"op": "OR", "inputs": ["PASS", "FAIL"], "expected": "PASS"},
+    {"op": "OR", "inputs": ["PASS", "UNKNOWN"], "expected": "PASS"},
+    {"op": "OR", "inputs": ["FAIL", "UNKNOWN"], "expected": "UNKNOWN"},
+    {"op": "OR", "inputs": ["FAIL", "FAIL"], "expected": "FAIL"},
+    {"op": "OR", "inputs": ["UNKNOWN", "UNKNOWN"], "expected": "UNKNOWN"}
+  ],
+  "nested_cases": [
+    {
+      "case_id": "N01", "expression": "A AND B AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "AND"},
+        {"rule_id": "B", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND"},
+        {"rule_id": "C", "field_name": "category", "operator": "IN", "value_json": ["sc", "st"], "logical_group": "OR"},
+        {"rule_id": "D", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "OR"}
+      ],
+      "profile": {"state": "Karnataka", "land_size_acres": 2, "category": "General", "gender": "female"},
+      "expected_status": "ELIGIBLE", "description": "A,B PASS; C FAIL, D PASS -> PASS"
+    },
+    {
+      "case_id": "N02", "expression": "A AND B AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "AND"},
+        {"rule_id": "B", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND"},
+        {"rule_id": "C", "field_name": "category", "operator": "IN", "value_json": ["sc", "st"], "logical_group": "OR"},
+        {"rule_id": "D", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "OR"}
+      ],
+      "profile": {"state": "Karnataka", "land_size_acres": 2, "category": "General", "gender": "male"},
+      "expected_status": "NOT_ELIGIBLE", "description": "C FAIL, D FAIL -> OR FAIL"
+    },
+    {
+      "case_id": "N03", "expression": "A AND B AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "AND"},
+        {"rule_id": "B", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND"},
+        {"rule_id": "C", "field_name": "category", "operator": "IN", "value_json": ["sc", "st"], "logical_group": "OR"},
+        {"rule_id": "D", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "OR"}
+      ],
+      "profile": {"state": "Karnataka", "land_size_acres": 2, "category": "General"},
+      "expected_status": "NEEDS_MORE_INFORMATION", "description": "C FAIL, D UNKNOWN -> OR UNKNOWN"
+    },
+    {
+      "case_id": "N04", "expression": "A AND B AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "AND"},
+        {"rule_id": "B", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND"},
+        {"rule_id": "C", "field_name": "category", "operator": "IN", "value_json": ["sc", "st"], "logical_group": "OR"},
+        {"rule_id": "D", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "OR"}
+      ],
+      "profile": {"state": "Karnataka", "land_size_acres": 9, "category": "SC"},
+      "expected_status": "NOT_ELIGIBLE", "description": "B FAIL dominates OR PASS"
+    },
+    {
+      "case_id": "N05", "expression": "(A OR B) AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "OR_region"},
+        {"rule_id": "B", "field_name": "state", "operator": "EQ", "value_json": "maharashtra", "logical_group": "OR_region"},
+        {"rule_id": "C", "field_name": "primary_crop", "operator": "EQ", "value_json": "ragi", "logical_group": "OR_crop"},
+        {"rule_id": "D", "field_name": "primary_crop", "operator": "EQ", "value_json": "maize", "logical_group": "OR_crop"}
+      ],
+      "profile": {"state": "Maharashtra", "primary_crop": "maize"},
+      "expected_status": "ELIGIBLE", "description": "B PASS, D PASS"
+    },
+    {
+      "case_id": "N06", "expression": "(A OR B) AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "OR_region"},
+        {"rule_id": "B", "field_name": "state", "operator": "EQ", "value_json": "maharashtra", "logical_group": "OR_region"},
+        {"rule_id": "C", "field_name": "primary_crop", "operator": "EQ", "value_json": "ragi", "logical_group": "OR_crop"},
+        {"rule_id": "D", "field_name": "primary_crop", "operator": "EQ", "value_json": "maize", "logical_group": "OR_crop"}
+      ],
+      "profile": {"state": "Kerala", "primary_crop": "maize"},
+      "expected_status": "NOT_ELIGIBLE", "description": "Region group FAIL"
+    },
+    {
+      "case_id": "N07", "expression": "(A OR B) AND (C OR D)",
+      "rules": [
+        {"rule_id": "A", "field_name": "state", "operator": "EQ", "value_json": "karnataka", "logical_group": "OR_region"},
+        {"rule_id": "B", "field_name": "state", "operator": "EQ", "value_json": "maharashtra", "logical_group": "OR_region"},
+        {"rule_id": "C", "field_name": "primary_crop", "operator": "EQ", "value_json": "ragi", "logical_group": "OR_crop"},
+        {"rule_id": "D", "field_name": "primary_crop", "operator": "EQ", "value_json": "maize", "logical_group": "OR_crop"}
+      ],
+      "profile": {"state": "Karnataka"},
+      "expected_status": "NEEDS_MORE_INFORMATION", "description": "Crop group UNKNOWN"
+    },
+    {
+      "case_id": "N08", "expression": "A AND B where the AND group is named with a word containing 'or'",
+      "rules": [
+        {"rule_id": "A", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "land_for_smallholders"},
+        {"rule_id": "B", "field_name": "land_size_acres", "operator": "GTE", "value_json": 1, "logical_group": "land_for_smallholders"}
+      ],
+      "profile": {"land_size_acres": 9},
+      "expected_status": "NOT_ELIGIBLE", "description": "A non-OR group name must not be treated as OR because it contains the letters 'or' (FOR)"
+    }
+  ],
+  "missing_info_case": {
+    "case_id": "M01",
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "EQ", "value_json": "karnataka"},
+      {"rule_id": "R2", "field_name": "primary_crop", "operator": "EQ", "value_json": "ragi"},
+      {"rule_id": "R3", "field_name": "annual_income", "operator": "LTE", "value_json": 200000}
+    ],
+    "profile_before": {"state": "Karnataka", "primary_crop": "ragi"},
+    "expected_before": "NEEDS_MORE_INFORMATION",
+    "profile_after": {"state": "Karnataka", "primary_crop": "ragi", "annual_income": 150000},
+    "expected_after": "ELIGIBLE"
+  },
+  "conflict_case": {
+    "case_id": "CF01",
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5},
+      {"rule_id": "R2", "field_name": "land_size_acres", "operator": "GTE", "value_json": 10}
+    ],
+    "profiles": [{"land_size_acres": 2}, {"land_size_acres": 12}, {}],
+    "expected_status": "UNVERIFIABLE"
+  }
+}

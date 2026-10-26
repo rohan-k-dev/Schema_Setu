@@ -1,0 +1,352 @@
+[
+  {
+    "test_id": "golden_01_all_pass",
+    "description": "All rules PASS — ELIGIBLE",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2, "annual_income": 150000},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true, "source_text": "For Karnataka farmers"},
+      {"rule_id": "R2", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi", "maize"], "logical_group": "AND", "required": true, "source_text": "Ragi or Maize growers"},
+      {"rule_id": "R3", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true, "source_text": "Up to 5 acres"},
+      {"rule_id": "R4", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true, "source_text": "Income up to 2 lakh"}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "PASS", "R3": "PASS", "R4": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_02_one_fail",
+    "description": "One rule FAIL — NOT_ELIGIBLE",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 10, "annual_income": 150000},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true, "source_text": "Up to 5 acres"}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_03_multiple_fail",
+    "description": "Multiple rules FAIL",
+    "profile": {"state": "Maharashtra", "land_size_acres": 10},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL", "R2": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_04_one_unknown",
+    "description": "One rule UNKNOWN — NEEDS_MORE_INFORMATION",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NEEDS_MORE_INFORMATION",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "UNKNOWN"},
+    "expected_missing": ["annual_income"]
+  },
+  {
+    "test_id": "golden_05_multiple_unknown",
+    "description": "Multiple rules UNKNOWN",
+    "profile": {"state": "Karnataka"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true},
+      {"rule_id": "R3", "field_name": "category", "operator": "IN", "value_json": ["SC", "ST"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NEEDS_MORE_INFORMATION",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "UNKNOWN", "R3": "UNKNOWN"},
+    "expected_missing": ["annual_income", "category"]
+  },
+  {
+    "test_id": "golden_06_pass_and_unknown",
+    "description": "PASS + UNKNOWN mix",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi"], "logical_group": "AND", "required": true},
+      {"rule_id": "R3", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true},
+      {"rule_id": "R4", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NEEDS_MORE_INFORMATION",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "PASS", "R3": "PASS", "R4": "UNKNOWN"},
+    "expected_missing": ["annual_income"]
+  },
+  {
+    "test_id": "golden_07_fail_and_unknown",
+    "description": "FAIL + UNKNOWN — FAIL dominates in AND",
+    "profile": {"state": "Maharashtra"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL", "R2": "UNKNOWN"},
+    "expected_missing": ["annual_income"]
+  },
+  {
+    "test_id": "golden_08_and_logic",
+    "description": "AND logic — all must pass",
+    "profile": {"state": "Karnataka", "primary_crop": "rice"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_09_or_logic",
+    "description": "OR logic — any can pass",
+    "profile": {"category": "ST"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "category", "operator": "IN", "value_json": ["SC"], "logical_group": "category_or", "required": true},
+      {"rule_id": "R2", "field_name": "category", "operator": "IN", "value_json": ["ST"], "logical_group": "category_or", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL", "R2": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_10_nested_and_or",
+    "description": "Nested AND/OR — state AND (SC or ST)",
+    "profile": {"state": "Karnataka", "category": "OBC"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "category", "operator": "IN", "value_json": ["SC"], "logical_group": "category_or", "required": true},
+      {"rule_id": "R3", "field_name": "category", "operator": "IN", "value_json": ["ST"], "logical_group": "category_or", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "FAIL", "R3": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_11_numeric_lte",
+    "description": "Numeric LTE comparison",
+    "profile": {"land_size_acres": 3},
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_12_numeric_gte",
+    "description": "Numeric GTE comparison",
+    "profile": {"land_size_acres": 3},
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "GTE", "value_json": 5, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_13_between",
+    "description": "BETWEEN operator",
+    "profile": {"land_size_acres": 3},
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "BETWEEN", "value_json": [1, 5], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_14_in_operator",
+    "description": "IN operator — value in list",
+    "profile": {"state": "Karnataka"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka", "Tamil Nadu"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_15_not_in",
+    "description": "NOT_IN operator — exclusion",
+    "profile": {"category": "General"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "category", "operator": "NOT_IN", "value_json": ["General"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_16_boolean",
+    "description": "Boolean operator — has_aadhaar",
+    "profile": {"has_aadhaar": true},
+    "rules": [
+      {"rule_id": "R1", "field_name": "has_aadhaar", "operator": "BOOLEAN", "value_json": true, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_17_state_pass",
+    "description": "State evaluation — exact match",
+    "profile": {"state": "Karnataka"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_18_district",
+    "description": "District evaluation",
+    "profile": {"district": "Mandya"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "district", "operator": "IN", "value_json": ["Mandya", "Mysuru"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_19_crop",
+    "description": "Crop evaluation",
+    "profile": {"primary_crop": "ragi"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi", "maize"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_20_category",
+    "description": "Category evaluation — OBC not in SC/ST",
+    "profile": {"category": "OBC"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "category", "operator": "IN", "value_json": ["SC", "ST"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_21_gender",
+    "description": "Gender evaluation",
+    "profile": {"gender": "female"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_22_occupation",
+    "description": "Occupation evaluation",
+    "profile": {"occupation": "farmer"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "occupation", "operator": "IN", "value_json": ["farmer", "agricultural labourer"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_23_aadhaar_unknown",
+    "description": "Aadhaar unknown — UNKNOWN not FAIL",
+    "profile": {},
+    "rules": [
+      {"rule_id": "R1", "field_name": "has_aadhaar", "operator": "BOOLEAN", "value_json": true, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NEEDS_MORE_INFORMATION",
+    "expected_rule_statuses": {"R1": "UNKNOWN"},
+    "expected_missing": ["has_aadhaar"]
+  },
+  {
+    "test_id": "golden_24_malformed_rule",
+    "description": "Malformed rule — unknown operator",
+    "profile": {"state": "Karnataka"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "SOMETHING_UNKNOWN", "value_json": "Karnataka", "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NEEDS_MORE_INFORMATION",
+    "expected_rule_statuses": {"R1": "UNKNOWN"},
+    "expected_missing": ["state"]
+  },
+  {
+    "test_id": "golden_25_no_rules",
+    "description": "No structured rules — UNVERIFIABLE",
+    "profile": {"state": "Karnataka"},
+    "rules": [],
+    "expected_status": "UNVERIFIABLE",
+    "expected_rule_statuses": {},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_26_contradictory_rules",
+    "description": "Contradictory rules — land <= 5 AND land >= 10",
+    "profile": {"land_size_acres": 3},
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "land_size_acres", "operator": "GTE", "value_json": 10, "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "UNVERIFIABLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_27_optional_rule",
+    "description": "Optional rule unknown doesn't block eligibility",
+    "profile": {"state": "Karnataka"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true},
+      {"rule_id": "R2", "field_name": "gender", "operator": "EQ", "value_json": "female", "logical_group": "AND", "required": false}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "UNKNOWN"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_28_global_scheme",
+    "description": "Global scheme — no state restriction doesn't fail",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi"], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_29_between_fail",
+    "description": "BETWEEN operator — value outside range",
+    "profile": {"land_size_acres": 7},
+    "rules": [
+      {"rule_id": "R1", "field_name": "land_size_acres", "operator": "BETWEEN", "value_json": [1, 5], "logical_group": "AND", "required": true}
+    ],
+    "expected_status": "NOT_ELIGIBLE",
+    "expected_rule_statuses": {"R1": "FAIL"},
+    "expected_missing": []
+  },
+  {
+    "test_id": "golden_30_full_e2e",
+    "description": "Full end-to-end scenario from §266",
+    "profile": {"state": "Karnataka", "district": "Mandya", "primary_crop": "ragi", "land_size_acres": 2, "annual_income": 150000, "category": "OBC", "gender": "female", "occupation": "farmer"},
+    "rules": [
+      {"rule_id": "R1", "field_name": "state", "operator": "IN", "value_json": ["Karnataka"], "logical_group": "AND", "required": true, "source_text": "For Karnataka farmers"},
+      {"rule_id": "R2", "field_name": "primary_crop", "operator": "IN", "value_json": ["ragi"], "logical_group": "AND", "required": true, "source_text": "Ragi growers"},
+      {"rule_id": "R3", "field_name": "land_size_acres", "operator": "LTE", "value_json": 5, "logical_group": "AND", "required": true, "source_text": "Up to 5 acres"},
+      {"rule_id": "R4", "field_name": "annual_income", "operator": "LTE", "value_json": 200000, "logical_group": "AND", "required": true, "source_text": "Income up to 2 lakh"},
+      {"rule_id": "R5", "field_name": "category", "operator": "IN", "value_json": ["OBC", "SC", "ST"], "logical_group": "category_or", "required": true, "source_text": "OBC/SC/ST categories"}
+    ],
+    "expected_status": "ELIGIBLE",
+    "expected_rule_statuses": {"R1": "PASS", "R2": "PASS", "R3": "PASS", "R4": "PASS", "R5": "PASS"},
+    "expected_missing": []
+  }
+]

@@ -1,0 +1,3456 @@
+{
+  "label": "before",
+  "manifest": {
+    "evaluation_version": "phase7-eval-1.0.0",
+    "generated_at": "2026-10-13T17:29:17.200383+00:00",
+    "mode": "offline",
+    "application_version": "0.6.0",
+    "git_commit": "a95ab12",
+    "git_working_tree_dirty": true,
+    "corpus_version": "1.0.0",
+    "corpus_content_hash": "4b99a45a57461952",
+    "graph_version": "1.0.0",
+    "graph_corpus_version": "1.0.0",
+    "eligibility_engine_version": "1.0.0",
+    "dataset_counts": {
+      "adversarial_cases.json": {
+        "version": "adversarial_v1",
+        "count": 36
+      },
+      "corpus_eligibility_cases.json": {
+        "version": "corpus_eligibility_v1",
+        "count": 36
+      },
+      "e2e_cases.json": {
+        "version": "e2e_v1",
+        "count": 24
+      },
+      "eligibility_cases.json": {
+        "version": "eligibility_cases_v1",
+        "count": 30
+      },
+      "eligibility_logic_cases.json": {
+        "version": "eligibility_logic_v1",
+        "count": 18
+      },
+      "multilingual_cases.json": {
+        "version": "multilingual_v1",
+        "count": 23
+      },
+      "profile_cases.json": {
+        "version": "profile_cases_v1",
+        "count": 30
+      },
+      "profile_logic_cases.json": {
+        "version": "profile_logic_v1",
+        "count": 22
+      },
+      "retrieval_cases.json": {
+        "version": "retrieval_v1",
+        "count": 43
+      },
+      "voice_cases.json": {
+        "version": "voice_v1",
+        "count": 28
+      },
+      "xai_cases.json": {
+        "version": "xai_v1",
+        "count": 32
+      },
+      "data/evaluation/eligibility_golden_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 30
+      },
+      "data/evaluation/multilingual_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 8
+      },
+      "data/evaluation/human_review_cases.json": {
+        "version": "phase5/6 legacy",
+        "count": 4
+      }
+    },
+    "test_environment": {
+      "os": "Windows-10-10.0.26200-SP0",
+      "python": "3.11.4",
+      "node": "v24.13.1",
+      "database": "corpus fixture (offline)"
+    },
+    "model_configuration": {
+      "llm": "Groq llama-3.3-70b-versatile (temperature 0)",
+      "llm_in_offline_mode": "mocked (scripted structured extraction; text LLM unavailable)",
+      "asr_tts_translation": "Sarvam (saarika/bulbul/mayura) — mocked offline",
+      "web_search": "Tavily — mocked offline",
+      "keys_present": {
+        "GROQ_API_KEY": false,
+        "TAVILY_API_KEY": false,
+        "SARVAM_API_KEY": false
+      }
+    },
+    "supported_languages_declared": [
+      "bn",
+      "en",
+      "gu",
+      "hi",
+      "kn",
+      "ml",
+      "mr",
+      "od",
+      "pa",
+      "ta",
+      "te"
+    ]
+  },
+  "results": {
+    "profile": {
+      "total": 22,
+      "passed": 8,
+      "failed": 14,
+      "pass_rate": 0.3636,
+      "failures": [
+        {
+          "id": "PL04",
+          "passed": false,
+          "area": "completeness",
+          "failures": [
+            "question targets ['land_size_acres'], expected state (reply='Could you please tell me more about your farming land?')"
+          ]
+        },
+        {
+          "id": "PL06",
+          "passed": false,
+          "area": "completeness",
+          "failures": [
+            "question targets ['land_size_acres'], expected primary_crop (reply='Could you please tell me more about your farming land?')"
+          ]
+        },
+        {
+          "id": "PL08",
+          "passed": false,
+          "area": "invalid_value",
+          "failures": [
+            "profile.land_size_acres should be absent, got -5.0",
+            "question targets [], expected land_size_acres (reply='\\n4 scheme(s) may match but need more information:\\n\\n• **Dairy Entrepreneurship De')"
+          ]
+        },
+        {
+          "id": "PL11",
+          "passed": false,
+          "area": "question",
+          "failures": [
+            "question sequence ['land_size_acres', 'land_size_acres'] expected ['state', 'land_size_acres']",
+            "duplicate question asked"
+          ]
+        },
+        {
+          "id": "PL12",
+          "passed": false,
+          "area": "normalization",
+          "failures": [
+            "profile.state='karnataka' expected 'Karnataka'"
+          ]
+        },
+        {
+          "id": "PL13",
+          "passed": false,
+          "area": "normalization",
+          "failures": [
+            "profile.state='KA' expected 'Karnataka'"
+          ]
+        },
+        {
+          "id": "PL14",
+          "passed": false,
+          "area": "normalization",
+          "failures": [
+            "profile.primary_crop='paddy' expected 'rice'"
+          ]
+        },
+        {
+          "id": "PL15",
+          "passed": false,
+          "area": "normalization",
+          "failures": [
+            "profile.category='scheduled caste' expected 'SC'"
+          ]
+        },
+        {
+          "id": "PL16",
+          "passed": false,
+          "area": "normalization",
+          "failures": [
+            "profile.gender='woman' expected 'female'",
+            "profile.occupation=None expected 'farmer'"
+          ]
+        },
+        {
+          "id": "PL17",
+          "passed": false,
+          "area": "fields",
+          "failures": [
+            "profile.occupation=None expected 'farmer'"
+          ]
+        },
+        {
+          "id": "PL18",
+          "passed": false,
+          "area": "fields",
+          "failures": [
+            "profile.age=None expected 35"
+          ]
+        },
+        {
+          "id": "PL19",
+          "passed": false,
+          "area": "invalid_value",
+          "failures": [
+            "profile.annual_income should be absent, got nan"
+          ]
+        },
+        {
+          "id": "PL20",
+          "passed": false,
+          "area": "follow_up",
+          "failures": [
+            "referenced_scheme_id=None expected 'KCC'"
+          ]
+        },
+        {
+          "id": "PL21",
+          "passed": false,
+          "area": "ambiguity",
+          "failures": [
+            "status=partial_results expected clarification_required"
+          ]
+        }
+      ],
+      "by_area": {
+        "hallucination": {
+          "passed": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "conflict": {
+          "passed": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "update": {
+          "passed": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "completeness": {
+          "passed": 2,
+          "total": 4,
+          "rate": 0.5
+        },
+        "invalid_value": {
+          "passed": 1,
+          "total": 3,
+          "rate": 0.3333
+        },
+        "context": {
+          "passed": 1,
+          "total": 1,
+          "rate": 1.0
+        },
+        "question": {
+          "passed": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "normalization": {
+          "passed": 0,
+          "total": 5,
+          "rate": 0.0
+        },
+        "fields": {
+          "passed": 0,
+          "total": 2,
+          "rate": 0.0
+        },
+        "follow_up": {
+          "passed": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "ambiguity": {
+          "passed": 0,
+          "total": 1,
+          "rate": 0.0
+        },
+        "isolation": {
+          "passed": 1,
+          "total": 1,
+          "rate": 1.0
+        }
+      }
+    },
+    "retrieval": {
+      "k": 10,
+      "merged": {
+        "cases": 20,
+        "mean_precision_at_k": 1.0,
+        "mean_targeted_recall_at_k": 0.25,
+        "exclusion_violations": 0,
+        "state_filter_accuracy": 1.0,
+        "crop_filter_accuracy": 1.0,
+        "only_real_schemes": true,
+        "cases_missing_targeted": [
+          {
+            "id": "R01",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R03",
+            "missing": [
+              "NFSM",
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R04",
+            "missing": [
+              "NMOOP",
+              "STATE_AP_RYTHU"
+            ]
+          },
+          {
+            "id": "R05",
+            "missing": [
+              "NFSM",
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R06",
+            "missing": [
+              "NFSM",
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R07",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R08",
+            "missing": [
+              "MIDH"
+            ]
+          },
+          {
+            "id": "R10",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R11",
+            "missing": [
+              "NMOOP"
+            ]
+          },
+          {
+            "id": "R12",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R13",
+            "missing": [
+              "NMOOP"
+            ]
+          },
+          {
+            "id": "R14",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R15",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R16",
+            "missing": [
+              "MIDH"
+            ]
+          },
+          {
+            "id": "R17",
+            "missing": [
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R18",
+            "missing": [
+              "NMOOP",
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R19",
+            "missing": [
+              "NFSM",
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R20",
+            "missing": [
+              "STATE_AP_RYTHU"
+            ]
+          }
+        ]
+      },
+      "database": {
+        "cases": 20,
+        "mean_precision_at_k": 1.0,
+        "mean_targeted_recall_at_k": 0.25,
+        "exclusion_violations": 0,
+        "state_filter_accuracy": 1.0,
+        "crop_filter_accuracy": 1.0,
+        "only_real_schemes": true,
+        "cases_missing_targeted": [
+          {
+            "id": "R01",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R03",
+            "missing": [
+              "NFSM",
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R04",
+            "missing": [
+              "NMOOP",
+              "STATE_AP_RYTHU"
+            ]
+          },
+          {
+            "id": "R05",
+            "missing": [
+              "NFSM",
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R06",
+            "missing": [
+              "NFSM",
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R07",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R08",
+            "missing": [
+              "MIDH"
+            ]
+          },
+          {
+            "id": "R10",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R11",
+            "missing": [
+              "NMOOP"
+            ]
+          },
+          {
+            "id": "R12",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R13",
+            "missing": [
+              "NMOOP"
+            ]
+          },
+          {
+            "id": "R14",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R15",
+            "missing": [
+              "NFSM"
+            ]
+          },
+          {
+            "id": "R16",
+            "missing": [
+              "MIDH"
+            ]
+          },
+          {
+            "id": "R17",
+            "missing": [
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R18",
+            "missing": [
+              "NMOOP",
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R19",
+            "missing": [
+              "NFSM",
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R20",
+            "missing": [
+              "STATE_AP_RYTHU"
+            ]
+          }
+        ]
+      },
+      "knowledge_graph": {
+        "cases": 20,
+        "mean_precision_at_k": 0.935,
+        "mean_targeted_recall_at_k": 0.5,
+        "exclusion_violations": 13,
+        "state_filter_accuracy": 1.0,
+        "crop_filter_accuracy": 0.35,
+        "only_real_schemes": true,
+        "cases_missing_targeted": [
+          {
+            "id": "R01",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R02",
+            "missing": [
+              "STATE_MH_NAMO"
+            ]
+          },
+          {
+            "id": "R03",
+            "missing": [
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R04",
+            "missing": [
+              "STATE_AP_RYTHU"
+            ]
+          },
+          {
+            "id": "R05",
+            "missing": [
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R06",
+            "missing": [
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R07",
+            "missing": [
+              "MOVCDNER"
+            ]
+          },
+          {
+            "id": "R08",
+            "missing": [
+              "MOVCDNER"
+            ]
+          },
+          {
+            "id": "R12",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R13",
+            "missing": [
+              "STATE_MH_NAMO"
+            ]
+          },
+          {
+            "id": "R14",
+            "missing": [
+              "STATE_KA_KRUSHAK"
+            ]
+          },
+          {
+            "id": "R16",
+            "missing": [
+              "MOVCDNER"
+            ]
+          },
+          {
+            "id": "R17",
+            "missing": [
+              "STATE_UP_KISAN"
+            ]
+          },
+          {
+            "id": "R18",
+            "missing": [
+              "STATE_TN_UZHAVAR"
+            ]
+          },
+          {
+            "id": "R19",
+            "missing": [
+              "STATE_TS_RYTHU"
+            ]
+          },
+          {
+            "id": "R20",
+            "missing": [
+              "STATE_AP_RYTHU"
+            ]
+          }
+        ]
+      },
+      "lookups": {
+        "total": 10,
+        "passed": 9,
+        "failed": 1,
+        "pass_rate": 0.9,
+        "failures": [
+          {
+            "id": "L06",
+            "passed": false,
+            "returned": [
+              "AGMARKNET",
+              "AGRI_INFRA_FUND",
+              "ATMA",
+              "DEDS",
+              "FPO_SCHEME"
+            ],
+            "crashed": false,
+            "query_len": 0
+          }
+        ]
+      },
+      "merge": {
+        "total": 5,
+        "passed": 4,
+        "failed": 1,
+        "pass_rate": 0.8,
+        "failures": [
+          {
+            "id": "M03",
+            "passed": false,
+            "ids": [
+              "KUSUM",
+              "PM_KUSUM"
+            ],
+            "sources": {
+              "PM_KUSUM": [
+                "DATABASE",
+                "KNOWLEDGE_GRAPH"
+              ],
+              "KUSUM": [
+                "LIVE_WEB"
+              ]
+            }
+          }
+        ]
+      },
+      "source_conflicts": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "failure_matrix": {
+        "total": 6,
+        "passed": 0,
+        "failed": 6,
+        "pass_rate": 0.0,
+        "failures": [
+          {
+            "id": "F01",
+            "passed": false,
+            "expected_errors": [
+              "live_web"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [
+              "DATABASE",
+              "KNOWLEDGE_GRAPH"
+            ],
+            "candidates": 10
+          },
+          {
+            "id": "F02",
+            "passed": false,
+            "expected_errors": [
+              "knowledge_graph"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [
+              "DATABASE",
+              "LIVE_WEB"
+            ],
+            "candidates": 10
+          },
+          {
+            "id": "F03",
+            "passed": false,
+            "expected_errors": [
+              "database"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [
+              "KNOWLEDGE_GRAPH",
+              "LIVE_WEB"
+            ],
+            "candidates": 10
+          },
+          {
+            "id": "F04",
+            "passed": false,
+            "expected_errors": [
+              "knowledge_graph",
+              "live_web"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [
+              "DATABASE"
+            ],
+            "candidates": 10
+          },
+          {
+            "id": "F05",
+            "passed": false,
+            "expected_errors": [
+              "database",
+              "knowledge_graph"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [
+              "LIVE_WEB"
+            ],
+            "candidates": 2
+          },
+          {
+            "id": "F06",
+            "passed": false,
+            "expected_errors": [
+              "database",
+              "knowledge_graph",
+              "live_web"
+            ],
+            "reported_errors": [],
+            "candidate_sources": [],
+            "candidates": 0
+          }
+        ]
+      },
+      "tavily_pipeline": {
+        "total": 3,
+        "passed": 1,
+        "failed": 2,
+        "pass_rate": 0.3333,
+        "failures": [
+          {
+            "id": "url_preserved",
+            "passed": false
+          },
+          {
+            "id": "known_scheme_linked",
+            "passed": false
+          }
+        ],
+        "details": {
+          "url_preserved": false,
+          "known_scheme_linked": false,
+          "unrelated_result_not_a_candidate": true,
+          "web_sources_seen": []
+        }
+      },
+      "parallel": {
+        "mock_delays_s": {
+          "database": 2.0,
+          "knowledge_graph": 1.0,
+          "live_web": 3.0
+        },
+        "sequential_expected_s": 6.0,
+        "parallel_expected_s": 3.0,
+        "measured_s": 3.021,
+        "concurrent": true
+      }
+    },
+    "eligibility": {
+      "engine_version": "1.0.0",
+      "operator_coverage": {
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "scheme_level": {
+        "cases": 104,
+        "correct": 100,
+        "accuracy": 0.9615,
+        "by_dataset": {
+          "eligibility_v1": {
+            "correct": 29,
+            "total": 30,
+            "accuracy": 0.9667
+          },
+          "phase5_golden": {
+            "correct": 30,
+            "total": 30,
+            "accuracy": 1.0
+          },
+          "corpus_eligibility_v1": {
+            "correct": 34,
+            "total": 36,
+            "accuracy": 0.9444
+          },
+          "eligibility_logic_v1": {
+            "correct": 7,
+            "total": 8,
+            "accuracy": 0.875
+          }
+        },
+        "failures": [
+          {
+            "id": "E26",
+            "passed": false,
+            "dataset": "eligibility_v1",
+            "expected": "ELIGIBLE",
+            "actual": "NOT_ELIGIBLE"
+          },
+          {
+            "id": "CE01",
+            "passed": false,
+            "dataset": "corpus_eligibility_v1",
+            "expected": "ELIGIBLE",
+            "actual": "NEEDS_MORE_INFORMATION"
+          },
+          {
+            "id": "CE02",
+            "passed": false,
+            "dataset": "corpus_eligibility_v1",
+            "expected": "NOT_ELIGIBLE",
+            "actual": "NEEDS_MORE_INFORMATION"
+          },
+          {
+            "id": "N08",
+            "passed": false,
+            "dataset": "eligibility_logic_v1",
+            "expected": "NOT_ELIGIBLE",
+            "actual": "ELIGIBLE"
+          }
+        ]
+      },
+      "rule_level": {
+        "total": 51,
+        "passed": 51,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 47,
+          "NOT_ELIGIBLE": 1,
+          "NEEDS_MORE_INFORMATION": 1
+        },
+        "NOT_ELIGIBLE": {
+          "NOT_ELIGIBLE": 33,
+          "NEEDS_MORE_INFORMATION": 1,
+          "ELIGIBLE": 1
+        },
+        "NEEDS_MORE_INFORMATION": {
+          "NEEDS_MORE_INFORMATION": 16
+        },
+        "UNVERIFIABLE": {
+          "UNVERIFIABLE": 4
+        }
+      },
+      "false_positive": {
+        "count": 1,
+        "gold_not_eligible": 35,
+        "rate": 0.0286,
+        "any_false_eligible_count": 1
+      },
+      "false_negative": {
+        "count": 1,
+        "gold_eligible": 49,
+        "rate": 0.0204
+      },
+      "three_valued_logic": {
+        "total": 10,
+        "passed": 10,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "re_evaluation": {
+        "id": "M01",
+        "passed": true,
+        "before": "NEEDS_MORE_INFORMATION",
+        "after": "ELIGIBLE"
+      },
+      "conflicting_rules": {
+        "id": "CF01",
+        "passed": true,
+        "actual": [
+          "UNVERIFIABLE",
+          "UNVERIFIABLE",
+          "UNVERIFIABLE"
+        ]
+      },
+      "rule_provenance": {
+        "total": 25,
+        "passed": 0,
+        "failed": 25,
+        "pass_rate": 0.0,
+        "failures": [
+          {
+            "id": "DEDS:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://dahd.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "DEDS:rule1",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://dahd.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "KCC:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://www.myscheme.gov.in/schemes/kcc",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "MGNREGA:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://nrega.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "MKSP:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://nrlm.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "MOVCDNER:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://agricoop.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "NMOOP:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://agricoop.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PKVY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pgsindia-ncof.gov.in/pkvy/index.aspx",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PMFBY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pmfby.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PMJJBY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://jansuraksha.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PMKSY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pmksy.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PMSBY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://jansuraksha.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PM_KISAN:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pmkisan.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PM_KISAN:rule1",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pmkisan.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PM_KMY:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://maandhan.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PM_KMY:rule1",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://maandhan.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "PM_KUSUM:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://pmkusum.mnre.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "SMAM:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://agrimachinery.nic.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "SOIL_HEALTH_CARD:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://soilhealth.dac.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_AP_RYTHU:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://ysrrythubharosa.ap.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_KA_KRUSHAK:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://raitamitra.karnataka.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_MH_NAMO:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://nsmny.mahait.org",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_TN_UZHAVAR:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://www.tn.gov.in/scheme/data_view/6023",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_TS_RYTHU:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://rythubandhu.telangana.gov.in",
+            "corpus_version": "1.0.0"
+          },
+          {
+            "id": "STATE_UP_KISAN:rule0",
+            "passed": false,
+            "has_source_text": true,
+            "source_url": null,
+            "expected_url": "https://agriculture.up.gov.in",
+            "corpus_version": "1.0.0"
+          }
+        ]
+      },
+      "determinism": {
+        "total": 40,
+        "passed": 40,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "corpus_status_rates": {
+        "evaluations": 200,
+        "reference_profiles": 5,
+        "status_distribution": {
+          "UNVERIFIABLE": 90,
+          "NEEDS_MORE_INFORMATION": 59,
+          "NOT_ELIGIBLE": 39,
+          "ELIGIBLE": 12
+        },
+        "needs_more_information_rate": 0.295,
+        "unverifiable_rate": 0.45,
+        "unknown_causes": {
+          "unsupported_profile_field": 59,
+          "derivation_gap": 5
+        },
+        "unsupported_fields": {
+          "occupation": 40,
+          "residence": 5,
+          "age": 14,
+          "has_land": 5
+        },
+        "schemes_without_structured_rules": 18,
+        "unverifiable_schemes": [
+          "AGMARKNET",
+          "AGRI_INFRA_FUND",
+          "ATMA",
+          "ENAM",
+          "FPO_SCHEME",
+          "MIDH",
+          "NABARD_RIDF",
+          "NBM",
+          "NFSM",
+          "NLM",
+          "NMAET",
+          "NMSA",
+          "NRLM",
+          "PMAY_G",
+          "PMEGP",
+          "PMJDY",
+          "PMKISAN_MAN_DHAN",
+          "RKVY_RAFTAAR"
+        ],
+        "profile_fields_supported": [
+          "annual_income",
+          "category",
+          "district",
+          "farmer_id",
+          "gender",
+          "has_aadhaar",
+          "land_size_acres",
+          "primary_crop",
+          "state"
+        ]
+      },
+      "dataset_sizes": {
+        "eligibility_v1": 30,
+        "phase5_golden": 30,
+        "corpus_eligibility_v1": 36,
+        "eligibility_logic_v1": 8
+      }
+    },
+    "xai": {
+      "cases": 32,
+      "status_consistency": {
+        "total": 32,
+        "passed": 30,
+        "failed": 2,
+        "pass_rate": 0.9375,
+        "failures": [
+          {
+            "id": "X21",
+            "passed": false,
+            "expected": "ELIGIBLE",
+            "actual": "NEEDS_MORE_INFORMATION"
+          },
+          {
+            "id": "X22",
+            "passed": false,
+            "expected": "NOT_ELIGIBLE",
+            "actual": "NEEDS_MORE_INFORMATION"
+          }
+        ]
+      },
+      "supported_claims": {
+        "total": 32,
+        "passed": 32,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "numeric_grounding": {
+        "total": 32,
+        "passed": 32,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "url_grounding": {
+        "total": 32,
+        "passed": 32,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "genuine_explanations_accepted": {
+        "total": 32,
+        "passed": 31,
+        "failed": 1,
+        "pass_rate": 0.9688,
+        "failures": [
+          {
+            "id": "X18",
+            "passed": false
+          }
+        ]
+      },
+      "fabrication_probe_rejection": {
+        "total": 128,
+        "passed": 26,
+        "failed": 102,
+        "pass_rate": 0.2031,
+        "failures": [
+          {
+            "id": "X01:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X01:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X01:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X02:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X02:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X02:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X03:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X03:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X03:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X04:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X04:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X04:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X04:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X05:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X05:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X05:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X06:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X06:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X06:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X07:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X07:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X07:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X08:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X08:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X08:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X09:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X09:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X09:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X10:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X10:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X10:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X11:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X11:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X11:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X12:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X12:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X12:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X13:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X13:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X13:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X13:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X14:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X14:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X14:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X15:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X15:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X15:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X16:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X16:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X16:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X16:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X17:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X17:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X17:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X17:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X19:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X19:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X19:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X20:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X20:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X20:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X21:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X21:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X21:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X21:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X22:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X22:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X22:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X22:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X23:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X23:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X23:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X23:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X24:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X24:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X24:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X25:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X25:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X25:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X26:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X26:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X26:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X27:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X27:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X27:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X28:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X28:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X28:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X29:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X29:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X29:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X29:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X30:claim_eligible",
+            "passed": false,
+            "probe": "claim_eligible"
+          },
+          {
+            "id": "X30:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X30:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X30:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X31:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X31:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X31:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          },
+          {
+            "id": "X32:new_threshold",
+            "passed": false,
+            "probe": "new_threshold"
+          },
+          {
+            "id": "X32:new_url",
+            "passed": false,
+            "probe": "new_url"
+          },
+          {
+            "id": "X32:new_rule",
+            "passed": false,
+            "probe": "new_rule"
+          }
+        ]
+      },
+      "fabrication_rejection_by_type": {
+        "claim_not_eligible": {
+          "rejected": 14,
+          "total": 14,
+          "rate": 1.0
+        },
+        "new_threshold": {
+          "rejected": 1,
+          "total": 32,
+          "rate": 0.0312
+        },
+        "new_url": {
+          "rejected": 1,
+          "total": 32,
+          "rate": 0.0312
+        },
+        "new_rule": {
+          "rejected": 1,
+          "total": 32,
+          "rate": 0.0312
+        },
+        "claim_eligible": {
+          "rejected": 9,
+          "total": 18,
+          "rate": 0.5
+        }
+      },
+      "source_citation": {
+        "cases_with_source_url": 3,
+        "cited": 0,
+        "rate": 0.0
+      },
+      "deterministic_fallback_without_llm": true
+    },
+    "recommendation": {
+      "total": 7,
+      "passed": 3,
+      "failed": 4,
+      "pass_rate": 0.4286,
+      "failures": [
+        {
+          "id": "ORDER_INDEPENDENT_TIES",
+          "passed": false,
+          "distinct_orders": 6
+        },
+        {
+          "id": "GRAPH_EVIDENCE_USED",
+          "passed": false,
+          "reasons": [
+            "2 criteria matched",
+            "All available criteria verified"
+          ]
+        },
+        {
+          "id": "EVIDENCE_FIELDS_PRESENT",
+          "passed": false,
+          "missing_keys": [
+            "graph_evidence",
+            "official_url",
+            "sources"
+          ],
+          "schemes": 10
+        },
+        {
+          "id": "GRAPH_EVIDENCE_IN_RESPONSE",
+          "passed": false,
+          "schemes_with_graph_evidence": 0
+        }
+      ]
+    },
+    "multilingual": {
+      "cases": 23,
+      "languages_tested_offline": [
+        "bn",
+        "en",
+        "gu",
+        "hi",
+        "kn",
+        "ml",
+        "mr",
+        "od",
+        "pa",
+        "ta",
+        "te"
+      ],
+      "profile_parity": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "candidate_parity": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "eligibility_parity": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "xai_evidence_parity": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "translation_presentation_only": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "numeric_preservation": {
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "translation_failure": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "language_matrix": [
+        {
+          "language": "English",
+          "code": "en",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Hindi",
+          "code": "hi",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Kannada",
+          "code": "kn",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Tamil",
+          "code": "ta",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Telugu",
+          "code": "te",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Marathi",
+          "code": "mr",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Bengali",
+          "code": "bn",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Gujarati",
+          "code": "gu",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Odia",
+          "code": "od",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Punjabi",
+          "code": "pa",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        },
+        {
+          "language": "Malayalam",
+          "code": "ml",
+          "declared_translation": "SUPPORTED",
+          "declared_asr": "SUPPORTED",
+          "declared_tts": "SUPPORTED",
+          "text_input_pipeline_offline": "PASS",
+          "eligibility_parity_offline": "PASS",
+          "xai_evidence_parity_offline": "PASS",
+          "live_translation_quality": "NOT_MEASURED",
+          "live_asr": "NOT_MEASURED",
+          "live_tts": "NOT_MEASURED",
+          "tested_offline": true
+        }
+      ],
+      "note": "Offline parity uses mocked translation; Sarvam translation quality is NOT_MEASURED without --live."
+    },
+    "voice": {
+      "cases": 28,
+      "post_asr_pipeline": {
+        "total": 16,
+        "passed": 14,
+        "failed": 2,
+        "pass_rate": 0.875,
+        "failures": [
+          {
+            "id": "V05",
+            "passed": false,
+            "language": "hi",
+            "failures": [
+              "occupation=None expected 'farmer'"
+            ]
+          },
+          {
+            "id": "V09",
+            "passed": false,
+            "language": "ta",
+            "failures": [
+              "primary_crop='paddy' expected 'rice'"
+            ]
+          }
+        ]
+      },
+      "voice_field_extraction": {
+        "fields": 18,
+        "correct": 16,
+        "accuracy": 0.8889,
+        "note": "Given mocked ASR transcripts; not ASR accuracy."
+      },
+      "session_continuity": {
+        "total": 2,
+        "passed": 1,
+        "failed": 1,
+        "pass_rate": 0.5,
+        "failures": [
+          {
+            "id": "VS2",
+            "passed": false,
+            "failures": [
+              "occupation=None expected 'farmer'"
+            ]
+          }
+        ]
+      },
+      "failures_and_upload_security": {
+        "total": 10,
+        "passed": 9,
+        "failed": 1,
+        "pass_rate": 0.9,
+        "failures": [
+          {
+            "id": "VF08",
+            "passed": false,
+            "kind": "malformed_audio",
+            "error": "VOICE_TRANSCRIPTION_FAILED",
+            "asr_calls": 1
+          }
+        ]
+      },
+      "wer": "NOT_MEASURED — no recorded audio corpus with ground-truth transcripts exists in the repository. See docs/phase7-limitations.md."
+    },
+    "human_review": {
+      "total": 22,
+      "passed": 21,
+      "failed": 1,
+      "pass_rate": 0.9545,
+      "failures": [
+        {
+          "id": "ESC_UNVERIFIABLE",
+          "passed": false,
+          "expected": "UNVERIFIABLE",
+          "actual": null,
+          "area": "escalation"
+        }
+      ],
+      "by_area": {
+        "escalation": {
+          "passed": 5,
+          "total": 6
+        },
+        "lifecycle": {
+          "passed": 2,
+          "total": 2
+        },
+        "transitions": {
+          "passed": 3,
+          "total": 3
+        },
+        "actions": {
+          "passed": 4,
+          "total": 4
+        },
+        "audit": {
+          "passed": 2,
+          "total": 2
+        },
+        "privacy": {
+          "passed": 1,
+          "total": 1
+        },
+        "auth": {
+          "passed": 4,
+          "total": 4
+        }
+      },
+      "automatic_triggers": [
+        "UNVERIFIABLE",
+        "RULE_CONFLICT",
+        "SOURCE_CONFLICT",
+        "SYSTEM_ERROR"
+      ],
+      "manual_only_reasons": [
+        "INSUFFICIENT_DATA",
+        "AMBIGUOUS_QUERY",
+        "OTHER"
+      ]
+    },
+    "adversarial": {
+      "total": 36,
+      "passed": 17,
+      "failed": 19,
+      "pass_rate": 0.4722,
+      "failures": [
+        {
+          "id": "A01",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "Negative land size",
+          "stored": {
+            "land_size_acres": -5.0
+          }
+        },
+        {
+          "id": "A03",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "NaN land",
+          "stored": {
+            "land_size_acres": NaN
+          }
+        },
+        {
+          "id": "A04",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "Infinite income",
+          "stored": {
+            "annual_income": Infinity
+          }
+        },
+        {
+          "id": "A05",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "Non-existent state",
+          "stored": {
+            "state": "Xyzland"
+          }
+        },
+        {
+          "id": "A06",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "SQL text in a profile field",
+          "stored": {
+            "state": "Karnataka'; DROP TABLE schemes;--"
+          }
+        },
+        {
+          "id": "A07",
+          "passed": false,
+          "category": "PROFILE",
+          "kind": "profile_value",
+          "attack": "Negative income",
+          "stored": {
+            "annual_income": -150000.0
+          }
+        },
+        {
+          "id": "A08",
+          "passed": false,
+          "category": "ELIGIBILITY",
+          "kind": "engine_numeric",
+          "attack": "Negative land as a string must not pass a <= rule",
+          "status": "ELIGIBLE"
+        },
+        {
+          "id": "A09",
+          "passed": false,
+          "category": "ELIGIBILITY",
+          "kind": "engine_numeric",
+          "attack": "NaN income must be unknown, not a decision",
+          "status": "NOT_ELIGIBLE"
+        },
+        {
+          "id": "A10",
+          "passed": false,
+          "category": "ELIGIBILITY",
+          "kind": "engine_numeric",
+          "attack": "Plural 'lakhs' notation",
+          "status": "NEEDS_MORE_INFORMATION"
+        },
+        {
+          "id": "A13",
+          "passed": false,
+          "category": "XAI",
+          "kind": "formatter_fabrication",
+          "attack": "§101 LLM claims eligibility the engine denied",
+          "llm_reply_used": true
+        },
+        {
+          "id": "A14",
+          "passed": false,
+          "category": "XAI",
+          "kind": "formatter_fabrication",
+          "attack": "§103 URL fabrication",
+          "llm_reply_used": true
+        },
+        {
+          "id": "A15",
+          "passed": false,
+          "category": "XAI",
+          "kind": "formatter_fabrication",
+          "attack": "§104 number fabrication",
+          "llm_reply_used": true
+        },
+        {
+          "id": "A16",
+          "passed": false,
+          "category": "XAI",
+          "kind": "formatter_fabrication",
+          "attack": "§105 scheme fabrication",
+          "llm_reply_used": true
+        },
+        {
+          "id": "A18",
+          "passed": false,
+          "category": "SECURITY",
+          "kind": "static_sql_scan",
+          "attack": "§106 SQL injection",
+          "interpolated_sql": [
+            "backend\\app\\services\\corpus_import_service.py:307: await cur.execute(f\"DELETE FROM {table} WHERE scheme_id = %s\", (db_id,))"
+          ]
+        },
+        {
+          "id": "A25",
+          "passed": false,
+          "category": "VOICE",
+          "kind": "audio_upload",
+          "attack": "§109 malformed audio",
+          "error": "VOICE_TRANSCRIPTION_FAILED",
+          "asr_calls": 1
+        },
+        {
+          "id": "A31",
+          "passed": false,
+          "category": "SECURITY",
+          "kind": "static_secret_scan",
+          "attack": "§113 secret leakage",
+          "hits": [
+            "backend\\app\\api\\review.py:28: REVIEW_API_KEY = \"schemesetu-review-dev-2026\""
+          ]
+        },
+        {
+          "id": "A32",
+          "passed": false,
+          "category": "SECURITY",
+          "kind": "huge_message",
+          "attack": "§98 huge query",
+          "http": 200,
+          "reached_llm": true
+        },
+        {
+          "id": "A34",
+          "passed": false,
+          "category": "SECURITY",
+          "kind": "log_audit",
+          "attack": "§113 sensitive data in logs",
+          "leaked_tokens": [
+            "187654",
+            "'has_aadhaar': True",
+            "'category': 'SC'"
+          ],
+          "log_lines": 71
+        },
+        {
+          "id": "A35",
+          "passed": false,
+          "category": "SECURITY",
+          "kind": "network_audit",
+          "attack": "§114 outbound data minimisation",
+          "leaks": [
+            "187654",
+            "has_aadhaar",
+            "annual_income",
+            "category: sc"
+          ],
+          "tavily_queries": [
+            "Karnataka ragi farmer government schemes India"
+          ],
+          "llm_prompt_count": 2
+        }
+      ],
+      "by_category": {
+        "PROFILE": {
+          "passed": 1,
+          "total": 7
+        },
+        "ELIGIBILITY": {
+          "passed": 0,
+          "total": 3
+        },
+        "SECURITY": {
+          "passed": 10,
+          "total": 15
+        },
+        "XAI": {
+          "passed": 1,
+          "total": 5
+        },
+        "VOICE": {
+          "passed": 2,
+          "total": 3
+        },
+        "HUMAN_REVIEW": {
+          "passed": 3,
+          "total": 3
+        }
+      }
+    },
+    "e2e": {
+      "total": 24,
+      "passed": 8,
+      "failed": 16,
+      "pass_rate": 0.3333,
+      "failures": [
+        {
+          "id": "E2E01",
+          "passed": false,
+          "title": "Simple eligible farmer",
+          "failures": [
+            "STATE_KA_KRUSHAK not returned",
+            "PM_KISAN not returned",
+            "STATE_KA_KRUSHAK status=None expected ELIGIBLE",
+            "PM_KISAN status=None expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E02",
+          "passed": false,
+          "title": "Ineligible farmer (land above limit)",
+          "failures": [
+            "PM_KMY not returned",
+            "PM_KMY status=None expected NOT_ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E03",
+          "passed": false,
+          "title": "Missing information (age)",
+          "failures": [
+            "PM_KMY not returned",
+            "PM_KMY status=None expected NEEDS_MORE_INFORMATION",
+            "PM_KMY missing_information=[] expected ⊇ ['age']"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E06",
+          "passed": false,
+          "title": "State + crop match",
+          "failures": [
+            "STATE_AP_RYTHU not returned",
+            "NMOOP not returned",
+            "STATE_AP_RYTHU status=None expected ELIGIBLE",
+            "NMOOP status=None expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E07",
+          "passed": false,
+          "title": "Category-specific (optional category rule)",
+          "failures": [
+            "DEDS status=NEEDS_MORE_INFORMATION expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E10",
+          "passed": false,
+          "title": "Aadhaar requirement visible in documents",
+          "failures": [
+            "PM_KISAN not returned",
+            "PM_KISAN documents=[] expected ⊇ ['Aadhaar Card', 'Land Records']",
+            "PM_KISAN has no application steps",
+            "PM_KISAN has no source URL"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E11",
+          "passed": false,
+          "title": "Multiple AND rules (PM-KMY eligible)",
+          "failures": [
+            "PM_KMY not returned",
+            "STATE_UP_KISAN not returned",
+            "NFSM not returned",
+            "PM_KMY status=None expected ELIGIBLE",
+            "STATE_UP_KISAN status=None expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E12",
+          "passed": false,
+          "title": "Landless farmer (has_land FAIL)",
+          "failures": [
+            "PM_KISAN not returned",
+            "PM_KISAN status=None expected NOT_ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E13",
+          "passed": false,
+          "title": "Follow-up scheme question",
+          "failures": [
+            "follow-up referenced None / returned ['DEDS', 'KCC'] expected first of ['KCC', 'DEDS', 'MGNREGA']"
+          ],
+          "final_status": "partial_results"
+        },
+        {
+          "id": "E2E14",
+          "passed": false,
+          "title": "Voice input",
+          "failures": [
+            "STATE_KA_KRUSHAK status=None expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E15",
+          "passed": false,
+          "title": "Multilingual input (Hindi)",
+          "failures": [
+            "STATE_KA_KRUSHAK status=None expected ELIGIBLE",
+            "PM_KISAN status=None expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E17",
+          "passed": false,
+          "title": "Tavily failure",
+          "failures": [
+            "STATE_KA_KRUSHAK not returned",
+            "STATE_KA_KRUSHAK status=None expected ELIGIBLE",
+            "retrieval error for live_web not reported (errors=[])"
+          ],
+          "final_status": "partial_results"
+        },
+        {
+          "id": "E2E18",
+          "passed": false,
+          "title": "Knowledge Graph failure",
+          "failures": [
+            "STATE_KA_KRUSHAK not returned",
+            "retrieval error for knowledge_graph not reported (errors=[])"
+          ],
+          "final_status": "partial_results"
+        },
+        {
+          "id": "E2E19",
+          "passed": false,
+          "title": "Database failure (no false eligibility)",
+          "failures": [
+            "retrieval error for database not reported (errors=[])"
+          ],
+          "final_status": "partial_results"
+        },
+        {
+          "id": "E2E20",
+          "passed": false,
+          "title": "Human-review escalation",
+          "failures": [
+            "no human-review case created for the session"
+          ],
+          "final_status": "schemes_found"
+        },
+        {
+          "id": "E2E23",
+          "passed": false,
+          "title": "Re-evaluation after new information",
+          "failures": [
+            "turn 1: PM_KISAN status=None expected NEEDS_MORE_INFORMATION",
+            "PM_KISAN status=None expected ELIGIBLE",
+            "KCC status=NEEDS_MORE_INFORMATION expected ELIGIBLE"
+          ],
+          "final_status": "schemes_found"
+        }
+      ]
+    },
+    "accessibility": {
+      "total": 13,
+      "passed": 9,
+      "failed": 4,
+      "pass_rate": 0.6923,
+      "failures": [
+        {
+          "id": "HTML_LANG_FOLLOWS_SELECTED_LANGUAGE",
+          "passed": false,
+          "note": "screen readers need <html lang> to match the chosen language"
+        },
+        {
+          "id": "TOUCH_TARGETS_44PX",
+          "passed": false,
+          "below_44px": [
+            "components\\SchemeList.tsx"
+          ],
+          "unsized": []
+        },
+        {
+          "id": "VISIBLE_FOCUS_STYLES",
+          "passed": false,
+          "count": 2
+        },
+        {
+          "id": "AUDIO_PLAYBACK_CAN_BE_STOPPED",
+          "passed": false,
+          "note": "TTS audio should be stoppable by the user"
+        }
+      ]
+    },
+    "user_study": {
+      "participants": 0,
+      "task_results": 0,
+      "tasks": {
+        "T1": "Provide farmer profile",
+        "T2": "Find relevant schemes",
+        "T3": "Understand why one scheme matches",
+        "T4": "Find required documents",
+        "T5": "Find application steps",
+        "T6": "Ask a follow-up question",
+        "T7": "Use voice",
+        "T8": "Change language",
+        "T9": "Interpret eligibility result"
+      },
+      "privacy_violations": [],
+      "status": "NOT_MEASURED",
+      "reason": "No participant records in data/evaluation/user_study/records.json. The protocol is in docs/phase7-user-study-report.md.",
+      "task_completion_rate": null,
+      "average_task_time_s": null,
+      "comprehension_score": null,
+      "average_trust": null,
+      "average_ease_of_use": null,
+      "average_voice_rating": null
+    },
+    "expert_validation": {
+      "sample_size": 7,
+      "sample_distribution": {
+        "simple_eligibility": 1,
+        "not_eligible": 1,
+        "uncertain_data": 2,
+        "state_specific": 1,
+        "xai_explanation": 2
+      },
+      "ratings_recorded": 0,
+      "status": "NOT_MEASURED",
+      "reason": "No expert ratings recorded in data/evaluation/expert_validation/ratings.json",
+      "correct_rate": null,
+      "xai_correct_rate": null,
+      "source_correct_rate": null
+    },
+    "performance": {
+      "mode": "offline (all external services mocked, zero network latency)",
+      "text_request": {
+        "count": 25,
+        "mean_ms": 348.059,
+        "p50_ms": 343.76,
+        "p95_ms": 393.473,
+        "max_ms": 398.211
+      },
+      "stage_breakdown_ms": {
+        "profile_agent": {
+          "count": 5,
+          "mean_ms": 317.605,
+          "p50_ms": 332.065,
+          "p95_ms": 335.456,
+          "max_ms": 335.456
+        },
+        "completeness_agent": {
+          "count": 5,
+          "mean_ms": 6.68,
+          "p50_ms": 6.766,
+          "p95_ms": 7.254,
+          "max_ms": 7.254
+        },
+        "query_rewriter": {
+          "count": 5,
+          "mean_ms": 14.418,
+          "p50_ms": 14.251,
+          "p95_ms": 15.43,
+          "max_ms": 15.43
+        },
+        "retrieval_agent": {
+          "count": 5,
+          "mean_ms": 14.289,
+          "p50_ms": 13.679,
+          "p95_ms": 15.435,
+          "max_ms": 15.435
+        },
+        "eligibility_agent": {
+          "count": 5,
+          "mean_ms": 11.523,
+          "p50_ms": 11.22,
+          "p95_ms": 12.413,
+          "max_ms": 12.413
+        },
+        "recommendation_agent": {
+          "count": 5,
+          "mean_ms": 4.047,
+          "p50_ms": 4.076,
+          "p95_ms": 4.275,
+          "max_ms": 4.275
+        },
+        "response_formatter": {
+          "count": 5,
+          "mean_ms": 15.523,
+          "p50_ms": 15.311,
+          "p95_ms": 16.871,
+          "max_ms": 16.871
+        }
+      },
+      "language_latency": {
+        "en": {
+          "count": 3,
+          "mean_ms": 398.759,
+          "p50_ms": 411.93,
+          "p95_ms": 419.111,
+          "max_ms": 419.111
+        },
+        "hi": {
+          "count": 3,
+          "mean_ms": 401.676,
+          "p50_ms": 414.068,
+          "p95_ms": 420.32,
+          "max_ms": 420.32
+        },
+        "kn": {
+          "count": 3,
+          "mean_ms": 414.992,
+          "p50_ms": 430.401,
+          "p95_ms": 431.978,
+          "max_ms": 431.978
+        },
+        "ta": {
+          "count": 3,
+          "mean_ms": 400.742,
+          "p50_ms": 385.472,
+          "p95_ms": 440.701,
+          "max_ms": 440.701
+        },
+        "te": {
+          "count": 3,
+          "mean_ms": 428.693,
+          "p50_ms": 442.802,
+          "p95_ms": 443.578,
+          "max_ms": 443.578
+        },
+        "mr": {
+          "count": 3,
+          "mean_ms": 428.27,
+          "p50_ms": 441.469,
+          "p95_ms": 445.635,
+          "max_ms": 445.635
+        },
+        "bn": {
+          "count": 3,
+          "mean_ms": 457.03,
+          "p50_ms": 457.843,
+          "p95_ms": 465.45,
+          "max_ms": 465.45
+        },
+        "gu": {
+          "count": 3,
+          "mean_ms": 442.641,
+          "p50_ms": 456.07,
+          "p95_ms": 463.587,
+          "max_ms": 463.587
+        },
+        "od": {
+          "count": 3,
+          "mean_ms": 453.337,
+          "p50_ms": 468.299,
+          "p95_ms": 474.476,
+          "max_ms": 474.476
+        },
+        "pa": {
+          "count": 3,
+          "mean_ms": 456.813,
+          "p50_ms": 466.812,
+          "p95_ms": 479.282,
+          "max_ms": 479.282
+        },
+        "ml": {
+          "count": 3,
+          "mean_ms": 465.36,
+          "p50_ms": 482.076,
+          "p95_ms": 487.299,
+          "max_ms": 487.299
+        }
+      },
+      "voice_round_trip": {
+        "count": 20,
+        "mean_ms": 506.419,
+        "p50_ms": 508.881,
+        "p95_ms": 539.735,
+        "max_ms": 545.449
+      },
+      "load_sequential": {
+        "requests": 100,
+        "concurrency": 1,
+        "errors": {
+          "http_error": 0,
+          "app_error": 0,
+          "exception": 0
+        },
+        "error_rate": 0.0,
+        "latency": {
+          "count": 100,
+          "mean_ms": 690.55,
+          "p50_ms": 652.529,
+          "p95_ms": 835.693,
+          "max_ms": 1150.693
+        }
+      },
+      "load_concurrent": {
+        "requests": 200,
+        "concurrency": 10,
+        "errors": {
+          "http_error": 0,
+          "app_error": 0,
+          "exception": 0
+        },
+        "error_rate": 0.0,
+        "latency": {
+          "count": 200,
+          "mean_ms": 8410.313,
+          "p50_ms": 8708.862,
+          "p95_ms": 11820.95,
+          "max_ms": 12811.183
+        }
+      },
+      "memory": {
+        "rss_start_kb": 145168.0,
+        "rss_end_kb": 198536.0,
+        "rss_growth_kb_after_300_requests": 53368.0,
+        "note": "Includes the in-memory LangGraph checkpointer (MemorySaver) which keeps every thread's state by design (no eviction)."
+      },
+      "soak": {
+        "status": "NOT_MEASURED",
+        "reason": "soak disabled (use --soak-seconds)"
+      },
+      "graph_reloads_during_run": 0,
+      "db_connection_pool": {
+        "status": "NOT_MEASURED",
+        "reason": "Offline runs use the corpus fixture; pool behaviour needs PostgreSQL."
+      }
+    },
+    "live_profile_extraction": {
+      "status": "NOT_MEASURED",
+      "reason": "offline mode"
+    },
+    "live_performance": {
+      "status": "NOT_MEASURED",
+      "reason": "offline mode"
+    },
+    "_runner_seconds": {
+      "profile": 2.5,
+      "retrieval": 3.1,
+      "eligibility": 0.0,
+      "xai": 0.0,
+      "recommendation": 0.1,
+      "multilingual": 3.6,
+      "voice": 3.2,
+      "human_review": 0.0,
+      "adversarial": 4.9,
+      "e2e": 7.1,
+      "accessibility": 0.0,
+      "user_study": 0.0,
+      "expert_validation": 3.4,
+      "performance": 281.0
+    },
+    "_notes": [
+      "accessibility re-run on the unchanged frontend after fixing two false positives in the audit runner (JSX arrow-function parsing; dynamically named buttons) and adding a per-button 44px check"
+    ]
+  },
+  "scorecard": [
+    {
+      "category": "Profile",
+      "metric": "Deterministic profile-layer scenarios pass rate",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.3636,
+      "status": "FAIL",
+      "evidence": "profile_logic_cases.json",
+      "path": "profile.pass_rate"
+    },
+    {
+      "category": "Profile",
+      "metric": "LLM extraction field F1 (live)",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "profile_cases.json (--live)",
+      "path": "live_profile_extraction.field_f1"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Merged targeted recall@10",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": 0.25,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merged.mean_targeted_recall_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Merged precision@10 (applicable schemes)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merged.mean_precision_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "DB targeted recall@10",
+      "target": 0.9,
+      "comparator": ">=",
+      "actual": 0.25,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.database.mean_targeted_recall_at_k"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Graph false relationships (out-of-scope schemes)",
+      "target": 0,
+      "comparator": "<=",
+      "actual": 13,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.knowledge_graph.exclusion_violations"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Graph crop-filter accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.35,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.knowledge_graph.crop_filter_accuracy"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Exact lookup / adversarial query pass rate",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9,
+      "status": "PARTIAL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.lookups.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Candidate merge correctness",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.8,
+      "status": "PARTIAL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.merge.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Source-conflict handling",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.source_conflicts.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Failure matrix (6 combinations)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.0,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.failure_matrix.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Tavily pipeline (URL kept, official linked, unrelated dropped)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.3333,
+      "status": "FAIL",
+      "evidence": "retrieval_cases.json",
+      "path": "retrieval.tavily_pipeline.pass_rate"
+    },
+    {
+      "category": "Retrieval",
+      "metric": "Parallel retrieval (2s+1s+3s mocked) seconds",
+      "target": 4.0,
+      "comparator": "<=",
+      "actual": 3.021,
+      "status": "PASS",
+      "evidence": "parallel benchmark",
+      "path": "retrieval.parallel.measured_s"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Scheme-level accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9615,
+      "status": "PARTIAL",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.scheme_level.accuracy"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Rule-level accuracy",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "phase5 golden",
+      "path": "eligibility.rule_level.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "False-positive rate (ELIGIBLE when gold NOT_ELIGIBLE)",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0286,
+      "status": "FAIL",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.false_positive.rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "False-negative rate",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0204,
+      "status": "FAIL",
+      "evidence": "4 eligibility datasets",
+      "path": "eligibility.false_negative.rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Operator coverage probes",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "11 operators + unknown",
+      "path": "eligibility.operator_coverage.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Three-valued logic truth table",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "eligibility_logic_cases.json",
+      "path": "eligibility.three_valued_logic.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Rule provenance (source text + URL + version)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.0,
+      "status": "FAIL",
+      "evidence": "corpus rules",
+      "path": "eligibility.rule_provenance.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "Determinism (same input -> same result)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "40 cases x2",
+      "path": "eligibility.determinism.pass_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "UNKNOWNs caused by unsupported profile fields",
+      "target": "info",
+      "comparator": "info",
+      "actual": 59,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.unknown_causes.unsupported_profile_field"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "NEEDS_MORE_INFORMATION rate (fully stated profiles)",
+      "target": "info",
+      "comparator": "info",
+      "actual": 0.295,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.needs_more_information_rate"
+    },
+    {
+      "category": "Eligibility",
+      "metric": "UNVERIFIABLE rate (corpus rule coverage)",
+      "target": "info",
+      "comparator": "info",
+      "actual": 0.45,
+      "status": "INFO",
+      "evidence": "reference profiles x 40 schemes",
+      "path": "eligibility.corpus_status_rates.unverifiable_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Status consistency",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9375,
+      "status": "PARTIAL",
+      "evidence": "xai_cases.json",
+      "path": "xai.status_consistency.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Supported-claim grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.supported_claims.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Numeric grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.numeric_grounding.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "URL grounding",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "xai_cases.json",
+      "path": "xai.url_grounding.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Genuine explanations accepted by validator",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9688,
+      "status": "PARTIAL",
+      "evidence": "xai_cases.json",
+      "path": "xai.genuine_explanations_accepted.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Fabrication probes rejected",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.2031,
+      "status": "FAIL",
+      "evidence": "xai_cases.json",
+      "path": "xai.fabrication_probe_rejection.pass_rate"
+    },
+    {
+      "category": "XAI",
+      "metric": "Official source cited when available",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.0,
+      "status": "FAIL",
+      "evidence": "xai_cases.json",
+      "path": "xai.source_citation.rate"
+    },
+    {
+      "category": "Recommendation",
+      "metric": "Ranking checks",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.4286,
+      "status": "FAIL",
+      "evidence": "recommendation_runner",
+      "path": "recommendation.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Profile parity across languages (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.profile_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Eligibility parity across languages (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.eligibility_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "XAI evidence parity (offline)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.xai_evidence_parity.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Translation is presentation-only",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.translation_presentation_only.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Translation-failure fallback",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 1.0,
+      "status": "PASS",
+      "evidence": "multilingual_cases.json",
+      "path": "multilingual.translation_failure.pass_rate"
+    },
+    {
+      "category": "Multilingual",
+      "metric": "Live Sarvam translation quality",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "--live (not implemented offline)",
+      "path": "live_translation.score"
+    },
+    {
+      "category": "Voice",
+      "metric": "Post-ASR pipeline (mocked ASR)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.875,
+      "status": "PARTIAL",
+      "evidence": "voice_cases.json",
+      "path": "voice.post_asr_pipeline.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Voice/text session continuity",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.5,
+      "status": "FAIL",
+      "evidence": "voice_cases.json",
+      "path": "voice.session_continuity.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Failure fallbacks + upload security",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9,
+      "status": "PARTIAL",
+      "evidence": "voice_cases.json",
+      "path": "voice.failures_and_upload_security.pass_rate"
+    },
+    {
+      "category": "Voice",
+      "metric": "Word error rate (real audio)",
+      "target": null,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "no ground-truth audio",
+      "path": "voice.wer_value"
+    },
+    {
+      "category": "Human Review",
+      "metric": "HITL checks (escalation, lifecycle, audit, privacy, auth)",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.9545,
+      "status": "PARTIAL",
+      "evidence": "review_runner",
+      "path": "human_review.pass_rate"
+    },
+    {
+      "category": "Security",
+      "metric": "Red-team probes passed",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.4722,
+      "status": "FAIL",
+      "evidence": "adversarial_cases.json",
+      "path": "adversarial.pass_rate"
+    },
+    {
+      "category": "End-to-end",
+      "metric": "Golden journeys passed",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.3333,
+      "status": "FAIL",
+      "evidence": "e2e_cases.json",
+      "path": "e2e.pass_rate"
+    },
+    {
+      "category": "Performance",
+      "metric": "Offline text request P95 (ms, external services mocked)",
+      "target": 2000,
+      "comparator": "<=",
+      "actual": 393.473,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.text_request.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Offline voice round trip P95 (ms, mocked ASR/TTS)",
+      "target": 3000,
+      "comparator": "<=",
+      "actual": 539.735,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.voice_round_trip.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Review-II live latency target 10-15 s",
+      "target": 15000,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "--live",
+      "path": "live_performance.latency.p95_ms"
+    },
+    {
+      "category": "Performance",
+      "metric": "Concurrent load error rate (200 req, c=10)",
+      "target": 0.0,
+      "comparator": "<=",
+      "actual": 0.0,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.load_concurrent.error_rate"
+    },
+    {
+      "category": "Performance",
+      "metric": "Concurrent load P95 (ms)",
+      "target": 5000,
+      "comparator": "<=",
+      "actual": 11820.95,
+      "status": "FAIL",
+      "evidence": "performance_runner",
+      "path": "performance.load_concurrent.latency.p95_ms"
+    },
+    {
+      "category": "Stability",
+      "metric": "Graph reloads during run",
+      "target": 0,
+      "comparator": "<=",
+      "actual": 0,
+      "status": "PASS",
+      "evidence": "performance_runner",
+      "path": "performance.graph_reloads_during_run"
+    },
+    {
+      "category": "Stability",
+      "metric": "RSS growth over last 100 requests at session cap (KB)",
+      "target": 10240,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "performance_runner",
+      "path": "performance.memory.rss_growth_kb_last_100_requests"
+    },
+    {
+      "category": "Stability",
+      "metric": "Soak test errors",
+      "target": 0,
+      "comparator": "<=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "--soak-seconds",
+      "path": "performance.soak.errors"
+    },
+    {
+      "category": "Accessibility",
+      "metric": "Static accessibility audit checks",
+      "target": 1.0,
+      "comparator": ">=",
+      "actual": 0.6923,
+      "status": "FAIL",
+      "evidence": "accessibility_runner",
+      "path": "accessibility.pass_rate"
+    },
+    {
+      "category": "User Study",
+      "metric": "Task completion rate",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "data/evaluation/user_study/",
+      "path": "user_study.task_completion_rate"
+    },
+    {
+      "category": "Expert Validation",
+      "metric": "Outputs rated CORRECT",
+      "target": null,
+      "comparator": ">=",
+      "actual": null,
+      "status": "NOT_MEASURED",
+      "evidence": "data/evaluation/expert_validation/",
+      "path": "expert_validation.correct_rate"
+    }
+  ]
+}

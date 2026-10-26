@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-10-13T19:06:47.731880+00:00",
+  "database": "PostgreSQL 16 (Docker, local)",
+  "requests_per_component": 30,
+  "machine": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.4"
+  },
+  "note": "LLM, Tavily and Sarvam mocked: these are SchemeSetu's own processing times, not user-facing latency.",
+  "latency_ms": {
+    "db": {
+      "count": 30,
+      "mean_ms": 13.037,
+      "p50_ms": 10.306,
+      "p95_ms": 13.112,
+      "max_ms": 81.998
+    },
+    "graph": {
+      "count": 30,
+      "mean_ms": 0.745,
+      "p50_ms": 0.733,
+      "p95_ms": 0.797,
+      "max_ms": 0.93
+    },
+    "web_mocked": {
+      "count": 30,
+      "mean_ms": 0.209,
+      "p50_ms": 0.197,
+      "p95_ms": 0.299,
+      "max_ms": 0.314
+    },
+    "merge": {
+      "count": 30,
+      "mean_ms": 0.494,
+      "p50_ms": 0.473,
+      "p95_ms": 0.551,
+      "max_ms": 0.999
+    },
+    "eligibility": {
+      "count": 30,
+      "mean_ms": 2.457,
+      "p50_ms": 2.406,
+      "p95_ms": 2.911,
+      "max_ms": 3.069
+    },
+    "pipeline_llm_mocked": {
+      "count": 30,
+      "mean_ms": 121.465,
+      "p50_ms": 114.662,
+      "p95_ms": 152.406,
+      "max_ms": 243.919
+    }
+  }
+}
