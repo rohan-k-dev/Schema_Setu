@@ -15,15 +15,12 @@ import argparse
 import asyncio
 import json
 import re
-import subprocess
 import sys
 import uuid
-from pathlib import Path
 
 import httpx
 from playwright.sync_api import sync_playwright
 
-ROOT = Path(__file__).resolve().parents[1]
 API = "http://localhost:8000"
 PASSWORD = "PrivacyUi2468farm"
 results = []
@@ -35,15 +32,11 @@ def check(name, ok, detail=""):
 
 
 def account(tag):
-    """A verified account with a saved profile, a saved scheme and a followed scheme (through the API)."""
+    """An account with a saved profile, a saved scheme and a followed scheme (through the API)."""
     email = f"{tag}-{uuid.uuid4().hex[:8]}@example.com"
     c = httpx.Client(base_url=API, headers={"Origin": "http://localhost:3000"})
     r = c.post("/auth/register", json={"email": email, "password": PASSWORD})
     assert r.status_code == 202, f"register {r.status_code} (sign-up limit? restart the backend)"
-    logs = subprocess.run(["docker", "compose", "logs", "backend", "--since", "2m"], cwd=ROOT,
-                          capture_output=True, text=True).stdout
-    token = re.findall(r"verify-email\?token=([A-Za-z0-9_-]+)", logs)[-1]
-    assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
     csrf = c.post("/auth/login", json={"email": email, "password": PASSWORD}).json()["csrf_token"]
     h = {"X-CSRF-Token": csrf}
     assert c.put("/farmers/me/profile", json={"state": "Karnataka", "age": 39, "primary_crop": "ragi",

@@ -195,7 +195,7 @@ def env(monkeypatch):
     monkeypatch.setattr("app.services.saved_scheme_service.profile_repo", FakeProfileRepo(auth))
     monkeypatch.setattr("app.api.auth.is_db_available", lambda: True)
     monkeypatch.setattr("app.api.deps.is_db_available", lambda: True)
-    for name in ("send_verification_email", "send_password_reset_email",
+    for name in ("send_password_reset_email",
                  "send_account_exists_email", "send_password_changed_email"):
         async def _noop(*a, **k):
             return True

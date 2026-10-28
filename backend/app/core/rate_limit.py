@@ -68,6 +68,6 @@ LIMITS = {
     "forgot_ip": (10, 3600),
     "forgot_email": (3, 3600),
     "resend_email": (3, 3600),
-    "token_ip": (20, 3600),          # verify-email / reset-password attempts
+    "token_ip": (20, 3600),          # password-reset token attempts
     "change_password": (5, 900),
 }

@@ -76,7 +76,7 @@ Only after a successful publish, farmers are notified about each affected scheme
 | Channel | Default | Needs |
 |---|---|---|
 | In-app | on | nothing |
-| E-mail | off | SMTP configured (`SMTP_*`) + verified account e-mail. Every e-mail has a one-click unsubscribe link (`/unsubscribe`). |
+| E-mail | off | SMTP configured (`SMTP_*`). Every e-mail has a one-click unsubscribe link (`/unsubscribe`). |
 | SMS | off | a configured provider + a phone number verified by code + explicit consent (time and consent-text version recorded) |
 
 - **Consequential only:** a farmer can choose to hear only about consequential changes.

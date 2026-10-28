@@ -426,9 +426,6 @@ export default function DashboardPage() {
           <div className="dash-card">
             <div className="dash-card-header">
               <span className="dash-card-title">🏦 Account</span>
-              {data?.account.is_verified && (
-                <span className="dash-verified-badge">✓ Verified</span>
-              )}
             </div>
             <dl className="dash-account-list">
               <dt className="dash-account-dt">Email</dt>

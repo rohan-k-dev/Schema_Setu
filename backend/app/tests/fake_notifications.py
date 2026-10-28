@@ -191,7 +191,7 @@ class FakeNotificationRepo:
                 n = self.notifications[d["notification_id"]]
                 f = self.auth.farmers[d["farmer_id"]]
                 out.append({**d, "title": n["title"], "body": n["body"], "scheme_id": n["scheme_id"],
-                            "consequential": n["consequential"], "email": f.email, "is_verified": f.is_verified,
+                            "consequential": n["consequential"], "email": f.email,
                             "is_active": f.is_active, "phone": f.phone,
                             "phone_verified_at": getattr(f, "phone_verified_at", None)})
         return out

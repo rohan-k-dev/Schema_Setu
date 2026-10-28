@@ -88,7 +88,7 @@ def env(monkeypatch):
     monkeypatch.setattr(settings, "REVIEW_API_KEY", "dev-review-key-123")
     monkeypatch.setattr(settings, "ENVIRONMENT", "development")
     monkeypatch.setattr(settings, "RATE_LIMIT_ENABLED", True)
-    for name in ("send_verification_email", "send_password_reset_email",
+    for name in ("send_password_reset_email",
                  "send_account_exists_email", "send_password_changed_email"):
         async def _noop(*a, **k):
             return True

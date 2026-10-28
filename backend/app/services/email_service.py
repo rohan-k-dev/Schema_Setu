@@ -1,5 +1,5 @@
 """
-Outgoing e-mail for account flows (verification, password reset, notices).
+Outgoing e-mail for password reset and account notices.
 
 With SMTP_HOST configured, mail is sent over SMTP (STARTTLS by default).
 Without it, in non-production environments the message — including its link —
@@ -61,16 +61,6 @@ async def send_email(to: str, subject: str, body: str) -> bool:
 
 def _link(path: str, token: str) -> str:
     return f"{settings.FRONTEND_BASE_URL.rstrip('/')}{path}?token={token}"
-
-
-async def send_verification_email(to: str, token: str) -> bool:
-    return await send_email(
-        to, "Verify your SchemeSetu e-mail",
-        f"Welcome to SchemeSetu.\n\nConfirm your e-mail address by opening this link:\n"
-        f"{_link('/verify-email', token)}\n\n"
-        f"The link works once and expires in {settings.EMAIL_VERIFY_EXPIRE_HOURS} hours. "
-        f"If you did not create an account, ignore this e-mail.",
-    )
 
 
 async def send_account_exists_email(to: str) -> bool:

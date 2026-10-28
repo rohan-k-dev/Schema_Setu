@@ -154,10 +154,7 @@ class Settings(BaseSettings):
         default=None,
         description="Key for deriving CSRF tokens. Unset = random per process (tokens refresh on restart)")
 
-    # --- Accounts: e-mail verification and password reset ---
-    REQUIRE_EMAIL_VERIFICATION: bool = Field(
-        default=True, description="Users must verify their e-mail before they can log in")
-    EMAIL_VERIFY_EXPIRE_HOURS: int = Field(default=24)
+    # --- Accounts: password reset ---
     PASSWORD_RESET_EXPIRE_MINUTES: int = Field(default=30)
     FRONTEND_BASE_URL: str = Field(
         default="http://localhost:3000", description="Used to build links in e-mails")

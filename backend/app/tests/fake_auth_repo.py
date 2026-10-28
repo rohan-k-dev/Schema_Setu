@@ -13,7 +13,6 @@ from typing import Optional
 
 from app.models.db.farmer_auth import AuthSessionRow, FarmerRow
 
-PURPOSE_VERIFY_EMAIL = "verify_email"
 PURPOSE_RESET_PASSWORD = "reset_password"
 
 
@@ -22,7 +21,6 @@ def _now() -> datetime:
 
 
 class FakeAuthRepo:
-    PURPOSE_VERIFY_EMAIL = PURPOSE_VERIFY_EMAIL
     PURPOSE_RESET_PASSWORD = PURPOSE_RESET_PASSWORD
 
     def __init__(self):
@@ -116,18 +114,12 @@ class FakeAuthRepo:
                 return t["farmer_id"]
         return None
 
-    async def verify_email_with_token(self, token_hash):
-        pk = self._consume(token_hash, PURPOSE_VERIFY_EMAIL)
-        if pk is not None:
-            self._update(pk, is_verified=True, email_verified_at=_now())
-        return pk
-
     async def reset_password_with_token(self, token_hash, new_password_hash):
         pk = self._consume(token_hash, PURPOSE_RESET_PASSWORD)
         if pk is None:
             return None
         self._update(pk, password_hash=new_password_hash, password_changed_at=_now(),
-                     failed_login_count=0, locked_until=None, is_verified=True)
+                     failed_login_count=0, locked_until=None)
         await self.revoke_all_sessions(pk, "password_reset")
         return pk
 

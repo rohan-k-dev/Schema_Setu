@@ -86,7 +86,7 @@ actor, correlation id and time window. All filters are validated, and a bad valu
 
 ### What is never stored or shown
 
-Passwords, API keys, session cookies or tokens, CSRF tokens, reset / verification links, full profiles,
+Passwords, API keys, session cookies or tokens, CSRF tokens, reset links, full profiles,
 Aadhaar, phone or bank numbers, and e-mail addresses inside free text. They are removed in three places:
 1. **When an event is written:** detail keys like `password`, `token`, `session`, `phone`, `profile` are
    replaced with `[redacted]`.

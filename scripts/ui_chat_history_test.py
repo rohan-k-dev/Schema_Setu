@@ -11,16 +11,12 @@ delete one, turn saving off (a new chat isn't kept), delete all. Uses 2 sign-ups
 """
 
 import argparse
-import re
-import subprocess
 import sys
 import uuid
-from pathlib import Path
 
 import httpx
 from playwright.sync_api import sync_playwright
 
-ROOT = Path(__file__).resolve().parents[1]
 API = "http://localhost:8000"
 PASSWORD = "HistoryUi2468farm"
 results = []
@@ -36,10 +32,6 @@ def account(tag):
     c = httpx.Client(base_url=API, headers={"Origin": "http://localhost:3000"}, timeout=180)
     r = c.post("/auth/register", json={"email": email, "password": PASSWORD})
     assert r.status_code == 202, f"register {r.status_code} (sign-up limit? restart the backend)"
-    logs = subprocess.run(["docker", "compose", "logs", "backend", "--since", "2m"], cwd=ROOT,
-                          capture_output=True, text=True).stdout
-    token = re.findall(r"verify-email\?token=([A-Za-z0-9_-]+)", logs)[-1]
-    assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
     csrf = c.post("/auth/login", json={"email": email, "password": PASSWORD}).json()["csrf_token"]
     c.headers["X-CSRF-Token"] = csrf
     return email, c

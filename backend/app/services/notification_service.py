@@ -5,7 +5,7 @@ one-click e-mail unsubscribe, and the delivery dispatcher with retries.
 
 Channel rules (checked when a preference is set AND again at every send):
   in-app   always available; on by default.
-  e-mail   off by default; needs a verified account e-mail and SMTP configured.
+  e-mail   off by default; needs SMTP configured.
   SMS      off by default; needs a configured provider, a verified phone number and
            explicit consent (time + consent-text version recorded). Turning it off is an
            opt-out that takes effect for deliveries already queued.
@@ -63,7 +63,7 @@ def normalize_phone(raw: str) -> str:
 async def availability(pk: int) -> Dict[str, Any]:
     contact = await repo.account_contact(pk)
     return {
-        "email_configured": channels.email_available(), "email_verified": bool(contact and contact["is_verified"]),
+        "email_configured": channels.email_available(),
         "sms_available": channels.sms_available(),
         "phone": channels.mask_phone(contact["phone"]) if contact and contact["phone"] else None,
         "phone_verified": bool(contact and contact["phone_verified_at"]),
@@ -86,10 +86,9 @@ async def update_preferences(pk: int, principal: Principal, changes: Dict[str, A
     avail = await availability(pk)
     write: Dict[str, Any] = {k: changes[k] for k in ("in_app", "consequential_only") if k in changes}
     if "email" in changes:
-        if changes["email"] and not (avail["email_configured"] and avail["email_verified"]):
+        if changes["email"] and not avail["email_configured"]:
             raise NotifyRejected("EMAIL_UNAVAILABLE", "E-mail notifications aren't available: "
-                                 + ("e-mail isn't set up on this server." if not avail["email_configured"]
-                                    else "verify your e-mail address first."))
+                                 "e-mail isn't set up on this server.")
         write["email"] = changes["email"]
         write["email_opted_out_at"] = None if changes["email"] else now
     if "sms" in changes:
@@ -183,8 +182,6 @@ async def _deliver(d: dict) -> None:
         if d["channel"] == "EMAIL":
             if not prefs["email"]:
                 raise channels.ChannelError("Opted out of e-mail.", retryable=False)
-            if not d["is_verified"]:
-                raise channels.ChannelError("E-mail address not verified.", retryable=False)
             from app.core.config import settings as s
             link = f"{s.FRONTEND_BASE_URL.rstrip('/')}/unsubscribe?token={unsubscribe_token(d['account_uuid'], 'email')}"
             mid = await channels.send_email(

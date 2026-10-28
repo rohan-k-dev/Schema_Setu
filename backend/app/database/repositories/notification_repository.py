@@ -171,7 +171,7 @@ async def claim_due(limit: int) -> List[dict]:
         "UPDATE notification_deliveries d SET status = 'SENDING', attempts = d.attempts + 1, "
         "last_attempt_at = NOW(), updated_at = NOW() FROM due, notifications n, farmers f "
         "WHERE d.id = due.id AND n.id = d.notification_id AND f.id = d.farmer_id "
-        "RETURNING d.*, n.title, n.body, n.scheme_id, n.consequential, f.email, f.is_verified, f.is_active, "
+        "RETURNING d.*, n.title, n.body, n.scheme_id, n.consequential, f.email, f.is_active, "
         "f.phone, f.phone_verified_at", (limit,))
 
 

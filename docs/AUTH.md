@@ -13,19 +13,16 @@ farmer save their profile, bookmark schemes and see their search history.
 | Reauthentication | Sensitive staff actions need a sign-in or a password confirmation within `REAUTH_WINDOW_MINUTES` (default 10). These are final review decisions, dismissals, case assignments and grants, and reviewer approval. Otherwise the server answers 403 `REAUTH_REQUIRED`; the page asks for the password (`POST /auth/reauthenticate`) and retries. Five wrong passwords end the session. Both outcomes are audited. See [HUMAN_REVIEW.md](HUMAN_REVIEW.md). |
 | Stolen-cookie protection | A session only works in the browser it was created in (User-Agent check). Used from another browser, it is rejected and revoked. Every sign-in creates a new session id, which prevents session fixation. |
 | CSRF | Every state-changing request made with the cookie must send the session's CSRF token in the `X-CSRF-Token` header. The token is derived from the session with HMAC, kept in memory by the frontend, and returned by `/auth/login` and `/auth/session`. Account POSTs from origins not in `CORS_ORIGINS` are refused. |
-| E-mail verification | New accounts must open the e-mailed link (valid 24 h, single use) before they can sign in. |
 | Password reset | The link is random (256-bit), stored hashed, single use, valid **30 minutes**, and replaced by any newer request. A reset signs the account out everywhere. |
-| No account enumeration | Registration, resend-verification and forgot-password give the same answer whether or not the e-mail exists. Unknown e-mails cost the same password-hash time. |
+| No account enumeration | Registration and forgot-password give the same answer whether or not the e-mail exists. Unknown e-mails cost the same password-hash time. |
 | Brute force | After 5 wrong passwords the account is locked for 15 minutes. Every account endpoint is rate-limited per IP and per e-mail (HTTP 429 with `Retry-After`). |
 
 ## Endpoints (`/auth`)
 
 | Method | Path | Notes |
 |---|---|---|
-| POST | `/register` | `{email, password, full_name?, phone?}` → 202, generic message; e-mails a verification link |
-| POST | `/verify-email` | `{token}` → 200, or 400 if invalid/expired/used |
-| POST | `/resend-verification` | `{email}` → 202, generic |
-| POST | `/login` | `{email, password}` → 200 `{user, csrf_token, session_expires_at}` + cookie; 401 generic; 403 `EMAIL_NOT_VERIFIED`; 429 |
+| POST | `/register` | `{email, password, full_name?, phone?}` → 202, account is ready to sign in |
+| POST | `/login` | `{email, password}` → 200 `{user, csrf_token, session_expires_at}` + cookie; 401 generic; 429 |
 | GET | `/session` | 200 `{user, csrf_token, ...}` or 401 |
 | POST | `/logout` | 204, clears the cookie (CSRF required when signed in) |
 | POST | `/logout-all` | Ends every session of the account (CSRF) |
@@ -41,13 +38,20 @@ CSRF header is present, so another site cannot act as the user.
 
 ## E-mail
 
-Set `SMTP_*` in `backend/.env` to send real e-mail. Without it, for local use, each
-e-mail and its link is printed in the backend log:
+Set `SMTP_*` in `backend/.env` to send real account e-mails such as password-reset
+links. Without it, for local use, each e-mail and its link is printed in the backend log:
 
 ```
 docker compose logs backend | grep -A3 "DEV E-MAIL"
 ```
 
+In PowerShell, use:
+
+```powershell
+docker compose logs backend | Select-String -Pattern "DEV E-MAIL" -Context 0,3
+```
+
+When starting the backend directly, check the terminal running `python -m app --reload`.
 In production without SMTP, nothing is sent and the link is never logged.
 
 ## Database
@@ -58,7 +62,7 @@ tokens revoked, because the previous version exposed reset tokens in an API resp
 
 ## Tests
 
-- `backend/app/tests/test_auth_security.py`: all account flows through the API, including session-hijacking attempts.
+- `backend/app/tests/test_auth_security.py`: signup/sign-in, password recovery, and account security through the API.
 - `backend/app/tests/test_auth_repository_pg.py`: the real SQL and the migration, against PostgreSQL. Opt-in:
   `TEST_DATABASE_URL=postgresql://schemesetu:schemesetu@localhost:5432/schemesetu_auth_test`
 - `scripts/ui_auth_test.py`: the same flows in a real browser (Playwright) against `docker compose up`.

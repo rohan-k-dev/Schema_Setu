@@ -4,7 +4,7 @@ against the running local stack (`docker compose up`).
 
     python scripts/ui_auth_test.py [--base-url http://localhost:3000]
 
-Covers: register → refused before verification → verify link → sign in (cookie is
+Covers: register → sign in (cookie is
 HttpOnly: not visible to JavaScript, nothing in localStorage) → session survives a
 reload → change password → sign out (server session ends) → forgot password →
 reset link → old password rejected, new accepted → reused reset link rejected.
@@ -71,24 +71,13 @@ def main():
         page.locator("#password").fill(pw1)
         page.locator("#confirmPassword").fill(pw1)
         page.get_by_role("button", name="Create Account").click()
-        wait_text(page, "verification link")
-        check("register shows generic 'check your e-mail' message", True)
-
-        page.locator("#password").fill(pw1)
-        page.get_by_role("button", name="Sign In").click()
-        wait_text(page, "verify your e-mail")
-        check("sign-in refused before e-mail verification", page.url.endswith("/auth"))
-
-        page.goto(latest_link("verify-email", "2m"))
-        wait_text(page, "Your e-mail is verified")
-        check("verification link accepted and removed from address bar", "token=" not in page.url)
-
-        page.goto(f"{base}/auth")
-        page.locator("#email").fill(email)
+        wait_text(page, "account is ready")
+        check("registration completes without requiring email verification",
+              page.get_by_role("tab", name="Sign In").is_visible())
         page.locator("#password").fill(pw1)
         page.get_by_role("button", name="Sign In").click()
         page.wait_for_url(f"{base}/dashboard", timeout=10000)
-        check("sign-in lands on dashboard", True)
+        check("newly registered account signs in and lands on dashboard", True)
         check("session cookie not readable by JavaScript", page.evaluate("document.cookie") == "")
         check("no tokens in localStorage", page.evaluate("Object.keys(localStorage).length") == 0)
         cookie = next(c for c in page.context.cookies() if c["name"] == "ss_session")

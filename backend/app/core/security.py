@@ -86,7 +86,7 @@ def _verify_argon2(plain: str, hashed: str) -> bool:
         return False
 
 
-# ─── Opaque tokens (sessions, e-mail verification, password reset) ──────────
+# ─── Opaque tokens (sessions, password reset) ────────────────────────────────
 
 def generate_token() -> tuple[str, str]:
     """Return ``(raw_token, sha256_hex)``. 256 bits of randomness; store only the hash."""

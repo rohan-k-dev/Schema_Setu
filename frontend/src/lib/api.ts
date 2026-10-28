@@ -229,7 +229,7 @@ async function postJson(path: string, body: unknown, fallback: string): Promise<
   return res;
 }
 
-/** Creates an unverified account; the server e-mails a verification link. */
+/** Creates an account that can sign in immediately. */
 export async function apiRegister(payload: RegisterPayload): Promise<string> {
   const res = await postJson("/auth/register", payload, "Registration failed.");
   return (await res.json()).message;
@@ -254,16 +254,6 @@ export async function apiLogout(): Promise<void> {
 
 export async function apiLogoutAll(): Promise<string> {
   const res = await postJson("/auth/logout-all", {}, "Sign-out failed.");
-  return (await res.json()).message;
-}
-
-export async function apiVerifyEmail(token: string): Promise<string> {
-  const res = await postJson("/auth/verify-email", { token }, "Verification failed.");
-  return (await res.json()).message;
-}
-
-export async function apiResendVerification(email: string): Promise<string> {
-  const res = await postJson("/auth/resend-verification", { email }, "Could not send the link.");
   return (await res.json()).message;
 }
 

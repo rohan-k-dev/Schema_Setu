@@ -36,10 +36,6 @@ def make_account(tag: str) -> str:
     email = f"{tag}-{uuid.uuid4().hex[:8]}@example.com"
     c = httpx.Client(base_url=API, headers={"Origin": "http://localhost:3000"})
     assert c.post("/auth/register", json={"email": email, "password": PASSWORD}).status_code == 202
-    logs = subprocess.run(["docker", "compose", "logs", "backend", "--since", "2m"], cwd=ROOT,
-                          capture_output=True, text=True).stdout
-    token = re.findall(r"verify-email\?token=([A-Za-z0-9_-]+)", logs)[-1]
-    assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
     return email
 
 

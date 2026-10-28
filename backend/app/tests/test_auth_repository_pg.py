@@ -120,20 +120,6 @@ def test_sessions_live_revoke_expire_and_revoke_all():
     assert n == 2 and b_after is None           # b plus the already-expired c
 
 
-def test_token_single_use_even_when_used_concurrently():
-    from app.database.repositories import auth_repository as repo
-
-    async def body():
-        f = await repo.create_farmer("t@example.com", "h", None, None)
-        await repo.create_token(f.id, repo.PURPOSE_VERIFY_EMAIL, "v" * 64, _now() + timedelta(hours=1))
-        results = await asyncio.gather(*(repo.verify_email_with_token("v" * 64) for _ in range(5)))
-        return results, await repo.get_farmer_by_pk(f.id)
-
-    results, farmer = run(body)
-    assert sorted(r is not None for r in results) == [False, False, False, False, True]
-    assert farmer.is_verified and farmer.email_verified_at is not None
-
-
 def test_expired_and_superseded_tokens_rejected():
     from app.database.repositories import auth_repository as repo
 
@@ -144,7 +130,8 @@ def test_expired_and_superseded_tokens_rejected():
         await repo.create_token(f.id, repo.PURPOSE_RESET_PASSWORD, "2" * 64, _now() + timedelta(minutes=30))
         await repo.create_token(f.id, repo.PURPOSE_RESET_PASSWORD, "3" * 64, _now() + timedelta(minutes=30))
         superseded = await repo.reset_password_with_token("2" * 64, "new")
-        wrong_purpose = await repo.verify_email_with_token("3" * 64)
+        await repo.create_token(f.id, "other-purpose", "4" * 64, _now() + timedelta(minutes=30))
+        wrong_purpose = await repo.reset_password_with_token("4" * 64, "new")
         ok = await repo.reset_password_with_token("3" * 64, "new")
         return expired, superseded, wrong_purpose, ok
 
@@ -168,7 +155,7 @@ def test_password_reset_is_one_transaction_that_revokes_sessions():
     locked, pk, farmer, session = run(body)
     assert locked is not None and locked > _now()
     assert pk == farmer.id and farmer.password_hash == "new-hash"
-    assert farmer.locked_until is None and farmer.failed_login_count == 0 and farmer.is_verified
+    assert farmer.locked_until is None and farmer.failed_login_count == 0 and not farmer.is_verified
     assert farmer.password_changed_at is not None
     assert session is None
 

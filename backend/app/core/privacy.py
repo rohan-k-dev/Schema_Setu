@@ -20,7 +20,7 @@ GROQ, TAVILY, SARVAM, SMTP, SMS = "groq", "tavily", "sarvam", "email_provider", 
 
 ACCOUNT_FIELDS: List[Dict[str, Any]] = [
     {"field": "email", "label": "E-mail address", "required": True,
-     "why": "Signing in, verifying the account, password reset, and e-mail alerts if you turn them on.",
+     "why": "Signing in, password reset, and e-mail alerts if you turn them on.",
      "stored": "Yes — accounts table, until you delete the account.",
      "shared_with": [SMTP], "shared_note": "Only to send you an e-mail (when an e-mail service is set up)."},
     {"field": "password", "label": "Password", "required": True,

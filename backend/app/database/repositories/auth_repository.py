@@ -20,7 +20,6 @@ from psycopg.rows import dict_row
 from app.database.connection import get_db_connection
 from app.models.db.farmer_auth import AuthSessionRow, FarmerRow
 
-PURPOSE_VERIFY_EMAIL = "verify_email"
 PURPOSE_RESET_PASSWORD = "reset_password"
 
 
@@ -44,7 +43,7 @@ async def get_farmer_by_pk(pk: int) -> Optional[FarmerRow]:
 
 async def create_farmer(email: str, password_hash: str, full_name: Optional[str],
                         phone: Optional[str]) -> Optional[FarmerRow]:
-    """Insert an unverified account. Returns None if the e-mail or phone is already taken."""
+    """Insert an account ready to sign in. Returns None if the e-mail or phone is already taken."""
     async with get_db_connection() as conn:
         # Caught here, inside the connection block: get_db_connection() would otherwise
         # re-raise it as a generic DatabaseError (500), revealing that the e-mail exists.
@@ -169,7 +168,7 @@ async def revoke_all_sessions(pk: int, reason: str, except_session_id: Optional[
         return cur.rowcount
 
 
-# ─── Single-use tokens (e-mail verification, password reset) ─────────────────
+# ─── Single-use password-reset tokens ────────────────────────────────────────
 
 async def create_token(pk: int, purpose: str, token_hash: str, expires_at: datetime) -> None:
     """Store a new token; any earlier unused token for the same purpose stops working."""
@@ -201,24 +200,10 @@ async def _consume(conn, token_hash: str, purpose: str) -> Optional[int]:
     return row[0] if row else None
 
 
-async def verify_email_with_token(token_hash: str) -> Optional[int]:
-    async with get_db_connection() as conn:
-        async with conn.transaction():
-            pk = await _consume(conn, token_hash, PURPOSE_VERIFY_EMAIL)
-            if pk is not None:
-                await conn.execute(
-                    "UPDATE farmers SET is_verified = true, "
-                    "email_verified_at = COALESCE(email_verified_at, NOW()), updated_at = NOW() "
-                    "WHERE id = %s",
-                    (pk,),
-                )
-    return pk
-
-
 async def reset_password_with_token(token_hash: str, new_password_hash: str) -> Optional[int]:
     """
     One transaction: consume the reset token, set the new password, clear the lockout,
-    mark the e-mail verified (the user proved access to it) and revoke every session.
+    and revoke every session.
     """
     async with get_db_connection() as conn:
         async with conn.transaction():
@@ -228,8 +213,7 @@ async def reset_password_with_token(token_hash: str, new_password_hash: str) -> 
             await conn.execute(
                 """
                 UPDATE farmers SET password_hash = %s, password_changed_at = NOW(),
-                       failed_login_count = 0, locked_until = NULL, is_verified = true,
-                       email_verified_at = COALESCE(email_verified_at, NOW()), updated_at = NOW()
+                       failed_login_count = 0, locked_until = NULL, updated_at = NOW()
                 WHERE id = %s
                 """,
                 (new_password_hash, pk),

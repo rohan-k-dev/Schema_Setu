@@ -81,16 +81,8 @@ class MessageResponse(BaseModel):
     message: str
 
 
-# ─── E-mail verification ──────────────────────────────────────────────────────
-
-class VerifyEmailRequest(BaseModel):
-    """Payload for POST /auth/verify-email."""
-
-    token: str = TokenStr
-
-
 class EmailOnlyRequest(BaseModel):
-    """Payload for POST /auth/resend-verification and /auth/forgot-password."""
+    """Payload for POST /auth/forgot-password."""
 
     email: EmailStr
 

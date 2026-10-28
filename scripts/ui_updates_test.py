@@ -43,9 +43,6 @@ def account(tag):
     email = f"{tag}-{uuid.uuid4().hex[:8]}@example.com"
     c = httpx.Client(base_url=API, headers={"Origin": "http://localhost:3000"})
     assert c.post("/auth/register", json={"email": email, "password": PASSWORD}).status_code == 202
-    token = re.findall(r"verify-email\?token=([A-Za-z0-9_-]+)", sh("docker", "compose", "logs", "backend",
-                                                                  "--since", "2m").stdout)[-1]
-    assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
     csrf = c.post("/auth/login", json={"email": email, "password": PASSWORD}).json()["csrf_token"]
     return email, c, csrf
 

@@ -142,8 +142,8 @@ async def set_reviewer_approval(actor: Principal, farmer_id: str, approved: bool
                     rejected = _SELF
                 elif target["role"] != Role.REVIEWER.value:
                     rejected = ("NOT_A_REVIEWER", "Only REVIEWER accounts can be approved for review work.")
-                elif approved and not (target["is_active"] and target["is_verified"]):
-                    rejected = ("NOT_ELIGIBLE", "The account must be active and have a verified e-mail.")
+                elif approved and not target["is_active"]:
+                    rejected = ("NOT_ELIGIBLE", "The account must be active.")
                 elif bool(target["reviewer_approved_at"]) == approved:
                     row = target
                 else:

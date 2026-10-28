@@ -1,5 +1,5 @@
 """
-Account security tests: registration, e-mail verification, login, server-managed
+Account security tests: registration, login, server-managed
 cookie sessions, CSRF, logout, password reset / change, lockout, rate limiting
 and session-hijacking attempts — through the real HTTP API with an in-memory
 account store (FakeAuthRepo). The PostgreSQL repository itself is covered by
@@ -58,7 +58,6 @@ def outbox(monkeypatch):
         return _send if with_token else _send_no_token
 
     es = "app.services.auth_service.email_service"
-    monkeypatch.setattr(f"{es}.send_verification_email", capture("verify", True))
     monkeypatch.setattr(f"{es}.send_password_reset_email", capture("reset", True))
     monkeypatch.setattr(f"{es}.send_account_exists_email", capture("exists", False))
     monkeypatch.setattr(f"{es}.send_password_changed_email", capture("changed", False))
@@ -74,9 +73,11 @@ def token_of(outbox, kind):
     return [t for k, _, t in outbox if k == kind][-1]
 
 
-def register_and_verify(c, outbox, email=EMAIL, password=PASSWORD):
-    assert c.post("/auth/register", json={"email": email, "password": password}).status_code == 202
-    assert c.post("/auth/verify-email", json={"token": token_of(outbox, "verify")}).status_code == 200
+def register_account(c, outbox, email=EMAIL, password=PASSWORD):
+    response = c.post("/auth/register", json={"email": email, "password": password})
+    assert response.status_code == 202
+    assert "sign in now" in response.json()["message"]
+    assert "set-cookie" not in response.headers
 
 
 def login(c, email=EMAIL, password=PASSWORD):
@@ -84,7 +85,7 @@ def login(c, email=EMAIL, password=PASSWORD):
 
 
 def signed_in(c, outbox):
-    register_and_verify(c, outbox)
+    register_account(c, outbox)
     r = login(c)
     assert r.status_code == 200, r.text
     return r.json()["csrf_token"]
@@ -111,18 +112,19 @@ class TestPasswordHashing:
         assert not password_needs_rehash(hash_password(PASSWORD))
 
 
-# ─── registration and e-mail verification ─────────────────────────────────────
+# ─── registration ─────────────────────────────────────────────────────────────
 
 class TestRegistration:
-    def test_register_is_generic_and_sends_verification(self, repo, outbox):
+    def test_register_is_generic_and_immediately_sign_in_ready(self, repo, outbox):
         c = browser()
         r = c.post("/auth/register", json={"email": EMAIL, "password": PASSWORD, "full_name": "Ramesh"})
         assert r.status_code == 202
-        assert "verification link" in r.json()["message"]
-        assert "set-cookie" not in r.headers                      # no session before verification
-        assert [k for k, _, _ in outbox] == ["verify"]
+        assert "sign in now" in r.json()["message"]
+        assert "set-cookie" not in r.headers
+        assert not outbox
         f = repo.farmers[1]
         assert f.password_hash.startswith("$argon2id$") and not f.is_verified
+        assert login(c).status_code == 200
 
     def test_duplicate_registration_gives_same_response_no_enumeration(self, repo, outbox):
         c = browser()
@@ -130,38 +132,17 @@ class TestRegistration:
         second = c.post("/auth/register", json={"email": EMAIL.upper(), "password": "Other1234x"})
         assert first.status_code == second.status_code == 202
         assert first.json() == second.json()
-        assert [k for k, _, _ in outbox] == ["verify", "exists"]
+        assert [k for k, _, _ in outbox] == ["exists"]
         assert len(repo.farmers) == 1
 
-    def test_login_before_verification_refused(self, repo, outbox):
+    def test_legacy_unverified_account_can_sign_in(self, repo, outbox):
         c = browser()
-        c.post("/auth/register", json={"email": EMAIL, "password": PASSWORD})
+        register_account(c, outbox)
+        repo.farmers[1] = repo.farmers[1].model_copy(update={"is_verified": False, "email_verified_at": None})
         r = login(c)
-        assert r.status_code == 403 and r.json()["error"]["code"] == "EMAIL_NOT_VERIFIED"
-        assert settings.SESSION_COOKIE_NAME not in c.cookies
-
-    def test_verification_token_is_single_use(self, repo, outbox):
-        c = browser()
-        c.post("/auth/register", json={"email": EMAIL, "password": PASSWORD})
-        token = token_of(outbox, "verify")
-        assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
-        r = c.post("/auth/verify-email", json={"token": token})
-        assert r.status_code == 400 and r.json()["error"]["code"] == "INVALID_TOKEN"
-
-    def test_expired_verification_token_rejected(self, repo, outbox):
-        c = browser()
-        c.post("/auth/register", json={"email": EMAIL, "password": PASSWORD})
-        repo.tokens[-1]["expires_at"] = datetime.now(timezone.utc) - timedelta(seconds=1)
-        r = c.post("/auth/verify-email", json={"token": token_of(outbox, "verify")})
-        assert r.status_code == 400
-
-    def test_resend_verification_invalidates_old_link(self, repo, outbox):
-        c = browser()
-        c.post("/auth/register", json={"email": EMAIL, "password": PASSWORD})
-        old = token_of(outbox, "verify")
-        assert c.post("/auth/resend-verification", json={"email": EMAIL}).status_code == 202
-        assert c.post("/auth/verify-email", json={"token": old}).status_code == 400
-        assert c.post("/auth/verify-email", json={"token": token_of(outbox, "verify")}).status_code == 200
+        assert r.status_code == 200
+        assert not r.json()["user"]["is_verified"]
+        assert not repo.farmers[1].is_verified
 
     def test_password_rules_validated(self, repo, outbox):
         c = browser()
@@ -175,7 +156,7 @@ class TestRegistration:
 class TestLoginAndSession:
     def test_successful_login_sets_secure_session_cookie(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         r = login(c)
         assert r.status_code == 200
         body = r.json()
@@ -193,13 +174,13 @@ class TestLoginAndSession:
 
     def test_cookie_is_secure_in_production(self, repo, outbox, monkeypatch):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         monkeypatch.setattr(settings, "COOKIE_SECURE", True)
         assert "Secure" in login(c).headers["set-cookie"]
 
     def test_invalid_credentials_generic_for_wrong_password_and_unknown_email(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         wrong = login(c, password="WrongPass999")
         unknown = login(c, email="nobody@example.com")
         assert wrong.status_code == unknown.status_code == 401
@@ -211,7 +192,7 @@ class TestLoginAndSession:
 
     def test_lockout_after_repeated_failures(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         for _ in range(settings.LOGIN_MAX_FAILURES):
             assert login(c, password="WrongPass999").status_code == 401
         locked = login(c)                                        # correct password, but locked
@@ -222,7 +203,7 @@ class TestLoginAndSession:
 
     def test_successful_login_resets_failure_counter(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         for _ in range(settings.LOGIN_MAX_FAILURES - 1):
             login(c, password="WrongPass999")
         assert login(c).status_code == 200
@@ -277,7 +258,7 @@ class TestLogout:
 
     def test_logout_all_ends_every_device(self, repo, outbox):
         phone, laptop = browser("Phone UA"), browser("Laptop UA")
-        register_and_verify(phone, outbox)
+        register_account(phone, outbox)
         csrf = login(phone).json()["csrf_token"]
         assert login(laptop).status_code == 200
         assert phone.post("/auth/logout-all", headers={"X-CSRF-Token": csrf}).status_code == 200
@@ -305,7 +286,7 @@ class TestCSRF:
 
     def test_cross_site_origin_rejected(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         r = c.post("/auth/login", json={"email": EMAIL, "password": PASSWORD},
                    headers={"Origin": "https://evil.example"})
         assert r.status_code == 403 and r.json()["detail"]["code"] == "ORIGIN_NOT_ALLOWED"
@@ -351,7 +332,7 @@ class TestSessionHijacking:
 
     def test_session_fixation_login_issues_a_new_session(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         planted = login(c).cookies[settings.SESSION_COOKIE_NAME]     # attacker-known session
         c.cookies.set(settings.SESSION_COOKIE_NAME, planted)
         fresh = login(c).cookies[settings.SESSION_COOKIE_NAME]
@@ -362,7 +343,7 @@ class TestSessionHijacking:
 
     def test_session_cookie_never_in_response_body(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         r = login(c)
         assert r.cookies[settings.SESSION_COOKIE_NAME] not in r.text
         assert c.cookies[settings.SESSION_COOKIE_NAME] not in c.get("/auth/session").text
@@ -373,7 +354,7 @@ class TestSessionHijacking:
 class TestPasswordRecovery:
     def test_forgot_password_generic_and_never_returns_token(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         known = c.post("/auth/forgot-password", json={"email": EMAIL})
         unknown = c.post("/auth/forgot-password", json={"email": "nobody@example.com"})
         assert known.status_code == unknown.status_code == 202
@@ -384,7 +365,7 @@ class TestPasswordRecovery:
 
     def test_reset_token_is_short_lived(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         c.post("/auth/forgot-password", json={"email": EMAIL})
         lifetime = repo.tokens[-1]["expires_at"] - datetime.now(timezone.utc)
         assert timedelta(minutes=settings.PASSWORD_RESET_EXPIRE_MINUTES - 1) < lifetime <= \
@@ -410,7 +391,7 @@ class TestPasswordRecovery:
 
     def test_expired_reset_token_rejected(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         c.post("/auth/forgot-password", json={"email": EMAIL})
         repo.tokens[-1]["expires_at"] = datetime.now(timezone.utc) - timedelta(seconds=1)
         r = c.post("/auth/reset-password", json={"token": token_of(outbox, "reset"),
@@ -420,7 +401,7 @@ class TestPasswordRecovery:
 
     def test_new_reset_request_invalidates_previous_link(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         c.post("/auth/forgot-password", json={"email": EMAIL})
         first = token_of(outbox, "reset")
         c.post("/auth/forgot-password", json={"email": EMAIL})
@@ -430,7 +411,7 @@ class TestPasswordRecovery:
 
     def test_reset_unlocks_a_locked_account(self, repo, outbox):
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         for _ in range(settings.LOGIN_MAX_FAILURES):
             login(c, password="WrongPass999")
         c.post("/auth/forgot-password", json={"email": EMAIL})
@@ -465,7 +446,7 @@ class TestRateLimiting:
     def test_login_rate_limited_per_account(self, repo, outbox, monkeypatch):
         monkeypatch.setitem(__import__("app.core.rate_limit", fromlist=["LIMITS"]).LIMITS, "login_email", (3, 900))
         c = browser()
-        register_and_verify(c, outbox)
+        register_account(c, outbox)
         for _ in range(3):
             login(c, password="WrongPass999")
         r = login(c)

@@ -109,7 +109,7 @@ SchemeSetu ("Bridge to Schemes") is a multilingual AI assistant that helps rural
 - ✅ Configurable Groq model (`GROQ_MODEL`), after the live run of 2026-10-18 with real keys
 
 ### Farmer Accounts, Profile & Dashboard (optional sign-in)
-- ✅ Secure accounts: Argon2id passwords, HttpOnly cookie sessions, CSRF tokens, e-mail verification,
+- ✅ Secure accounts: Argon2id passwords, HttpOnly cookie sessions, CSRF tokens,
   password reset, lockout and rate limits ([docs/AUTH.md](docs/AUTH.md))
 - ✅ Saved farmer profile with land units, income ranges and conflict-safe edits; used by chat with consent
   ([docs/PROFILE.md](docs/PROFILE.md))
@@ -305,7 +305,7 @@ npm run dev
 
 ```bash
 docker compose up --build -d   # PostgreSQL 16, migrations + corpus import, backend (:8000), frontend (:3000)
-docker compose logs backend    # without SMTP, verification / reset e-mail links are printed here
+docker compose logs backend    # without SMTP, reset e-mail links are printed here
 docker compose down            # stop
 ```
 
@@ -334,8 +334,8 @@ To use an external database (e.g. Neon) instead, set `DATABASE_URL` in the root 
 | `MAX_CANDIDATES` / `MAX_RESPONSE_SCHEMES` | No | Candidates evaluated / returned (default 25 / 25) |
 | `MAX_MESSAGE_CHARS` | No | Chat message length limit (default 2000) |
 | `GROQ_MODEL` | No | Groq model id (default `openai/gpt-oss-20b`) |
-| `SMTP_HOST` … `SMTP_FROM` | No | E-mail for account verification / password reset. Unset locally: links are printed in the backend log |
-| `SESSION_*`, `COOKIE_SECURE`, `REQUIRE_EMAIL_VERIFICATION`, `LOGIN_*` | No | Account security settings — see [docs/AUTH.md](docs/AUTH.md). Set `SESSION_SECRET`: unsubscribe links depend on it |
+| `SMTP_HOST` … `SMTP_FROM` | No | E-mail for password reset and account notices. Unset locally: links are printed in the backend log |
+| `SESSION_*`, `COOKIE_SECURE`, `LOGIN_*` | No | Account security settings — see [docs/AUTH.md](docs/AUTH.md). Set `SESSION_SECRET`: unsubscribe links depend on it |
 | `RETENTION_*` | No | Data retention (sessions 30 d, tokens 7 d, notifications 365 d, closed review cases anonymised after 365 d; daily purge) — see [docs/PRIVACY.md](docs/PRIVACY.md) |
 | `STAFF_SESSION_*`, `REAUTH_WINDOW_MINUTES`, `REVIEW_SELF_ASSIGN`, `REVIEW_GRANT_MAX_HOURS`, `REVIEW_VIEWS_PER_10_MIN` | No | Reviewer access policy: shorter staff sessions, password re-entry for sensitive actions, case scope — see [docs/HUMAN_REVIEW.md](docs/HUMAN_REVIEW.md#access-policy) |
 | `LIVE_*` | No | Query-time check of official websites: on/off, time budget, pages per question, per-request limits — see [docs/LIVE_VERIFICATION.md](docs/LIVE_VERIFICATION.md) |
@@ -374,7 +374,7 @@ To use an external database (e.g. Neon) instead, set `DATABASE_URL` in the root 
 | POST | `/review-cases/{id}/resolve` | APPROVE / REJECT / MARK_UNVERIFIABLE / RESOLVE, or REQUEST_INFORMATION (request verification) |
 | POST | `/review-cases/{id}/dismiss` | Dismiss a case |
 | GET | `/farmers/me/review-cases` | Your own cases, in plain language |
-| POST | `/auth/register`, `/auth/verify-email`, `/auth/login`, `/auth/logout`, … | Accounts: cookie sessions, e-mail verification, password reset — see [docs/AUTH.md](docs/AUTH.md) |
+| POST | `/auth/register`, `/auth/login`, `/auth/logout`, … | Accounts: cookie sessions and password reset — see [docs/AUTH.md](docs/AUTH.md) |
 | GET/PUT/POST/DELETE | `/farmers/me/*` | Saved profile ([docs/PROFILE.md](docs/PROFILE.md)), eligibility from the saved profile, search history, dashboard ([docs/DASHBOARD.md](docs/DASHBOARD.md)) (signed in) |
 | GET/POST/PATCH/DELETE | `/farmers/me/saved-schemes[/{id}[/checklist[/{item}]]]` | Save / unsave schemes, user-reported application checklist, optional application reference ([docs/SAVED_SCHEMES.md](docs/SAVED_SCHEMES.md)) |
 

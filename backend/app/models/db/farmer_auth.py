@@ -62,11 +62,11 @@ class AuthSessionRow(BaseModel):
 
 
 class AuthTokenRow(BaseModel):
-    """Represents a row in the ``auth_tokens`` table (e-mail verification / password reset)."""
+    """Represents a single-use password-reset token row."""
 
     id: int
     farmer_id: int            # farmers.id
-    purpose: str              # 'verify_email' | 'reset_password'
+    purpose: str
     token_hash: str
     created_at: datetime
     expires_at: datetime

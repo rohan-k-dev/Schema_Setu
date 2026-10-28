@@ -482,7 +482,7 @@ export interface NotificationPreferences {
   sms_consent_at: string | null; sms_consent_version: string | null; sms_opted_out_at: string | null;
 }
 export interface NotificationChannels {
-  email_configured: boolean; email_verified: boolean; sms_available: boolean;
+  email_configured: boolean; sms_available: boolean;
   phone: string | null; phone_verified: boolean; sms_consent_text: string; sms_consent_version: string;
 }
 export interface PreferencesResponse { preferences: NotificationPreferences; channels: NotificationChannels }

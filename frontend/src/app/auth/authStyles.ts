@@ -1,4 +1,4 @@
-/** Styles shared by the account pages (/auth, /verify-email, /reset-password, /account/security). */
+/** Styles shared by the account pages (/auth, /reset-password, /account/security). */
 export const AUTH_CSS = `
         .auth-page {
           min-height: 100vh;

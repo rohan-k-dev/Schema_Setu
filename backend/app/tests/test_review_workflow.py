@@ -88,7 +88,7 @@ def env(monkeypatch):
     monkeypatch.setattr(review_service, "_audit_log", [])
     monkeypatch.setattr(review_service, "_review_grants", {})
     monkeypatch.setattr(settings, "REVIEW_API_KEY", None)
-    for name in ("send_verification_email", "send_password_reset_email",
+    for name in ("send_password_reset_email",
                  "send_account_exists_email", "send_password_changed_email"):
         async def _noop(*a, **k):
             return True

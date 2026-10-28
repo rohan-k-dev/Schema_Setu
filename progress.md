@@ -17,7 +17,7 @@ FastAPI backend (localhost:8000)
    ├─ /chat, /voice, /tts ── LangGraph workflow (8 nodes): profile → completeness → question
    │                         | query_rewriter → retrieval (DB + knowledge graph + Tavily web,
    │                         parallel) → eligibility (deterministic rules) → recommendation → formatter
-   ├─ /auth/*   accounts: cookie sessions, CSRF, e-mail verification, reset (docs/AUTH.md)
+   ├─ /auth/*   accounts: cookie sessions, CSRF, sign-up, reset (docs/AUTH.md)
    ├─ /farmers/me/*  saved profile, saved schemes, eligibility, search history, dashboard (docs/PROFILE.md, docs/DASHBOARD.md)
    ├─ /farmers/me/notifications…, /subscriptions…, /phone…  inbox, channels, followed schemes (docs/SCHEME_UPDATES.md)
    ├─ /admin/*  accounts, audit, operations, scheme-change review (docs/RBAC.md, ADMIN_OPERATIONS.md, SCHEME_UPDATES.md)
@@ -51,7 +51,7 @@ Key decisions (keep):
   - Argon2id passwords; legacy bcrypt hashes upgraded at the next login.
   - Cookie sessions: 12 h idle and 7 day absolute limits, bound to the User-Agent, revoked on logout / password reset / password change.
   - CSRF tokens (HMAC of the session) plus an Origin check.
-  - E-mail verification required before login.
+  - Accounts sign in immediately after registration; no e-mail verification step.
   - Forgot / reset password with single-use links valid 30 min.
   - Change password and "sign out of all devices".
   - Lock for 15 min after 5 failed logins; per-IP / per-e-mail rate limits (429).
@@ -125,7 +125,7 @@ Key decisions (keep):
   - Detect: a normalised candidate file in `data/incoming/` is compared with the verified corpus for eligibility, benefits, states, documents, steps, URLs, status, new / missing schemes. Cosmetic and provenance-only differences are ignored; invalid records are refused; suspicious scrapes (>20 % missing, >50 % changed) are flagged; change fingerprints stop duplicates. Provenance: source file + SHA-256, before / after, detector, time.
   - Verify: every change is PENDING until an admin approves or rejects it; consequential changes need "I checked the official source" + a note. Audited.
   - Publish (admin job `PUBLISH_CHANGES`): only fully reviewed batches; only approved categories merged; validated; new corpus version + backup + snapshot; DB import in one transaction; files restored and nobody notified if the import fails; stale candidate / base version refused.
-  - Notify: savers and followers of an affected scheme, once per account per scheme per batch. In-app (default on), e-mail (SMTP + verified e-mail, one-click unsubscribe), SMS (configured provider + code-verified phone + recorded consent, opt-out). "Consequential only" option.
+  - Notify: savers and followers of an affected scheme, once per account per scheme per batch. In-app (default on), e-mail (SMTP configured, one-click unsubscribe), SMS (configured provider + code-verified phone + recorded consent, opt-out). "Consequential only" option.
   - Delivery: one row per (notification, channel); `SKIP LOCKED` claims; retries 1/5/30/120/360 min up to `NOTIFY_MAX_ATTEMPTS`, then GAVE_UP; SENT is final; permanent failures SKIPPED; opt-out re-checked at send; interrupted sends are not retried (no duplicates); signed SMS delivery reports (DELIVERED / UNDELIVERED).
   - Found and fixed on the way: a punctuation-only benefit difference was reported as a change; the admin panel overwrote the detection summary with a generic message; the first inbox query used f-string SQL (caught by `test_bug026`).
 
@@ -141,7 +141,7 @@ Key decisions (keep):
 
 ### Partially done / limitations
 - **Real-service features are untested after the `.env` change**: `backend/.env` has placeholder keys (see §6.1).
-- **E-mail**: no SMTP configured, so verification and reset e-mails are printed in the backend log (development only).
+- **E-mail**: no SMTP configured, so reset e-mails are printed in the backend log (development only).
 - **Rate limits** are in-memory per process; that's fine for one backend instance only.
 - **Session binding** checks the User-Agent; an attacker who copies the exact UA string is not stopped.
 - **Income range** is stored, but no eligibility rule uses income; if a future rule does, the engine needs range-aware evaluation.
@@ -199,7 +199,7 @@ Key decisions (keep):
 | `backend/.env.example` | Documented account and SMTP settings, `GROQ_MODEL` |
 | `frontend/src/lib/api.ts`, `AuthContext.tsx`, `types.ts` | Cookie sessions, CSRF in memory, `ApiError`; no localStorage tokens |
 | `frontend/src/app/auth/page.tsx`, `auth/AuthLayout.tsx`, `auth/authStyles.ts` | Register → "check e-mail", resend link, shared styles |
-| `frontend/src/app/verify-email/`, `reset-password/`, `account/security/` (new) | New pages |
+| `frontend/src/app/reset-password/`, `account/security/` (new) | New pages |
 | `frontend/src/app/dashboard/page.tsx`, `profile/page.tsx`, `page.tsx` | Use the session instead of an access token; Security link |
 
 ### Profile module
@@ -352,7 +352,7 @@ Key decisions (keep):
 |---|---|---|
 | 0001 | Scheme corpus schema | — |
 | 0002 | `farmers`, `farmer_profiles`, `saved_schemes`, `search_history`, `refresh_tokens` (Tanmay) | — |
-| 0003 | `auth_sessions`, `auth_tokens`; `farmers.failed_login_count / locked_until / password_changed_at` | Clears old `password_reset_token`s and revokes all `refresh_tokens` (both unused now). **Existing users must verify their e-mail** before login (use "Send me a new verification link"). |
+| 0003 | `auth_sessions`, `auth_tokens`; `farmers.failed_login_count / locked_until / password_changed_at` | Clears old `password_reset_token`s and revokes all `refresh_tokens` (both unused now). |
 | 0004 | `farmer_profiles.land_size_value / land_unit / income_range / residence / version` + check constraints | Converts `annual_income` to `income_range`, then **clears `annual_income` and `has_aadhaar`**. Irreversible: downgrade can't restore them. |
 | 0005 | `saved_schemes` version / reference columns + `UNIQUE (id, farmer_id)`; new `saved_scheme_checklist_items` | Additive and reversible. Notes longer than 1000 characters are cut to 1000. Existing saved schemes get a checklist on first read. |
 | 0006 | `farmers.role` (default FARMER, check); `audit_events` + append-only trigger | Every existing account becomes FARMER; nobody is admin until `scripts/set_role.py` is run. Reversible (the downgrade drops the audit log). |
@@ -432,7 +432,7 @@ The UI test falls back to Microsoft Edge because Windows blocks Playwright's own
 ```bash
 docker compose up --build -d          # full stack: db, migrations + corpus import, backend, frontend
 docker compose down                   # stop
-docker compose logs backend           # backend log (dev e-mails with verify/reset links appear here)
+docker compose logs backend           # backend log (dev reset links appear here)
 curl localhost:8000/health/ready      # shows which API keys are configured
 
 cd backend && py -m pytest app/tests -q                   # backend tests

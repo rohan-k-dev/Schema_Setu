@@ -43,9 +43,6 @@ def account(tag, role=None, approve=False):
     c = httpx.Client(base_url=API, headers={"Origin": "http://localhost:3000"})
     r = c.post("/auth/register", json={"email": email, "password": PASSWORD})
     assert r.status_code == 202, f"register {r.status_code} (sign-up limit? restart the backend)"
-    token = re.findall(r"verify-email\?token=([A-Za-z0-9_-]+)",
-                       sh("docker", "compose", "logs", "backend", "--since", "2m").stdout)[-1]
-    assert c.post("/auth/verify-email", json={"token": token}).status_code == 200
     if role:
         assert sh("docker", "compose", "exec", "-T", "backend", "python", "../scripts/set_role.py",
                   email, role, *(["--approve"] if approve else [])).returncode == 0

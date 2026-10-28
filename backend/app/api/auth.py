@@ -1,5 +1,5 @@
 """
-Auth API — registration, e-mail verification, login, session, logout,
+Auth API — registration, login, session, logout,
 password reset and password change. All endpoints are under /auth.
 
 Sessions are server-managed: the session token is set as an HttpOnly cookie
@@ -34,7 +34,6 @@ from app.models.auth_schemas import (
     RegisterRequest,
     ResetPasswordRequest,
     SessionResponse,
-    VerifyEmailRequest,
 )
 from app.services import auth_service
 from app.services.auth_service import AuthError, SessionContext
@@ -43,10 +42,7 @@ logger = get_logger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-REGISTER_MESSAGE = ("If this e-mail can be used, we have sent a verification link to it. "
-                    "Open the link to activate your account, then sign in.")
-REGISTER_MESSAGE_NO_VERIFY = ("If this e-mail can be used, the account is ready — "
-                              "you can sign in now.")
+REGISTER_MESSAGE = "If this e-mail can be used, your account is ready. You can sign in now."
 RECOVERY_MESSAGE = "If an account exists for this e-mail, we have sent a link to it."
 
 
@@ -118,37 +114,15 @@ def _session_body(ctx: SessionContext) -> SessionResponse:
 _GUARDS = [Depends(trusted_origin), Depends(accounts_available)]
 
 
-# ─── Registration and e-mail verification ────────────────────────────────────
+# ─── Registration ────────────────────────────────────────────────────────────
 
 @router.post("/register", status_code=status.HTTP_202_ACCEPTED, response_model=MessageResponse,
-             dependencies=_GUARDS, summary="Create an account (e-mails a verification link)")
+             dependencies=_GUARDS, summary="Create an account")
 async def register(req: RegisterRequest, request: Request) -> MessageResponse:
     """Same response whether or not the e-mail is already registered (no enumeration)."""
     _rate_limit("register_ip", _client_ip(request))
     await auth_service.register(req.email, req.password, req.full_name, req.phone)
-    message = REGISTER_MESSAGE if settings.REQUIRE_EMAIL_VERIFICATION else REGISTER_MESSAGE_NO_VERIFY
-    return MessageResponse(message=message)
-
-
-@router.post("/verify-email", response_model=MessageResponse, dependencies=_GUARDS,
-             summary="Confirm an e-mail address with the link token")
-async def verify_email(req: VerifyEmailRequest, request: Request):
-    _rate_limit("token_ip", _client_ip(request))
-    try:
-        await auth_service.verify_email(req.token)
-    except AuthError as exc:
-        return _error(exc)
-    return MessageResponse(message="Your e-mail is verified. You can sign in now.")
-
-
-@router.post("/resend-verification", status_code=status.HTTP_202_ACCEPTED,
-             response_model=MessageResponse, dependencies=_GUARDS,
-             summary="Send a new verification link")
-async def resend_verification(req: EmailOnlyRequest, request: Request) -> MessageResponse:
-    _rate_limit("forgot_ip", _client_ip(request))
-    _rate_limit("resend_email", req.email)
-    await auth_service.resend_verification(req.email)
-    return MessageResponse(message=RECOVERY_MESSAGE)
+    return MessageResponse(message=REGISTER_MESSAGE)
 
 
 # ─── Login, session, logout ──────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 """
-Auth service — account registration, e-mail verification, login, server-managed
+Auth service — account registration, login, server-managed
 sessions, logout, password reset and password change.
 
 The HTTP layer (app/api/auth.py) calls these functions; all SQL lives in
@@ -14,7 +14,7 @@ Security properties (see docs/AUTH.md):
 - Generic responses for registration and recovery (no account enumeration);
   unknown accounts still cost one Argon2 verification (no timing oracle).
 - Temporary account lock after repeated failed logins.
-- Reset / verification tokens: random, hashed, single-use (atomic), short-lived;
+- Reset tokens: random, hashed, single-use (atomic), short-lived;
   issuing a new one invalidates older ones.
 """
 
@@ -66,11 +66,11 @@ def _now() -> datetime:
     return datetime.now(tz=timezone.utc)
 
 
-# ─── Registration and e-mail verification ────────────────────────────────────
+# ─── Registration ────────────────────────────────────────────────────────────
 
 async def register(email: str, password: str, full_name: Optional[str], phone: Optional[str]) -> None:
     """
-    Create an unverified account and e-mail a verification link.
+    Create an account that can sign in immediately.
 
     Always succeeds from the caller's point of view: when the e-mail is already
     registered, the owner gets an "account exists" e-mail instead, and the API
@@ -87,29 +87,6 @@ async def register(email: str, password: str, full_name: Optional[str], phone: O
             # No PII in the log: the caller cannot learn which contact detail collided.
             logger.info("Registration ignored: a contact detail is already in use.")
         return
-    if settings.REQUIRE_EMAIL_VERIFICATION:
-        await _send_verification(farmer)
-
-
-async def _send_verification(farmer: FarmerRow) -> None:
-    raw, token_hash = generate_token()
-    expires = _now() + timedelta(hours=settings.EMAIL_VERIFY_EXPIRE_HOURS)
-    await repo.create_token(farmer.id, repo.PURPOSE_VERIFY_EMAIL, token_hash, expires)
-    await email_service.send_verification_email(farmer.email, raw)
-
-
-async def verify_email(raw_token: str) -> None:
-    if not await repo.verify_email_with_token(hash_token(raw_token)):
-        raise AuthError("This verification link is invalid or has expired.", "INVALID_TOKEN", 400)
-
-
-async def resend_verification(email: str) -> None:
-    """Generic: sends a new link only for an existing, active, unverified account."""
-    farmer = await repo.get_farmer_by_email(email)
-    if farmer and farmer.is_active and not farmer.is_verified:
-        await _send_verification(farmer)
-
-
 # ─── Login, sessions, logout ─────────────────────────────────────────────────
 
 async def login(email: str, password: str, user_agent: Optional[str],
@@ -118,8 +95,8 @@ async def login(email: str, password: str, user_agent: Optional[str],
     Verify credentials and start a new session.
 
     Raises AuthError(401) with one generic message for unknown e-mail, wrong
-    password and locked account. Account state (unverified, deactivated) is only
-    revealed after a correct password.
+    password and locked account. Deactivated status is only revealed after a
+    correct password.
     """
     farmer = await repo.get_farmer_by_email(email)
     password_ok = verify_password(password, farmer.password_hash if farmer else None)
@@ -134,10 +111,6 @@ async def login(email: str, password: str, user_agent: Optional[str],
         raise AuthError(GENERIC_LOGIN_ERROR, "INVALID_CREDENTIALS", 401)
     if not farmer.is_active:
         raise AuthError("This account has been deactivated. Contact support.", "ACCOUNT_INACTIVE", 403)
-    if settings.REQUIRE_EMAIL_VERIFICATION and not farmer.is_verified:
-        raise AuthError("Please verify your e-mail address first. Check your inbox for the link.",
-                        "EMAIL_NOT_VERIFIED", 403)
-
     upgraded = hash_password(password) if password_needs_rehash(farmer.password_hash) else None
     await repo.record_login_success(farmer.id, upgraded)
     return await _start_session(farmer, user_agent, ip_address)

@@ -9,7 +9,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
-import { apiForgotPassword, apiResendVerification, ApiError } from "@/lib/api";
+import { apiForgotPassword } from "@/lib/api";
 import { AUTH_CSS } from "./authStyles";
 
 type AuthMode = "login" | "register" | "forgot";
@@ -30,8 +30,6 @@ export default function AuthPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  // Sign-in refused because the e-mail is not verified yet: offer a new link.
-  const [needsVerification, setNeedsVerification] = useState(false);
 
   // If already authenticated, redirect to dashboard
   useEffect(() => {
@@ -43,6 +41,7 @@ export default function AuthPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError(null);
+    setSuccess(null);
   };
 
   const handleSubmit = useCallback(
@@ -65,8 +64,6 @@ export default function AuthPage() {
           return;
         }
       }
-      setNeedsVerification(false);
-
       setSubmitting(true);
       try {
         if (mode === "login") {
@@ -79,7 +76,6 @@ export default function AuthPage() {
             full_name: formData.fullName || undefined,
             phone: formData.phone || undefined,
           });
-          // No automatic sign-in: the account is activated from the e-mailed link.
           setMode("login");
           setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
           setSuccess(message);
@@ -88,7 +84,6 @@ export default function AuthPage() {
           setSuccess(await apiForgotPassword(formData.email));
         }
       } catch (err: unknown) {
-        if (err instanceof ApiError && err.code === "EMAIL_NOT_VERIFIED") setNeedsVerification(true);
         setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       } finally {
         setSubmitting(false);
@@ -96,16 +91,6 @@ export default function AuthPage() {
     },
     [mode, formData, login, register, router]
   );
-
-  const handleResend = useCallback(async () => {
-    setError(null);
-    try {
-      setSuccess(await apiResendVerification(formData.email));
-      setNeedsVerification(false);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Could not send the link. Please try again.");
-    }
-  }, [formData.email]);
 
   if (isLoading) {
     return (
@@ -137,7 +122,7 @@ export default function AuthPage() {
               role="tab"
               aria-selected={mode === "login"}
               className={`auth-tab min-h-[44px] ${mode === "login" ? "auth-tab--active" : ""}`}
-              onClick={() => { setMode("login"); setError(null); setSuccess(null); setNeedsVerification(false); }}
+              onClick={() => { setMode("login"); setError(null); setSuccess(null); }}
             >
               Sign In
             </button>
@@ -145,7 +130,7 @@ export default function AuthPage() {
               role="tab"
               aria-selected={mode === "register"}
               className={`auth-tab min-h-[44px] ${mode === "register" ? "auth-tab--active" : ""}`}
-              onClick={() => { setMode("register"); setError(null); setSuccess(null); setNeedsVerification(false); }}
+              onClick={() => { setMode("register"); setError(null); setSuccess(null); }}
             >
               Create Account
             </button>
@@ -155,7 +140,7 @@ export default function AuthPage() {
         {mode === "forgot" && (
           <div className="auth-back-row">
             <button
-              onClick={() => { setMode("login"); setError(null); setSuccess(null); setNeedsVerification(false); }}
+              onClick={() => { setMode("login"); setError(null); setSuccess(null); }}
               className="auth-back-btn min-h-[44px]"
             >
               ← Back to Sign In
@@ -164,7 +149,6 @@ export default function AuthPage() {
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
           {/* Full name (register only) */}
           {mode === "register" && (
@@ -249,7 +233,7 @@ export default function AuthPage() {
                 <button
                   type="button"
                   className="auth-forgot-link min-h-[44px]"
-                  onClick={() => { setMode("forgot"); setError(null); setSuccess(null); setNeedsVerification(false); }}
+                  onClick={() => { setMode("forgot"); setError(null); setSuccess(null); }}
                 >
                   Forgot password?
                 </button>
@@ -290,15 +274,16 @@ export default function AuthPage() {
               ⚠️ {error}
             </div>
           )}
-          {needsVerification && mode === "login" && (
-            <button type="button" onClick={handleResend} className="auth-forgot-link min-h-[44px]">
-              Send me a new verification link
-            </button>
-          )}
           {success && (
             <div className="auth-alert auth-alert--success" role="status">
               ✅ {success}
             </div>
+          )}
+          {mode === "forgot" && success && (
+            <p className="auth-hint">
+              If this email belongs to an account and you are running locally without SMTP, check the
+              backend terminal or <code>docker compose logs backend</code> for the reset link.
+            </p>
           )}
 
           {/* Submit */}

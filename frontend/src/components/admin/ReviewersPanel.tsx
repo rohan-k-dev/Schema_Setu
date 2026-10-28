@@ -59,7 +59,7 @@ export default function ReviewersPanel({ fail }: { fail: (err: unknown) => void 
             {rows.map((u) => (
               <tr key={u.farmer_id}>
                 <td>{u.email}</td>
-                <td>{u.is_active ? (u.is_verified ? "active" : "e-mail not verified") : "deactivated"}</td>
+                <td>{u.is_active ? "active" : "deactivated"}</td>
                 <td><span className={`adm-badge ${u.reviewer_approved ? "adm-badge--ok" : "adm-badge--muted"}`}>
                   {u.reviewer_approved ? "Approved" : "Not approved"}</span></td>
                 <td>

@@ -3,7 +3,7 @@
 /**
  * Notification channels (docs/SCHEME_UPDATES.md): in-app, e-mail, SMS. Every rule is
  * enforced by the server — this only shows what is possible:
- *  - e-mail needs a verified address and e-mail set up on the server;
+ *  - e-mail needs e-mail set up on the server;
  *  - SMS needs an SMS provider on the server, a phone number verified with a code,
  *    and the farmer's explicit agreement to the consent text (recorded); it can be
  *    turned off at any time (opt-out).
@@ -64,7 +64,7 @@ export default function NotificationSettingsPanel({ onUnauthorized }: { onUnauth
         <legend className="fix-heading">How to tell you</legend>
         <label className="nset-row"><input type="checkbox" checked={p.in_app} onChange={(e) => toggle("in_app", e.target.checked)} /> In the app</label>
         <label className="nset-row">
-          <input type="checkbox" checked={p.email} disabled={!p.email && !(c.email_configured && c.email_verified)}
+          <input type="checkbox" checked={p.email} disabled={!p.email && !c.email_configured}
                  onChange={(e) => toggle("email", e.target.checked)} /> By e-mail
           {!c.email_configured && <span className="fix-why"> — not available on this server</span>}
         </label>

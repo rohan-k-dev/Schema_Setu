@@ -207,7 +207,7 @@ def env(monkeypatch):
     }.items():
         monkeypatch.setattr(target, value)
     monkeypatch.setattr(audit_repository, "record", audit.record)       # review decisions
-    for name in ("send_verification_email", "send_password_reset_email",
+    for name in ("send_password_reset_email",
                  "send_account_exists_email", "send_password_changed_email"):
         async def _noop(*a, **k):
             return True
@@ -315,7 +315,7 @@ PUBLIC = {
     "/", "/health", "/health/live", "/health/ready", "/chat", "/voice", "/tts", "/schemes",
     "/schemes/{scheme_id}", "/languages", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc",
     # account endpoints authenticate themselves (sign-in / session / password flows)
-    "/auth/register", "/auth/verify-email", "/auth/resend-verification", "/auth/login", "/auth/session",
+    "/auth/register", "/auth/login", "/auth/session",
     "/auth/logout", "/auth/logout-all", "/auth/forgot-password", "/auth/reset-password",
     "/auth/change-password", "/auth/reauthenticate",
     "/privacy/policy",                      # public: what is collected and why (no personal data)
