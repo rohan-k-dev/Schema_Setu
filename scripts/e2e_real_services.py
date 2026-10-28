@@ -66,7 +66,7 @@ def main(api):
     fresh = [s for s in schemes if (s.get("freshness") or {}).get("sources")]
     check("results carry source links and timestamps", all(src.get("url") and (src.get("checked_at"))
                                                            for s in fresh for src in s["freshness"]["sources"]))
-    reply = d.get("reply") or ""
+    reply = re.sub("[   ]", " ", d.get("reply") or "")       # LLM may use no-break spaces
     check("reply mentions an eligible scheme by name", any(s["name"].split(" (")[0][:20].lower() in reply.lower()
                                                            for s in elig) or "PM-KISAN" in reply, reply[:300])
     check("reply doesn't claim alternatives are eligible", "not confirmed" in reply.lower(), reply[-400:])
