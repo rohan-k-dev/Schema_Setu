@@ -1,0 +1,434 @@
+{
+  "note": "Generated from the offline pipeline. Experts rate each sample in ratings.json.",
+  "samples": [
+    {
+      "sample_id": "EX01",
+      "category": "simple_eligibility",
+      "scheme_id": "PM_KISAN",
+      "scheme_name": "Pradhan Mantri Kisan Samman Nidhi",
+      "query": "I am a farmer from Karnataka with 2 acres growing ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 2,
+        "primary_crop": "ragi",
+        "occupation": "farmer"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "occupation",
+          "user_value": "farmer",
+          "required_value": "farmer"
+        },
+        {
+          "field": "has_land",
+          "user_value": true,
+          "required_value": true
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Pradhan Mantri Kisan Samman Nidhi\n\nMatched criteria:\n✓ Occupation: Farmer\n✓ Land holding: Yes",
+      "documents": [
+        "Aadhaar Card",
+        "Bank Account Details",
+        "Land Records"
+      ],
+      "application_steps": [
+        "Visit PM-KISAN portal or nearest CSC center",
+        "Register with Aadhaar number, bank details, and land records",
+        "Verification by state/district agriculture officer"
+      ],
+      "source_url": "https://pmkisan.gov.in"
+    },
+    {
+      "sample_id": "EX02",
+      "category": "simple_eligibility",
+      "scheme_id": "KCC",
+      "scheme_name": "Kisan Credit Card",
+      "query": "I am a farmer from Karnataka with 2 acres growing ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 2,
+        "primary_crop": "ragi",
+        "occupation": "farmer"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "occupation",
+          "user_value": "farmer",
+          "required_value": "farmer"
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Kisan Credit Card\n\nMatched criteria:\n✓ Occupation: Farmer",
+      "documents": [
+        "Aadhaar Card",
+        "Land Records",
+        "Passport Size Photo"
+      ],
+      "application_steps": [
+        "Visit nearest bank branch (scheduled commercial bank, cooperative bank, or RRB)",
+        "Fill KCC application form and submit documents"
+      ],
+      "source_url": "https://www.myscheme.gov.in/schemes/kcc"
+    },
+    {
+      "sample_id": "EX03",
+      "category": "multiple_conditions",
+      "scheme_id": "PM_KMY",
+      "scheme_name": "Pradhan Mantri Kisan Maandhan Yojana",
+      "query": "I am a 30 year old farmer in Uttar Pradesh with 2 acres of wheat",
+      "profile_summary": {
+        "state": "Uttar Pradesh",
+        "land_size_acres": 2,
+        "primary_crop": "wheat",
+        "occupation": "farmer",
+        "age": 30
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "land_size_acres",
+          "user_value": 2.0,
+          "required_value": 5
+        },
+        {
+          "field": "age",
+          "user_value": 30.0,
+          "required_value": [
+            18,
+            40
+          ]
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Pradhan Mantri Kisan Maandhan Yojana\n\nMatched criteria:\n✓ Land size: 2\n✓ Age: 30",
+      "documents": [
+        "Aadhaar Card",
+        "Bank Account/Jan Dhan Account"
+      ],
+      "application_steps": [
+        "Visit nearest CSC center with Aadhaar and bank details"
+      ],
+      "source_url": "https://maandhan.in"
+    },
+    {
+      "sample_id": "EX04",
+      "category": "state_specific",
+      "scheme_id": "STATE_AP_RYTHU",
+      "scheme_name": "YSR Rythu Bharosa - AP Farmer Investment Support",
+      "query": "I grow groundnut on 4 acres in Andhra Pradesh",
+      "profile_summary": {
+        "state": "Andhra Pradesh",
+        "land_size_acres": 4,
+        "primary_crop": "groundnut"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "state",
+          "user_value": "andhra pradesh",
+          "required_value": [
+            "Andhra Pradesh"
+          ]
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: YSR Rythu Bharosa - AP Farmer Investment Support\n\nMatched criteria:\n✓ State: Andhra Pradesh",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://ysrrythubharosa.ap.gov.in"
+    },
+    {
+      "sample_id": "EX05",
+      "category": "crop_specific",
+      "scheme_id": "NMOOP",
+      "scheme_name": "National Mission on Oilseeds and Oil Palm",
+      "query": "I grow groundnut on 4 acres in Andhra Pradesh",
+      "profile_summary": {
+        "state": "Andhra Pradesh",
+        "land_size_acres": 4,
+        "primary_crop": "groundnut"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "primary_crop",
+          "user_value": "peanut",
+          "required_value": [
+            "groundnut",
+            "mustard",
+            "soybean",
+            "sunflower",
+            "sesame",
+            "linseed",
+            "oilseeds"
+          ]
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: National Mission on Oilseeds and Oil Palm\n\nMatched criteria:\n✓ Crop: Peanut",
+      "documents": [
+        "Land Records",
+        "Aadhaar Card"
+      ],
+      "application_steps": [],
+      "source_url": "https://agricoop.nic.in"
+    },
+    {
+      "sample_id": "EX06",
+      "category": "needs_information",
+      "scheme_id": "PM_KMY",
+      "scheme_name": "Pradhan Mantri Kisan Maandhan Yojana",
+      "query": "I am a farmer in Telangana with 3 acres of maize",
+      "profile_summary": {
+        "state": "Telangana",
+        "land_size_acres": 3,
+        "primary_crop": "maize",
+        "occupation": "farmer"
+      },
+      "system_status": "NEEDS_MORE_INFORMATION",
+      "matched_criteria": [
+        {
+          "field": "land_size_acres",
+          "user_value": 3.0,
+          "required_value": 5
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [
+        "age"
+      ],
+      "explanation": "More information is needed to complete the assessment.\n\nScheme: Pradhan Mantri Kisan Maandhan Yojana\n\nMatched criteria:\n✓ Land size: 3\n\nMore information needed:\n○ Age (required: 18, 40)",
+      "documents": [
+        "Aadhaar Card",
+        "Bank Account/Jan Dhan Account"
+      ],
+      "application_steps": [
+        "Visit nearest CSC center with Aadhaar and bank details"
+      ],
+      "source_url": "https://maandhan.in"
+    },
+    {
+      "sample_id": "EX07",
+      "category": "not_eligible",
+      "scheme_id": "MKSP",
+      "scheme_name": "Mahila Kisan Sashaktikaran Pariyojana",
+      "query": "I am a male farmer in Karnataka with 1 acre of ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 1,
+        "primary_crop": "ragi",
+        "gender": "male",
+        "occupation": "farmer"
+      },
+      "system_status": "NOT_ELIGIBLE",
+      "matched_criteria": [],
+      "failed_criteria": [
+        {
+          "field": "gender",
+          "user_value": "male",
+          "required_value": "female",
+          "source_text": "women in agriculture"
+        }
+      ],
+      "missing_information": [],
+      "explanation": "One or more published criteria do not match the current profile.\n\nScheme: Mahila Kisan Sashaktikaran Pariyojana\n\nDoes not match:\n✗ Gender: Profile has Male, required: Female (women in agriculture)",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://nrlm.gov.in"
+    },
+    {
+      "sample_id": "EX08",
+      "category": "not_eligible",
+      "scheme_id": "PM_KISAN",
+      "scheme_name": "Pradhan Mantri Kisan Samman Nidhi",
+      "query": "I am a landless farmer in Karnataka, I own 0 acres and grow ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 0,
+        "primary_crop": "ragi",
+        "occupation": "farmer"
+      },
+      "system_status": "NOT_ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "occupation",
+          "user_value": "farmer",
+          "required_value": "farmer"
+        }
+      ],
+      "failed_criteria": [
+        {
+          "field": "has_land",
+          "user_value": false,
+          "required_value": true,
+          "source_text": "land-holding farmer families"
+        }
+      ],
+      "missing_information": [],
+      "explanation": "One or more published criteria do not match the current profile.\n\nScheme: Pradhan Mantri Kisan Samman Nidhi\n\nMatched criteria:\n✓ Occupation: Farmer\n\nDoes not match:\n✗ Land holding: Profile has No, required: Yes (land-holding farmer families)",
+      "documents": [
+        "Aadhaar Card",
+        "Bank Account Details",
+        "Land Records"
+      ],
+      "application_steps": [
+        "Visit PM-KISAN portal or nearest CSC center",
+        "Register with Aadhaar number, bank details, and land records",
+        "Verification by state/district agriculture officer"
+      ],
+      "source_url": "https://pmkisan.gov.in"
+    },
+    {
+      "sample_id": "EX09",
+      "category": "uncertain_data",
+      "scheme_id": "MGNREGA",
+      "scheme_name": "Mahatma Gandhi National Rural Employment Guarantee Act",
+      "query": "I am a farmer from Karnataka with 2 acres growing ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 2,
+        "primary_crop": "ragi",
+        "occupation": "farmer"
+      },
+      "system_status": "NEEDS_MORE_INFORMATION",
+      "matched_criteria": [],
+      "failed_criteria": [],
+      "missing_information": [
+        "residence"
+      ],
+      "explanation": "More information is needed to complete the assessment.\n\nScheme: Mahatma Gandhi National Rural Employment Guarantee Act\n\nMore information needed:\n○ Residence (required: Rural)",
+      "documents": [
+        "Job Card",
+        "Aadhaar Card"
+      ],
+      "application_steps": [
+        "Apply for Job Card at Gram Panchayat",
+        "Demand work in writing or orally to Gram Panchayat"
+      ],
+      "source_url": "https://nrega.nic.in"
+    },
+    {
+      "sample_id": "EX10",
+      "category": "uncertain_data",
+      "scheme_id": "AGMARKNET",
+      "scheme_name": "Agricultural Marketing Information Network",
+      "query": "I am a farmer from Karnataka with 2 acres growing ragi",
+      "profile_summary": {
+        "state": "Karnataka",
+        "land_size_acres": 2,
+        "primary_crop": "ragi",
+        "occupation": "farmer"
+      },
+      "system_status": "UNVERIFIABLE",
+      "matched_criteria": [],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "The available structured criteria are insufficient to make a reliable assessment.\n\nScheme: Agricultural Marketing Information Network",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://agmarknet.gov.in"
+    },
+    {
+      "sample_id": "EX11",
+      "category": "state_specific",
+      "scheme_id": "STATE_MH_NAMO",
+      "scheme_name": "Namo Shetkari Mahasanman Nidhi - Maharashtra",
+      "query": "I am a farmer in Maharashtra with 5 acres of cotton",
+      "profile_summary": {
+        "state": "Maharashtra",
+        "land_size_acres": 5,
+        "primary_crop": "cotton",
+        "occupation": "farmer"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "state",
+          "user_value": "maharashtra",
+          "required_value": [
+            "Maharashtra"
+          ]
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Namo Shetkari Mahasanman Nidhi - Maharashtra\n\nMatched criteria:\n✓ State: Maharashtra",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://nsmny.mahait.org"
+    },
+    {
+      "sample_id": "EX12",
+      "category": "xai_explanation",
+      "scheme_id": "MKSP",
+      "scheme_name": "Mahila Kisan Sashaktikaran Pariyojana",
+      "query": "I am a woman farmer in Assam with 1 acre of rice",
+      "profile_summary": {
+        "state": "Assam",
+        "land_size_acres": 1,
+        "primary_crop": "rice",
+        "gender": "female",
+        "occupation": "farmer"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "gender",
+          "user_value": "female",
+          "required_value": "female"
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Mahila Kisan Sashaktikaran Pariyojana\n\nMatched criteria:\n✓ Gender: Female",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://nrlm.gov.in"
+    },
+    {
+      "sample_id": "EX13",
+      "category": "xai_explanation",
+      "scheme_id": "MOVCDNER",
+      "scheme_name": "Mission Organic Value Chain Development for North Eastern Region",
+      "query": "I am a woman farmer in Assam with 1 acre of rice",
+      "profile_summary": {
+        "state": "Assam",
+        "land_size_acres": 1,
+        "primary_crop": "rice",
+        "gender": "female",
+        "occupation": "farmer"
+      },
+      "system_status": "ELIGIBLE",
+      "matched_criteria": [
+        {
+          "field": "state",
+          "user_value": "assam",
+          "required_value": [
+            "Arunachal Pradesh",
+            "Assam",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Sikkim",
+            "Tripura"
+          ]
+        }
+      ],
+      "failed_criteria": [],
+      "missing_information": [],
+      "explanation": "Your profile matches the available eligibility criteria.\n\nScheme: Mission Organic Value Chain Development for North Eastern Region\n\nMatched criteria:\n✓ State: Assam",
+      "documents": [],
+      "application_steps": [],
+      "source_url": "https://agricoop.nic.in"
+    }
+  ]
+}

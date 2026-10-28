@@ -1,0 +1,38 @@
+[
+  {
+    "case_id": "hr_01_unverifiable",
+    "trigger": "UNVERIFIABLE eligibility",
+    "reason": "UNVERIFIABLE",
+    "profile": {"state": "Karnataka", "primary_crop": "ragi"},
+    "scheme_ids": ["SCHEME_NO_RULES"],
+    "expected_action": "REQUEST_INFORMATION",
+    "description": "System cannot verify — needs human review"
+  },
+  {
+    "case_id": "hr_02_rule_conflict",
+    "trigger": "Conflicting rules",
+    "reason": "RULE_CONFLICT",
+    "profile": {"state": "Karnataka", "land_size_acres": 7},
+    "scheme_ids": ["SCHEME_CONFLICT"],
+    "expected_action": "MARK_UNVERIFIABLE",
+    "description": "Contradictory rules in scheme → reviewer marks unverifiable"
+  },
+  {
+    "case_id": "hr_03_source_conflict",
+    "trigger": "DB vs Web conflict",
+    "reason": "SOURCE_CONFLICT",
+    "profile": {"state": "Maharashtra"},
+    "scheme_ids": ["PM_KISAN"],
+    "expected_action": "APPROVE",
+    "description": "Source conflict resolved by reviewer"
+  },
+  {
+    "case_id": "hr_04_dismiss",
+    "trigger": "False alarm",
+    "reason": "OTHER",
+    "profile": {},
+    "scheme_ids": [],
+    "expected_action": "DISMISS",
+    "description": "Reviewer dismisses non-relevant case"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "participants": 0,
+  "task_results": 0,
+  "tasks": {
+    "T1": "Provide farmer profile",
+    "T2": "Find relevant schemes",
+    "T3": "Understand why one scheme matches",
+    "T4": "Find required documents",
+    "T5": "Find application steps",
+    "T6": "Ask a follow-up question",
+    "T7": "Use voice",
+    "T8": "Change language",
+    "T9": "Interpret eligibility result"
+  },
+  "privacy_violations": [],
+  "status": "NOT_MEASURED",
+  "reason": "No participant records in data/evaluation/user_study/records.json. The protocol is in docs/phase7-user-study-report.md.",
+  "task_completion_rate": null,
+  "average_task_time_s": null,
+  "comprehension_score": null,
+  "average_trust": null,
+  "average_ease_of_use": null,
+  "average_voice_rating": null
+}

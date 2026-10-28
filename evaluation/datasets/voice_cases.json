@@ -1,0 +1,50 @@
+{
+  "dataset": "voice",
+  "version": "voice_v1",
+  "created": "2026-10-13",
+  "label_method": "Hand-written. In OFFLINE mode Sarvam ASR is mocked: each audio_id maps to a fixed transcript (the 'mocked ASR output'). Offline results therefore measure the voice plumbing (upload validation, ASR -> translation -> same LangGraph pipeline -> translation -> TTS, failure fallbacks, session continuity) and post-ASR field extraction handling. Transcription accuracy and WER need real recorded audio with ground-truth transcripts and are NOT measured offline.",
+  "wer_status": "NOT_MEASURED — no recorded audio corpus with ground-truth transcripts exists in the repository. See docs/phase7-limitations.md.",
+  "pipeline_cases": [
+    {"case_id": "V01", "audio_id": "v01", "language": "en", "transcript": "I am from Karnataka", "extraction": {"state": "Karnataka"}, "expected_profile": {"state": "Karnataka"}},
+    {"case_id": "V02", "audio_id": "v02", "language": "en", "transcript": "I have two acres of land", "extraction": {"land_size_acres": 2}, "expected_profile": {"land_size_acres": 2}},
+    {"case_id": "V03", "audio_id": "v03", "language": "en", "transcript": "I grow ragi in Mandya", "extraction": {"primary_crop": "ragi", "district": "Mandya", "state": "Karnataka"}, "expected_profile": {"primary_crop": "ragi", "district": "Mandya"}},
+    {"case_id": "V04", "audio_id": "v04", "language": "en", "transcript": "My annual income is one lakh fifty thousand", "extraction": {"annual_income": 150000}, "expected_profile": {"annual_income": 150000}},
+    {"case_id": "V05", "audio_id": "v05", "language": "hi", "transcript": "मैं कर्नाटक का किसान हूँ", "translation": "I am a farmer from Karnataka", "extraction": {"state": "Karnataka", "occupation": "farmer"}, "expected_profile": {"state": "Karnataka", "occupation": "farmer"}},
+    {"case_id": "V06", "audio_id": "v06", "language": "hi", "transcript": "मेरे पास दो एकड़ ज़मीन है", "translation": "I have 2 acres of land", "extraction": {"land_size_acres": 2}, "expected_profile": {"land_size_acres": 2}},
+    {"case_id": "V07", "audio_id": "v07", "language": "kn", "transcript": "ನಾನು ರಾಗಿ ಬೆಳೆಯುತ್ತೇನೆ", "translation": "I grow ragi", "extraction": {"primary_crop": "ragi"}, "expected_profile": {"primary_crop": "ragi"}},
+    {"case_id": "V08", "audio_id": "v08", "language": "kn", "transcript": "ನಾನು ಮಂಡ್ಯ ಜಿಲ್ಲೆಯವನು", "translation": "I am from Mandya district", "extraction": {"district": "Mandya", "state": "Karnataka"}, "expected_profile": {"district": "Mandya"}},
+    {"case_id": "V09", "audio_id": "v09", "language": "ta", "transcript": "நான் நெல் பயிரிடுகிறேன்", "translation": "I grow paddy", "extraction": {"primary_crop": "paddy"}, "expected_profile": {"primary_crop": "rice"}},
+    {"case_id": "V10", "audio_id": "v10", "language": "te", "transcript": "నేను తెలంగాణ నుండి వచ్చాను", "translation": "I am from Telangana", "extraction": {"state": "Telangana"}, "expected_profile": {"state": "Telangana"}},
+    {"case_id": "V11", "audio_id": "v11", "language": "mr", "transcript": "माझ्याकडे पाच एकर जमीन आहे", "translation": "I have 5 acres of land", "extraction": {"land_size_acres": 5}, "expected_profile": {"land_size_acres": 5}},
+    {"case_id": "V12", "audio_id": "v12", "language": "bn", "transcript": "আমি পশ্চিমবঙ্গের কৃষক", "translation": "I am a farmer from West Bengal", "extraction": {"state": "West Bengal", "occupation": "farmer"}, "expected_profile": {"state": "West Bengal"}},
+    {"case_id": "V13", "audio_id": "v13", "language": "gu", "transcript": "હું મગફળી ઉગાડું છું", "translation": "I grow groundnut", "extraction": {"primary_crop": "groundnut"}, "expected_profile": {"primary_crop": "groundnut"}},
+    {"case_id": "V14", "audio_id": "v14", "language": "pa", "transcript": "ਮੈਂ ਕਣਕ ਉਗਾਉਂਦਾ ਹਾਂ", "translation": "I grow wheat", "extraction": {"primary_crop": "wheat"}, "expected_profile": {"primary_crop": "wheat"}},
+    {"case_id": "V15", "audio_id": "v15", "language": "ml", "transcript": "ഞാൻ കേരളത്തിൽ നിന്നാണ്", "translation": "I am from Kerala", "extraction": {"state": "Kerala"}, "expected_profile": {"state": "Kerala"}},
+    {"case_id": "V16", "audio_id": "v16", "language": "od", "transcript": "ମୁଁ ଓଡ଼ିଶାରୁ ଆସିଛି", "translation": "I am from Odisha", "extraction": {"state": "Odisha"}, "expected_profile": {"state": "Odisha"}}
+  ],
+  "session_cases": [
+    {"case_id": "VS1", "title": "Voice session continuity (voice -> text -> voice)", "turns": [
+      {"channel": "voice", "audio_id": "vs1a", "language": "en", "transcript": "I am from Karnataka", "extraction": {"state": "Karnataka"}},
+      {"channel": "text", "language": "en", "input": "I grow ragi", "extraction": {"primary_crop": "ragi"}},
+      {"channel": "voice", "audio_id": "vs1c", "language": "en", "transcript": "I have 2 acres", "extraction": {"land_size_acres": 2}}],
+     "expect_profile": {"state": "Karnataka", "primary_crop": "ragi", "land_size_acres": 2}, "expect_status_in": ["schemes_found", "partial_results"]},
+    {"case_id": "VS2", "title": "Mixed modality text -> voice -> text -> voice", "turns": [
+      {"channel": "text", "language": "en", "input": "I am a farmer", "extraction": {"occupation": "farmer"}},
+      {"channel": "voice", "audio_id": "vs2b", "language": "hi", "transcript": "मैं कर्नाटक से हूँ", "translation": "I am from Karnataka", "extraction": {"state": "Karnataka"}},
+      {"channel": "text", "language": "en", "input": "2 acres", "extraction": {"land_size_acres": 2}},
+      {"channel": "voice", "audio_id": "vs2d", "language": "kn", "transcript": "ನಾನು ರಾಗಿ ಬೆಳೆಯುತ್ತೇನೆ", "translation": "I grow ragi", "extraction": {"primary_crop": "ragi"}}],
+     "expect_profile": {"occupation": "farmer", "state": "Karnataka", "land_size_acres": 2, "primary_crop": "ragi"}, "expect_status_in": ["schemes_found", "partial_results"]}
+  ],
+  "failure_cases": [
+    {"case_id": "VF01", "kind": "asr_failure", "expect": "error response with a text-fallback message; no crash"},
+    {"case_id": "VF02", "kind": "asr_empty", "expect": "VOICE_TRANSCRIPTION_FAILED with a text-fallback message"},
+    {"case_id": "VF03", "kind": "tts_failure", "expect": "TTS returns an error object; the chat text reply is unaffected"},
+    {"case_id": "VF04", "kind": "translation_failure", "expect": "untranslated transcript passed on; English reply; no crash"},
+    {"case_id": "VF05", "kind": "empty_audio", "expect": "VALIDATION_ERROR (empty)"},
+    {"case_id": "VF06", "kind": "oversized_audio", "expect": "VALIDATION_ERROR (too large)"},
+    {"case_id": "VF07", "kind": "wrong_mime", "content_type": "application/pdf", "expect": "VALIDATION_ERROR (unsupported)"},
+    {"case_id": "VF08", "kind": "malformed_audio", "content_type": "audio/wav", "payload": "this is not audio at all", "expect": "VALIDATION_ERROR before any ASR call"},
+    {"case_id": "VF09", "kind": "suspicious_filename", "filename": "../../etc/passwd.wav", "expect": "filename never used; server-generated safe filename sent to ASR"},
+    {"case_id": "VF10", "kind": "tts_valid_audio", "expect": "non-empty base64 audio that decodes"}
+  ]
+}

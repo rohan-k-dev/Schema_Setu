@@ -1,0 +1,748 @@
+{
+  "generated_at": "2026-09-26T20:14:50.514446",
+  "corpus_version": "1.0.0",
+  "total_schemes": 40,
+  "valid_schemes": 40,
+  "failed_schemes": 0,
+  "warning_count": 91,
+  "error_count": 0,
+  "duplicate_count": 1,
+  "official_source_percentage": 100.0,
+  "missing_field_counts": {
+    "application_url": 37,
+    "application_steps": 31,
+    "required_documents": 22
+  },
+  "rule_count": 25,
+  "issues": [
+    {
+      "scheme_id": "PM_KUSUM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "SOIL_HEALTH_CARD",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PKVY",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PKVY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "KCC",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MGNREGA",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMKSY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "SMAM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMOOP",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMOOP",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ENAM",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ENAM",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ENAM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "RKVY_RAFTAAR",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "RKVY_RAFTAAR",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "RKVY_RAFTAAR",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NFSM",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NFSM",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NFSM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PM_KMY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MIDH",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MIDH",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMEGP",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ATMA",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ATMA",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "ATMA",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NBM",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NBM",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NBM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "DEDS",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "DEDS",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NLM",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NLM",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NLM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMJJBY",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMJJBY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMSBY",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMSBY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMJDY",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMJDY",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMAY_G",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMAY_G",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NRLM",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NRLM",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NRLM",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MKSP",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MKSP",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MKSP",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMSA",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMSA",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMSA",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGRI_INFRA_FUND",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGRI_INFRA_FUND",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGRI_INFRA_FUND",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "FPO_SCHEME",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "FPO_SCHEME",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "FPO_SCHEME",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_KA_KRUSHAK",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_KA_KRUSHAK",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_KA_KRUSHAK",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_AP_RYTHU",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_AP_RYTHU",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_AP_RYTHU",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TS_RYTHU",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TS_RYTHU",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TS_RYTHU",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_MH_NAMO",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_MH_NAMO",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_MH_NAMO",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TN_UZHAVAR",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TN_UZHAVAR",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_TN_UZHAVAR",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_UP_KISAN",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_UP_KISAN",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "STATE_UP_KISAN",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MOVCDNER",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MOVCDNER",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "MOVCDNER",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMKISAN_MAN_DHAN",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMKISAN_MAN_DHAN",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMKISAN_MAN_DHAN",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "PMKISAN_MAN_DHAN",
+      "issue_type": "WARNING",
+      "field": "possible_duplicate",
+      "message": "Flagged as possible duplicate",
+      "current_value": null,
+      "recommended_action": "Verify and merge or differentiate"
+    },
+    {
+      "scheme_id": "NABARD_RIDF",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NABARD_RIDF",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NABARD_RIDF",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGMARKNET",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGMARKNET",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "AGMARKNET",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMAET",
+      "issue_type": "WARNING",
+      "field": "required_documents",
+      "message": "Missing required documents list",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMAET",
+      "issue_type": "WARNING",
+      "field": "application_steps",
+      "message": "Missing application steps",
+      "current_value": null,
+      "recommended_action": null
+    },
+    {
+      "scheme_id": "NMAET",
+      "issue_type": "WARNING",
+      "field": "application_url",
+      "message": "Missing application URL",
+      "current_value": null,
+      "recommended_action": null
+    }
+  ],
+  "manual_review_count": 1
+}

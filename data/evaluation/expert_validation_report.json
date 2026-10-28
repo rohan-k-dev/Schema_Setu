@@ -1,0 +1,19 @@
+{
+  "sample_size": 13,
+  "sample_distribution": {
+    "simple_eligibility": 2,
+    "multiple_conditions": 1,
+    "state_specific": 2,
+    "crop_specific": 1,
+    "needs_information": 1,
+    "not_eligible": 2,
+    "uncertain_data": 2,
+    "xai_explanation": 2
+  },
+  "ratings_recorded": 0,
+  "status": "NOT_MEASURED",
+  "reason": "No expert ratings recorded in data/evaluation/expert_validation/ratings.json",
+  "correct_rate": null,
+  "xai_correct_rate": null,
+  "source_correct_rate": null
+}

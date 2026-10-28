@@ -1,0 +1,20 @@
+[
+  {
+    "scheme_id": "PMKISAN_MAN_DHAN",
+    "issue_type": "NEEDS_REVIEW",
+    "field": null,
+    "current_value": null,
+    "source_url": "https://maandhan.in",
+    "explanation": "Possible duplicate of PM_KMY",
+    "recommended_action": "Verify scheme data against official source"
+  },
+  {
+    "scheme_id": "PMKISAN_MAN_DHAN",
+    "issue_type": "POSSIBLE_DUPLICATE",
+    "field": null,
+    "current_value": null,
+    "source_url": "https://maandhan.in",
+    "explanation": "This scheme may be a duplicate of another scheme",
+    "recommended_action": "Compare with similar schemes and merge or differentiate"
+  }
+]
